@@ -90,7 +90,7 @@ export default function ContactView() {
           </div>
           <button
             onClick={() => copyToClipboard('chiranthmoger7@gmail.com')}
-            className="inline-flex items-center justify-center p-2 rounded border border-line bg-paper hover:bg-ink hover:text-paper hover:border-ink transition-all cursor-pointer"
+            className="inline-flex items-center justify-center p-2 rounded border border-line bg-paper hover:bg-ink hover:text-paper hover:border-ink transition-all cursor-pointer btn-sweep"
             id="btn-copy-email"
             title={copiedEmail ? "Copied!" : "Copy Email"}
           >
@@ -177,7 +177,7 @@ export default function ContactView() {
                 <button
                   type="submit"
                   disabled={isSubmitting || !name || !email || !message}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 font-mono text-xs border border-ink bg-ink text-white/80 rounded-sm px-6 py-3 hover:bg-ink-soft transition-colors duration-300 ease-out disabled:bg-ink disabled:text-white/50 disabled:border-ink disabled:cursor-not-allowed cursor-pointer shadow-sm"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 font-mono text-xs border border-ink bg-ink text-white/80 rounded-sm px-6 py-3 hover:bg-ink-soft transition-colors duration-300 ease-out disabled:bg-ink disabled:text-white/50 disabled:border-ink disabled:cursor-not-allowed cursor-pointer shadow-sm btn-sweep"
                   id="btn-form-submit"
                 >
                   {isSubmitting ? (
@@ -208,7 +208,7 @@ export default function ContactView() {
               </p>
               <button
                 onClick={() => setSubmitSuccess(false)}
-                className="font-mono text-2xs uppercase font-bold tracking-wider border border-line hover:border-ink rounded-sm px-4 py-2 bg-paper transition-colors duration-300 ease-out cursor-pointer"
+                className="font-mono text-2xs uppercase font-bold tracking-wider border border-line hover:border-ink hover:bg-ink hover:text-paper hover:border-ink rounded-sm px-4 py-2 bg-paper transition-colors duration-300 ease-out cursor-pointer btn-sweep"
                 id="btn-submit-another"
               >
                 Send another message

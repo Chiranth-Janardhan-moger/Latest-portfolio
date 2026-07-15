@@ -160,7 +160,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
         <div className="flex flex-wrap gap-3 font-mono text-xs" id="hero-actions">
           <button
             onClick={onNavigateToContact}
-            className="flex items-center gap-2 border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 active:scale-95 transition-all duration-200 ease-out cursor-pointer btn-sweep"
+            className="flex items-center gap-2 border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 transition-all duration-200 ease-out cursor-pointer btn-sweep"
             id="btn-contact-me"
           >
             <Mail size={13} className="shrink-0" />
@@ -170,7 +170,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
             href="https://github.com/Chiranth-Janardhan-moger"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 transition-all duration-200 ease-out btn-sweep"
+            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 transition-all duration-200 ease-out btn-sweep"
             id="link-github"
           >
             GitHub
@@ -179,7 +179,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
             href="https://www.linkedin.com/in/chiranth-moger-01a867316/"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 transition-all duration-200 ease-out btn-sweep"
+            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 transition-all duration-200 ease-out btn-sweep"
             id="link-linkedin"
           >
             LinkedIn
@@ -188,7 +188,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
             href="/assets/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 transition-all duration-200 ease-out btn-sweep"
+            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 transition-all duration-200 ease-out btn-sweep"
             id="link-resume"
           >
             Resume
@@ -437,7 +437,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                       href={proj.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink transition-all duration-300 ease-out"
+                      className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink transition-all duration-300 ease-out btn-sweep"
                       title="GitHub Repository"
                       id={`project-gh-${proj.id}`}
                     >
@@ -450,7 +450,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                       target="_blank"
                       onClick={(e) => handleDemoClick(e, proj)}
                       rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink transition-all duration-300 ease-out"
+                      className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink transition-all duration-300 ease-out btn-sweep"
                       title={proj.id === 'sqlguardjs' ? "npm Registry Package" : (proj.id === 'cloudpulse' ? "Docker Container Metrics" : "Live Project")}
                       id={`project-demo-${proj.id}`}
                     >
@@ -531,25 +531,25 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                   <div className="flex flex-wrap gap-2 mb-3">
                     <button
                       onClick={() => setTestPayload("SELECT * FROM users WHERE email = 'recruiter@bmsit.edu'")}
-                      className="font-mono text-[10px] border border-line hover:border-ink hover:bg-paper px-2.5 py-1 rounded-sm text-ink-soft hover:text-ink transition-all cursor-pointer"
+                      className="font-mono text-[10px] border border-line hover:border-ink hover:bg-ink px-2.5 py-1 rounded-sm text-ink-soft hover:text-paper transition-all cursor-pointer btn-sweep"
                     >
                       Safe Query
                     </button>
                     <button
                       onClick={() => setTestPayload("' UNION SELECT username, password_hash FROM admin_users --")}
-                      className="font-mono text-[10px] border border-line hover:border-red-500/50 hover:bg-red-50/50 px-2.5 py-1 rounded-sm text-ink-soft hover:text-red-600 transition-all cursor-pointer"
+                      className="font-mono text-[10px] border border-line hover:border-ink hover:bg-ink px-2.5 py-1 rounded-sm text-ink-soft hover:text-paper transition-all cursor-pointer btn-sweep"
                     >
                       SQL Injection Attack
                     </button>
                     <button
                       onClick={() => setTestPayload('<img src=x onerror="alert(document.domain)">')}
-                      className="font-mono text-[10px] border border-line hover:border-amber-500/50 hover:bg-amber-50/50 px-2.5 py-1 rounded-sm text-ink-soft hover:text-amber-600 transition-all cursor-pointer"
+                      className="font-mono text-[10px] border border-line hover:border-ink hover:bg-ink px-2.5 py-1 rounded-sm text-ink-soft hover:text-paper transition-all cursor-pointer btn-sweep"
                     >
                       XSS script injection
                     </button>
                     <button
                       onClick={() => setTestPayload('{"$ne": null}')}
-                      className="font-mono text-[10px] border border-line hover:border-orange-500/50 hover:bg-orange-50/50 px-2.5 py-1 rounded-sm text-ink-soft hover:text-orange-600 transition-all cursor-pointer"
+                      className="font-mono text-[10px] border border-line hover:border-ink hover:bg-ink px-2.5 py-1 rounded-sm text-ink-soft hover:text-paper transition-all cursor-pointer btn-sweep"
                     >
                       NoSQL injection bypass
                     </button>
@@ -566,7 +566,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                     <button
                       disabled={isScanning || !testPayload.trim()}
                       onClick={handleScanPayload}
-                      className="absolute right-2 bottom-3 font-mono text-[10px] bg-ink hover:bg-ink-soft text-paper disabled:bg-line disabled:text-ink-soft disabled:cursor-not-allowed px-3 py-1.5 rounded-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                      className="absolute right-2 bottom-3 font-mono text-[10px] bg-ink hover:bg-ink-soft text-paper disabled:bg-line disabled:text-ink-soft disabled:cursor-not-allowed px-3 py-1.5 rounded-sm transition-all flex items-center gap-1.5 cursor-pointer btn-sweep"
                     >
                       {isScanning ? (
                         <RefreshCw size={10} className="animate-spin" />

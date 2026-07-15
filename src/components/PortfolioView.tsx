@@ -501,22 +501,25 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
               )}
 
               {proj.id === "sqlguardjs" && isPlaygroundExpanded && (
-                <div className="mt-6 border border-line bg-cream/20 rounded-xl p-5 relative animate-fade-in" id="sqlguardjs-playground" onClick={(e) => e.stopPropagation()}>
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsPlaygroundExpanded(false);
-                    }}
-                    className="absolute top-4 right-4 font-mono text-[10px] text-ink-soft hover:text-ink hover:underline cursor-pointer flex items-center gap-1"
-                    title="Collapse Playground"
-                  >
-                    <span>[ Collapse ]</span>
-                  </button>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Shield size={16} className="text-ink animate-pulse" />
-                    <h4 className="font-mono text-xs font-semibold text-ink uppercase tracking-wider">
-                      SQLGuardJS Live Protection Shield Playground
-                    </h4>
+                <div className="mt-6 border border-line bg-cream/20 rounded-xl p-4 sm:p-5 relative animate-fade-in" id="sqlguardjs-playground" onClick={(e) => e.stopPropagation()}>
+                  <div className="flex justify-between items-start gap-4 mb-3" id="sqlguardjs-playground-header">
+                    <div className="flex items-center gap-2">
+                      <Shield size={16} className="text-ink animate-pulse" />
+                      <h4 className="font-mono text-xs font-semibold text-ink uppercase tracking-wider">
+                        SQLGuardJS Live Protection Shield Playground
+                      </h4>
+                    </div>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsPlaygroundExpanded(false);
+                      }}
+                      className="font-mono text-[10px] text-ink-soft hover:text-ink hover:underline cursor-pointer flex items-center gap-1 shrink-0"
+                      title="Collapse Playground"
+                      id="btn-collapse-playground"
+                    >
+                      <span>[ Collapse ]</span>
+                    </button>
                   </div>
                   <p className="text-xs text-ink-soft mb-4 leading-relaxed">
                     Test Chiranth's published middleware live. Input any payload or select a signature below to see SQLGuardJS evaluate, score, and defend the gateway in real-time.
@@ -575,14 +578,14 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                   {/* Scan Result Terminal */}
                   {scanResult && (
                     <div className="border border-line rounded-md overflow-hidden bg-paper font-mono text-xs mb-3 animate-fade-in">
-                      <div className="border-b border-line bg-cream px-3 py-1.5 flex justify-between items-center">
-                        <div className="flex items-center gap-1.5">
+                      <div className="border-b border-line bg-cream px-3 py-1.5 flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-0">
+                        <div className="flex items-center gap-1.5 self-start">
                            <Terminal size={12} className="text-ink-soft" />
                            <span className="text-[10px] font-semibold text-ink-soft uppercase tracking-wider">
                              Shield Gateway Inspection Report
                            </span>
                         </div>
-                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-sm ${
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-sm self-start sm:self-auto ${
                           scanResult.status === 200 
                             ? 'bg-green-100 text-green-700 border border-green-200' 
                             : 'bg-red-100 text-red-700 border border-red-200'
@@ -623,14 +626,14 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                   )}
 
                   {/* Threat logs button */}
-                  <div className="flex justify-between items-center border-t border-line/40 pt-3 mt-3">
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-t border-line/40 pt-3 mt-3">
                     <button
                       onClick={toggleRecentThreats}
-                      className="font-mono text-[10px] text-ink-soft hover:text-ink underline cursor-pointer flex items-center gap-1"
+                      className="font-mono text-[10px] text-ink-soft hover:text-ink underline cursor-pointer flex items-center gap-1 self-start"
                     >
-                      <span>{showRecentThreats ? "Hide Shield Traffic Logs" : "View Live Shield Traffic Logs"}</span>
+                      <span>{showRecentThreats ? "Hide Logs" : "View Live Logs"}</span>
                     </button>
-                    <span className="font-mono text-[9px] text-ink-soft">
+                    <span className="font-mono text-[9px] text-ink-soft self-start sm:self-auto">
                       Heuristics Sensitivity: Balanced
                     </span>
                   </div>

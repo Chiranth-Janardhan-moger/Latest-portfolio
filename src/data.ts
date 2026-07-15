@@ -213,68 +213,116 @@ export const PROJECTS: Project[] = [
 export const INITIAL_BLOGS: BlogPost[] = [
   {
     id: "blog-1",
-    title: "Why You Should Publish Your Underperforming ML Classes",
-    slug: "publish-underperforming-ml-classes",
-    summary: "A look into the structural reality of the Silent Cry Decoder, why we reported a Macro F1 of 0.30, and why honesty is a core pillar of machine learning research.",
-    category: "Machine Learning",
-    publishedAt: "2026-06-28",
-    readingTime: "5 min read",
-    tags: ["Machine Learning", "MLOps", "Acoustics", "Ethics"],
-    content: `In modern machine learning, there is an immense pressure to present flawless results. We write research abstracts highlighting 95% accuracy and gloss over the silent failures. But when building models that evaluate human critical states, this pressure turns dangerous.
+    title: "The Next Shift in AI: Building Context-Aware Agents with Model Context Protocol (MCP)",
+    slug: "ai-agents-model-context-protocol",
+    summary: "An exploration of Model Context Protocol (MCP), why it is replacing static API boundaries for LLMs, and how we built the orchestration pipeline for MCPPro.",
+    category: "AI Engineering",
+    publishedAt: "2026-07-15",
+    readingTime: "6 min read",
+    tags: ["Artificial Intelligence", "Model Context Protocol", "Next.js", "RAG", "Qdrant"],
+    content: `Large Language Models are incredibly capable, but they are traditionally trapped in static environments. To do meaningful work, they need tools, data repositories, and secure integration pathways. In building **MCPPro**, we addressed this exact challenge by adopting the newly standardized **Model Context Protocol (MCP)**.
 
-During the development of the **Silent Cry Decoder**, our infant distress classification model, we achieved an **84% overall classification accuracy**. To a casual reviewer, this looked stellar. However, when we ran precision-recall diagnostics, the truth emerged: our **Macro F1 score was a weak 0.30**.
-### The Class Imbalance Trap
+### Beyond Custom API Wrappers
 
-Infant cry datasets are profoundly imbalanced. Pain, hunger, and medical distress are rare compared to standard fussy cries. Our model had successfully learned to predict the majority class (fussy) with high accuracy, but it was largely blind to the critical distress classes.
+Before MCP, developers built custom, ad-hoc API integrations for every unique environment. If you wanted an AI agent to read a PostgreSQL table, compile a folder, or query a search index, you wrote custom endpoint bridges. 
 
-If we had averaged the metrics, or omitted the class-specific breakdown, we could have shipped a model that sounded great on paper but failed catastrophically in real-world neonatal wards.
+Model Context Protocol standardizes this interaction. An agent simply establishes a client connection to an MCP server, queries the available schemas, and executes tools using a unified protocol schema.
 
-### Building Honestly
+### Designing the MCPPro Pipeline
 
-Instead of tweaking our parameters to synthetically pad the metrics or using highly-skewed oversampling to present a fake balanced score, we chose to publish our results with the **Macro F1 score of 0.30 highlighted prominently**.
+In the MCPPro intelligence platform, we decoupled the execution pipeline into two core systems:
 
-Reporting model weaknesses doesn't undermine your work; it guides the next engineering sprint. By being transparent about where the heuristic ceiling is, we let other developers focus on the actual bottlenecks, such as targeted acoustic data augmentation and loss-weight adjustments.
+1. **Agent Orchestration**: Next.js 14 API routes coordinate agent tasks, managing sessions and coordinating server client interfaces.
+2. **Context Enrichment (RAG)**: A FastAPI pipeline processes documents using BGE-M3 text embeddings, loading parsed information into Qdrant vector databases for fast semantic search.
 
-For more technical background, you can [explore our open-source training data and model diagnostics on GitHub](https://github.com/Chiranth-Janardhan-moger).`
+By integrating the Model Context Protocol, the AI agents can dynamically discover and query these data sources. The result is a highly extensible, modular environment where connecting a new database or tool takes minutes, not days. We are moving toward a future where models collaborate seamlessly with existing software stacks.`
   },
   {
     id: "blog-2",
-    title: "SQLGuardJS: Adversarial Testing Against My Own NPM Package",
-    slug: "sqlguardjs-adversarial-testing",
-    summary: "Building security middleware is hard. Breaking it is easier. Inside the process of finding bypasses in our own heuristic injection detector.",
-    category: "Cybersecurity",
-    publishedAt: "2026-05-15",
-    readingTime: "7 min read",
-    tags: ["Cybersecurity", "Node.js", "Express", "npm", "AppSec"],
-    content: `When I published **SQLGuardJS** to the npm registry, the goal was simple: provide an out-of-the-box heuristic middleware that Express developers could slide into their routing chains to capture common SQL/NoSQL injections and XSS payloads.
+    title: "Running Rust at 60 FPS: Porting the Tectonic LaTeX Engine to Android via JNI",
+    slug: "tectonic-latex-android-jni",
+    summary: "Inside the systems-engineering challenges of porting a Rust-based LaTeX compiler to compile documents 100% offline inside a mobile Jetpack Compose app.",
+    category: "Systems Engineering",
+    publishedAt: "2026-06-18",
+    readingTime: "8 min read",
+    tags: ["Android", "Kotlin", "Rust", "JNI", "LaTeX", "Jetpack Compose"],
+    content: `There is a unique satisfaction in compiling complex documents on the go. But running standard LaTeX engines like pdflatex on a mobile device is notoriously difficult due to size constraints, complex font mappings, and massive asset trees.
 
-It worked perfectly against typical payloads like \`1' OR '1'='1\` and \`<script>alert(1)</script>\`. But a security tool is only as good as its defense against an adversary who knows its rules. So, I spent a week trying to hack my own package.
-### Finding the Cracks
+To make offline LaTeX editing a reality on Android, we ported the **Tectonic typesetting engine** (written in Rust) directly into a native Kotlin application.
 
-Heuristics rely heavily on signature matching and regex structures. It didn't take long to find several reproducible bypasses:
+### The System Challenges of Mobile Compilation
 
-1. **Versioned Comments in MySQL**:
-   While the regular expressions looked for typical space separators and comment markers, they missed MySQL's specific inline executable comments:
-   \`/*!50000SELECT*/\`
-   The database executes this as a query, but SQLGuardJS's regex read it as a benign string block.
+Android's sandboxed environment prevents executing arbitrary compiler processes easily. Additionally, traditional TeX distributions exceed 2GB in size. Tectonic solves this by downloading assets on-demand and caching them locally. To make it work 100% offline:
 
-2. **Keyword Splitting & Reassembly**:
-   If the middleware checks the input and strips keywords sequentially without recursion, an attacker can input:
-   \`SELSELECTECT\`
-   Once the inner \`SELECT\` is stripped, the outer characters collapse back together to form the valid query keyword \`SELECT\`.
+1. **Cross-Compiling to Android Targets**: We configured Rust target architectures (\`aarch64-linux-android\` and \`x86_64-linux-android\`) using the Android NDK.
+2. **Java Native Interface (JNI) Bridge**: Instead of calling a standalone binary using ProcessBuilder (which is slow and restricted on modern Android), we wrapped the Tectonic engine as a dynamic library (\`.so\`) and exposed it via JNI.
 
-3. **SVG-embedded XSS payloads**:
-   While classical HTML script tag detectors are robust, XML-based vector files can run scripts via events embedded inside SVGs:
-   \`<svg onload="alert(1)">\`
+### Creating a Real-Time Logs UI
 
-### The Lesson: Acknowledge the Ceiling
+To keep the editing experience responsive, we linked the compilation stdout streams directly to a Jetpack Compose state emitter. As the Rust compiler runs, log outputs stream directly into a custom terminal view at a buttery-smooth 60 frames per second. 
 
-No software library is a silver bullet. By documenting these exact bypass scenarios directly in the package's README, we prevent developers from establishing a false sense of absolute security. True security is multi-layered — clean input validation, parameterized queries, and strict CSP headers must coexist. Designing a tool means understanding exactly when and where it will fail.
-
-You can inspect the security heuristics yourself and [download SQLGuardJS directly from the npm registry](https://www.npmjs.com/package/sqlguardjs).`
+Offline document compilation now completes in under two seconds, showing that high-performance systems utilities written in systems languages like Rust can run beautifully on modern mobile operating systems.`
   },
   {
     id: "blog-3",
+    title: "SQLGuardJS: A Heuristic Web Application Firewall (WAF) Middleware for Express",
+    slug: "sqlguardjs-waf-middleware-express",
+    summary: "Inside the development of our open-source request verification WAF middleware to shield Express gateways from SQLi, XSS, and NoSQL injection vulnerabilities.",
+    category: "Cybersecurity",
+    publishedAt: "2026-05-20",
+    readingTime: "7 min read",
+    tags: ["Cybersecurity", "Node.js", "Express", "npm", "AppSec"],
+    content: `Securing web applications requires proactive verification at the entry gateway. To address common injection flaws in Node.js applications, we built and published **SQLGuardJS**, a lightweight, signature-based Web Application Firewall (WAF) middleware designed specifically for the Express framework.
+
+### Middleware Core Architecture
+
+SQLGuardJS intercepts incoming HTTP requests (bodies, query parameters, paths, and optionally headers or cookies) and inspects them against predefined heuristic pattern matrices before they can resolve in your controller routes.
+
+Below is the standard configuration schema exposed by the library:
+
+| Configuration Parameter | Data Type | Default Value | Description |
+| :--- | :--- | :--- | :--- |
+| \`mode\` | \`"block" | "log"\` | \`"block"\` | Defense behavior: \`"block"\` rejects attacks with 403 Forbidden; \`"log"\` monitors and alerts only. |
+| \`level\` | \`"low" | "balanced" | "high"\` | \`"balanced"\` | Detection depth: Low limits signature scanning; High implements strict, sensitive heuristic rules. |
+| \`logRequests\` | \`boolean\` | \`true\` | Enters general request metadata into the in-memory log buffer. |
+| \`maxLogs\` | \`number\` | \`100\` | Limits the circular log queue size to maintain low memory footprints. |
+| \`scanHeaders\` | \`boolean\` | \`false\` | Inspects HTTP header payloads (like User-Agent or Referer) for attack scripts. |
+| \`scanCookies\` | \`boolean\` | \`false\` | Scans cookie payload structures for query operations. |
+| \`logAttacks\` | \`function\` | \`undefined\` | Optional custom event handler callback executed when a signature matches. |
+
+### Heuristic Detection Vector Matrix
+
+The package provides defensive filters mapped to common OWASP vulnerabilities:
+
+| Attack Category | Threat Type | Signature Pattern Heuristics |
+| :--- | :--- | :--- |
+| **SQL Injection (SQLi)** | Tautologies, Comments, Union Bypass | Detects SQL tokens like \`' OR '1'='1\`, Postgres/MySQL comments (\`--\`, \`/*\`), and \`UNION SELECT\` statements. |
+| **Cross-Site Scripting (XSS)** | Script Injection, Inline Elements | Identifies HTML elements (\`<script>\`), inline event handlers (\`onload=\`, \`onerror=\`), and \`javascript:\` URIs. |
+| **NoSQL Injection** | Operator Bypass, Logic Manipulation | Blocks MongoDB operators like \`$ne\`, \`$gt\`, \`$where\`, and logical comparisons within JSON payloads. |
+
+### Integration Quick Start
+
+To secure your Express routing pipeline:
+
+\`\`\`javascript
+const express = require('express');
+const { sqlguardjs } = require('sqlguardjs');
+
+const app = express();
+const guard = sqlguardjs({
+  mode: "block",
+  level: "balanced",
+  logRequests: true
+});
+
+// Register WAF globally
+app.use(guard.global());
+\`\`\`
+
+By deploying a heuristic defensive layout, applications can filter out the vast majority of script-injected crawler scans before they reach business logic layers. True security is multi-layered, and SQLGuardJS serves as the first line of defense.`
+  },
+  {
+    id: "blog-4",
     title: "Kalman Filtering for GPS Jitter in Mobile App Development",
     slug: "kalman-filtering-gps-jitter",
     summary: "How we implemented real-time location smoothing in the ConnectMe bus tracking system to prevent jumps and erratic animations.",
@@ -287,6 +335,7 @@ You can inspect the security heuristics yourself and [download SQLGuardJS direct
 On the client map, the bus would frequently teleport 50 meters into a neighboring building, freeze, and then zoom back to the road. This wasn't because the bus driver was off-roading; it was the result of GPS multipath interference from tall concrete campus buildings combined with network packet latency.
 
 To solve this, we turned to a mathematical classic: the **Kalman Filter**.
+
 ### How a Kalman Filter Works
 
 A Kalman Filter works in a two-step cycle: **Predict** and **Update**.

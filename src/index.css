@@ -63,4 +63,43 @@ html {
   background: #9ca3af; /* Darker gray on hover */
 }
 
+/* Light Sweep Animation */
+@keyframes sweep {
+  0% {
+    left: -150%;
+  }
+  50% {
+    left: 150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+.btn-sweep {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.btn-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+.btn-sweep:hover::after {
+  animation: sweep 1.2s infinite ease-in-out;
+}
+
 

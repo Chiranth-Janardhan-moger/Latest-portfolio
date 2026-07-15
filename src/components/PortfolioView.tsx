@@ -160,7 +160,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
         <div className="flex flex-wrap gap-3 font-mono text-xs" id="hero-actions">
           <button
             onClick={onNavigateToContact}
-            className="flex items-center gap-2 border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 active:scale-95 transition-all duration-200 ease-out cursor-pointer"
+            className="flex items-center gap-2 border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 active:scale-95 transition-all duration-200 ease-out cursor-pointer btn-sweep"
             id="btn-contact-me"
           >
             <Mail size={13} className="shrink-0" />
@@ -170,7 +170,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
             href="https://github.com/Chiranth-Janardhan-moger"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 transition-all duration-200 ease-out"
+            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 transition-all duration-200 ease-out btn-sweep"
             id="link-github"
           >
             GitHub
@@ -179,14 +179,16 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
             href="https://www.linkedin.com/in/chiranth-moger-01a867316/"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 transition-all duration-200 ease-out"
+            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 transition-all duration-200 ease-out btn-sweep"
             id="link-linkedin"
           >
             LinkedIn
           </a>
           <a
-            href="#"
-            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 transition-all duration-200 ease-out"
+            href="/assets/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 transition-all duration-200 ease-out btn-sweep"
             id="link-resume"
           >
             Resume

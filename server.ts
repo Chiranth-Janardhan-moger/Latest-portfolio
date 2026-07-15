@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
 import { sqlguardjs } from "sqlguardjs";
@@ -301,9 +302,25 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
 
 // Total visit counter (increments on every page visit call, perfect for a live tracking experience)
 let totalVisits = 0;
+const visitsFilePath = path.join(process.cwd(), "visits.txt");
+
+try {
+  if (fs.existsSync(visitsFilePath)) {
+    const content = fs.readFileSync(visitsFilePath, "utf8").trim();
+    totalVisits = parseInt(content, 10) || 0;
+  }
+} catch (e) {
+  console.warn("Could not read visits file:", e);
+}
 
 app.get("/api/visits", (req, res) => {
   totalVisits++;
+  try {
+    fs.writeFileSync(visitsFilePath, totalVisits.toString(), "utf8");
+  } catch (e) {
+    // Silent fail on read-only file systems (like Vercel production)
+    console.warn("Could not write visits file:", e);
+  }
   res.json({ count: totalVisits });
 });
 

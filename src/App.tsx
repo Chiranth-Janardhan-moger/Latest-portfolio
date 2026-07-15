@@ -181,7 +181,7 @@ export default function App() {
         </main>
 
         {/* Footer */}
-        <footer className="mt-12 pt-8 border-t border-line/60 flex flex-col sm:flex-row justify-between items-center gap-3 font-mono text-[10px] text-ink-soft" id="app-footer">
+        <footer className="mt-12 pt-8 border-t border-line/60 flex flex-row justify-between items-center gap-3 font-mono text-[10px] text-ink-soft" id="app-footer">
           <span>© 2026 Chiranth Moger</span>
           {visitCount !== null && (
             <div className="flex items-center gap-1.5" id="visit-counter" title="Total visits counter">

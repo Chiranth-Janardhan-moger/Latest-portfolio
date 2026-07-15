@@ -160,10 +160,11 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
         <div className="flex flex-wrap gap-3 font-mono text-xs" id="hero-actions">
           <button
             onClick={onNavigateToContact}
-            className="border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 active:scale-95 transition-all duration-200 ease-out cursor-pointer"
+            className="flex items-center gap-2 border border-line rounded-sm px-4 py-2 hover:border-ink hover:bg-cream hover:-translate-y-0.5 active:scale-95 transition-all duration-200 ease-out cursor-pointer"
             id="btn-contact-me"
           >
-            Connect →
+            <Mail size={13} className="shrink-0" />
+            <span>Connect</span>
           </button>
           <a
             href="https://github.com/Chiranth-Janardhan-moger"

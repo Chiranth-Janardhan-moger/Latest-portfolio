@@ -1,0 +1,6 @@
+{
+  "name": "Chiranth Moger Portfolio",
+  "description": "An interactive, high-performance, and responsive portfolio for Chiranth Moger (Applied ML, Systems, and Cybersecurity Engineer) built with React, Tailwind CSS, and Framer Motion.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -19,13 +19,6 @@ export default function ContactView() {
     e.preventDefault();
     if (!name || !email || !message) return;
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.trim())) {
-      setSubmitError("Please enter a valid email address (e.g., name@domain.com).");
-      return;
-    }
-
     setIsSubmitting(true);
     setSubmitError(null);
 

@@ -3,6 +3,7 @@ import { ArrowLeft, Calendar, Tag } from 'lucide-react';
 import { INITIAL_BLOGS } from '../data';
 import { BlogPost } from '../types';
 import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function BlogView() {
   const [blogs, setBlogs] = useState<BlogPost[]>(INITIAL_BLOGS);
@@ -24,13 +25,12 @@ export default function BlogView() {
     <div className="py-8 space-y-12 animate-fade-in" id="blog-container">
       {!selectedPost ? (
         <div className="space-y-12" id="blog-list-wrapper">
-          {/* Header */}
-          <div>
+          <div className="border-b border-line pb-6" id="blog-header-section">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-3" id="blog-title">
-              Technical Logs &amp; Insights
+              Writing & Research
             </h1>
             <p className="text-base text-ink-soft max-w-[60ch] leading-relaxed" id="blog-subtitle">
-              Rigorous evaluations, lessons learned breaking my own architectures, and explorations in machine learning and systems.
+              Detailed articles covering AI architectures, offline compilers, cybersecurity, and real-time systems.
             </p>
           </div>
 
@@ -39,23 +39,20 @@ export default function BlogView() {
             {blogs.map((post) => (
               <div
                 key={post.id}
-                onClick={() => setSelectedPost(post)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setSelectedPost(post);
-                  }
+                onClick={() => {
+                  setSelectedPost(post);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                tabIndex={0}
-                role="button"
-                aria-label={`Read technical log: ${post.title}`}
-                className="border border-line rounded-xl p-5 bg-paper hover:border-ink hover:-translate-y-1 cursor-pointer flex flex-col justify-between transition-all duration-300 ease-out shadow-2xs focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2"
+                className="group border border-line bg-paper rounded-xl p-5 hover:border-ink hover:bg-cream/10 transition-all duration-300 cursor-pointer flex flex-col justify-between h-full"
                 id={`blog-card-${post.id}`}
               >
                 <div id={`blog-card-top-${post.id}`}>
                   <div className="flex justify-between items-center mb-3" id={`blog-card-meta-${post.id}`}>
                     <span className="font-mono text-[10px] uppercase tracking-wider text-ink bg-cream border border-line px-2 py-0.5 rounded-sm" id={`blog-card-cat-${post.id}`}>
                       {post.category}
+                    </span>
+                    <span className="font-mono text-[10px] text-ink-soft" id={`blog-card-date-${post.id}`}>
+                      {post.publishedAt}
                     </span>
                   </div>
                   <h3 className="text-lg font-bold text-ink leading-snug mb-2 group-hover:text-ink-soft transition-colors" id={`blog-card-title-${post.id}`}>
@@ -110,7 +107,14 @@ export default function BlogView() {
           {/* Article Body */}
           <div className="article-body prose prose-slate max-w-none text-ink-soft" id="article-content-body">
             <Markdown
+              remarkPlugins={[remarkGfm]}
               components={{
+                table: ({node, ...props}) => <div className="overflow-x-auto my-6 border border-line rounded-lg"><table className="min-w-full border-collapse text-sm" {...props} /></div>,
+                thead: ({node, ...props}) => <thead className="bg-cream border-b border-line" {...props} />,
+                tbody: ({node, ...props}) => <tbody className="divide-y divide-line/60" {...props} />,
+                tr: ({node, ...props}) => <tr className="hover:bg-cream/10 transition-colors" {...props} />,
+                th: ({node, ...props}) => <th className="px-4 py-3 text-left font-semibold text-ink text-[11px] uppercase tracking-wider border-r border-line last:border-r-0" {...props} />,
+                td: ({node, ...props}) => <td className="px-4 py-3 text-ink-soft text-xs leading-relaxed border-r border-line last:border-r-0" {...props} />,
                 h1: ({node, ...props}) => <h1 className="text-3xl font-bold text-ink mt-10 mb-4" {...props} />,
                 h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-ink mt-8 mb-3" {...props} />,
                 h3: ({node, ...props}) => <h3 className="text-xl font-bold text-ink mt-6 mb-2" {...props} />,

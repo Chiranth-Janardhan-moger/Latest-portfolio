@@ -555,18 +555,18 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                     </button>
                   </div>
 
-                  {/* Textarea Input */}
-                  <div className="relative mb-3">
+                  {/* Textarea & Scan Button Row */}
+                  <div className="flex flex-col sm:flex-row gap-3 mb-3 items-stretch">
                     <textarea
                       value={testPayload}
                       onChange={(e) => setTestPayload(e.target.value)}
                       placeholder="Type a query, script, or payload to scan..."
-                      className="w-full h-20 font-mono text-xs p-3 bg-paper border border-line focus:border-ink focus:outline-none rounded-md resize-none"
+                      className="flex-1 h-20 font-mono text-xs p-3 bg-paper border border-line focus:border-ink focus:outline-none rounded-md resize-none"
                     />
                     <button
                       disabled={isScanning || !testPayload.trim()}
                       onClick={handleScanPayload}
-                      className="absolute right-2 bottom-3 font-mono text-[10px] bg-ink hover:bg-ink-soft text-paper disabled:bg-line disabled:text-ink-soft disabled:cursor-not-allowed px-3 py-1.5 rounded-sm transition-all flex items-center gap-1.5 cursor-pointer btn-sweep"
+                      className="sm:w-32 flex items-center justify-center gap-1.5 font-mono text-[10px] bg-ink hover:bg-ink-soft text-paper disabled:bg-line disabled:text-ink-soft disabled:cursor-not-allowed px-4 py-3 sm:py-0 rounded-md transition-all cursor-pointer btn-sweep shrink-0"
                     >
                       {isScanning ? (
                         <RefreshCw size={10} className="animate-spin" />

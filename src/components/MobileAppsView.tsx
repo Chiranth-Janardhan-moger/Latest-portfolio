@@ -479,21 +479,39 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
             </h2>
 
             {selectedApp.screenshots && selectedApp.screenshots.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-                {selectedApp.screenshots.map((src, idx) => (
-                  <div 
-                    key={idx} 
-                    className="rounded-2xl border border-line/80 bg-[#0B0F17] overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-1.5"
-                  >
-                    <img
-                      src={src}
-                      alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
-                      className="w-full h-auto max-h-[480px] object-contain rounded-xl transition-transform duration-300 group-hover/img:scale-[1.01]"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
+              selectedApp.id === 'vaultx' ? (
+                <div className="flex flex-col gap-8 pt-2">
+                  {selectedApp.screenshots.map((src, idx) => (
+                    <div 
+                      key={idx} 
+                      className="w-full flex justify-center items-center"
+                    >
+                      <img
+                        src={src}
+                        alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
+                        className="w-full h-auto max-h-[680px] object-contain rounded-2xl transition-transform duration-300 hover:scale-[1.005]"
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                  {selectedApp.screenshots.map((src, idx) => (
+                    <div 
+                      key={idx} 
+                      className="rounded-2xl border border-line/80 bg-[#0B0F17] overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-1.5"
+                    >
+                      <img
+                        src={src}
+                        alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
+                        className="w-full h-auto max-h-[480px] object-contain rounded-xl transition-transform duration-300 group-hover/img:scale-[1.01]"
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 pt-2">
                 {selectedApp.screenMockups?.map((screen) => (

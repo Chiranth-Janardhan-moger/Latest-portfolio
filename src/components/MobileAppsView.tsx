@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { MOBILE_APPS } from '../data';
 import { MobileApp } from '../types';
+import TiltCard from './TiltCard';
 
 interface MobileAppsViewProps {
   initialAppId?: string | null;
@@ -580,10 +581,10 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
       {/* Grid: 2 Clean Cards in One Row on Desktop / Tablets */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6" id="mobile-apps-grid">
         {MOBILE_APPS.map((app: MobileApp) => (
-          <div
+          <TiltCard
             key={app.id}
             onClick={() => handleSelectApp(app.id)}
-            className="aquamorphic-card group border border-line/80 rounded-3xl bg-white/80 backdrop-blur-md overflow-hidden flex flex-col hover:border-ink hover:shadow-[0_16px_36px_-10px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] cursor-pointer"
+            className="aquamorphic-card group border border-line/80 rounded-3xl bg-white/80 backdrop-blur-md overflow-hidden flex flex-col hover:border-ink hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.12)] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] cursor-pointer"
             id={`app-card-${app.id}`}
           >
             {/* Top Showcase Banner with Big Logo */}
@@ -636,7 +637,7 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                 </p>
               </div>
             </div>
-          </div>
+          </TiltCard>
         ))}
       </div>
     </div>

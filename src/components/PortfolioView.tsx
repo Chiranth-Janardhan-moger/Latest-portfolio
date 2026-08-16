@@ -20,6 +20,7 @@ import {
 import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
 import { triggerFluidCloud } from './FluidCloud';
+import TiltCard from './TiltCard';
 
 interface PortfolioViewProps {
   onNavigateToContact: () => void;
@@ -558,9 +559,9 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
           {PROJECTS.map((proj) => {
             const isExpanded = expandedProjIds.includes(proj.id);
             return (
-              <div
+              <TiltCard
                 key={proj.id}
-                className="aquamorphic-card relative overflow-hidden border border-line/80 hover:border-ink rounded-2xl p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] cursor-pointer group"
+                className="aquamorphic-card relative overflow-hidden border border-line/80 hover:border-ink rounded-2xl p-6 bg-white/80 backdrop-blur-md hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.12)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] cursor-pointer group"
                 id={`project-card-${proj.id}`}
                 onClick={() => {
                   toggleProjExpand(proj.id);
@@ -888,7 +889,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                   )}
                 </div>
               )}
-            </div>
+            </TiltCard>
           );
         })}
         </div>

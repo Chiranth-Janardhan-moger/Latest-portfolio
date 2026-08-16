@@ -498,7 +498,7 @@ export const MOBILE_APPS: MobileApp[] = [
       "Distraction-Free Touch UI: Formula snippet shortcuts, auto-closing math delimiters, and clean dark/light themes."
     ],
     stack: ["Kotlin", "Android SDK", "Jetpack Compose", "Tectonic Engine (Rust)", "Android NDK / JNI", "TeX / PDF Rendering"],
-    iconUrl: "/latex-icon.webp",
+    iconUrl: "/latex-icon.svg",
     screenshots: [
       "/latex-editor-screenshot.png",
       "/latex-console-screenshot.png"

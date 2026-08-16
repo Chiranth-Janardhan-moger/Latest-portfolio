@@ -10,7 +10,9 @@ import {
   Eye,
   Key,
   Clock,
-  Radio
+  Radio,
+  FileCode,
+  Zap
 } from 'lucide-react';
 import { MOBILE_APPS } from '../data';
 import { MobileApp } from '../types';
@@ -287,6 +289,76 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
 
           <div className="text-[10px] text-center text-gray-400 font-mono">
             Offline SQLite Schedule Fallback Available
+          </div>
+        </div>
+      );
+    }
+
+    if (type === 'editor') {
+      return (
+        <div className="bg-[#0e1117] text-white p-4 rounded-2xl border border-line/60 h-80 flex flex-col justify-between select-none shadow-inner font-mono text-[11px]">
+          {/* Top Code Editor Bar */}
+          <div className="flex justify-between items-center text-gray-400 border-b border-gray-800 pb-2">
+            <span className="text-indigo-400 font-bold flex items-center gap-1.5">
+              <FileCode size={13} />
+              <span>paper.tex</span>
+            </span>
+            <span className="text-emerald-400 text-[10px] bg-emerald-950/60 border border-emerald-500/30 px-1.5 py-0.5 rounded">AST SYNTAX OK</span>
+          </div>
+
+          {/* Code lines */}
+          <div className="space-y-1 my-auto text-[10px] leading-relaxed overflow-hidden">
+            <div className="text-gray-500"><span className="inline-block w-4 text-gray-600">1</span><span className="text-purple-400">\documentclass</span><span className="text-gray-300">{"{article}"}</span></div>
+            <div className="text-gray-500"><span className="inline-block w-4 text-gray-600">2</span><span className="text-purple-400">\usepackage</span><span className="text-gray-300">{"{amsmath, amssymb}"}</span></div>
+            <div className="text-gray-500"><span className="inline-block w-4 text-gray-600">3</span><span className="text-blue-400">\begin</span><span className="text-gray-300">{"{document}"}</span></div>
+            <div className="text-gray-500"><span className="inline-block w-4 text-gray-600">4</span>  <span className="text-yellow-400">\section</span><span className="text-gray-300">{"{Tensor Field Theory}"}</span></div>
+            <div className="text-gray-500"><span className="inline-block w-4 text-gray-600">5</span>  <span className="text-blue-400">\begin</span><span className="text-gray-300">{"{equation}"}</span></div>
+            <div className="text-gray-300 bg-indigo-950/50 p-1 rounded border border-indigo-500/20"><span className="inline-block w-4 text-gray-600">6</span>    <span className="text-pink-400">R_{"\\mu\\nu"}</span> - <span className="text-cyan-400">{"\\frac{1}{2}"}</span>R g_{"\\mu\\nu"} = <span className="text-cyan-400">{"\\frac{8\\pi G}{c^4}"}</span> T_{"\\mu\\nu"}</div>
+            <div className="text-gray-500"><span className="inline-block w-4 text-gray-600">7</span>  <span className="text-blue-400">\end</span><span className="text-gray-300">{"{equation}"}</span></div>
+          </div>
+
+          {/* Quick Math Toolbar */}
+          <div className="flex items-center gap-1.5 border-t border-gray-800 pt-2 overflow-x-auto text-[10px]">
+            {['\\frac', '\\sum', '\\int', '\\alpha', '\\beta', '\\partial', '$...$'].map((sym, idx) => (
+              <span key={idx} className="bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded text-gray-300 border border-gray-700/50 shrink-0">
+                {sym}
+              </span>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    if (type === 'compiler') {
+      return (
+        <div className="bg-[#121824] text-white p-4 rounded-2xl border border-line/60 h-80 flex flex-col justify-between select-none shadow-inner font-sans">
+          {/* Top status */}
+          <div className="flex justify-between items-center text-[11px] text-gray-400 font-mono border-b border-gray-800 pb-2">
+            <span className="text-purple-400 font-bold flex items-center gap-1.5">
+              <Zap size={13} />
+              <span>TECTONIC ON-DEVICE</span>
+            </span>
+            <span className="text-emerald-400 font-mono text-[10px]">COMPILED (0.18s)</span>
+          </div>
+
+          {/* Vector PDF Preview Canvas */}
+          <div className="bg-white text-black p-3.5 rounded-xl shadow-md my-auto space-y-2 border border-gray-300">
+            <div className="text-center border-b border-gray-200 pb-1">
+              <span className="font-serif font-bold text-xs block">Tensor Field Theory</span>
+              <span className="text-[9px] text-gray-500 font-serif">Compiled locally · PDF/X-1a</span>
+            </div>
+            <div className="text-center py-2 font-serif text-sm">
+              <span className="italic">R<sub>μν</sub> - ½ R g<sub>μν</sub> = 8πG/c⁴ T<sub>μν</sub></span>
+            </div>
+            <div className="text-[8px] text-gray-500 font-serif leading-tight">
+              Where G represents Newton's constant and T_μν denotes the stress-energy tensor.
+            </div>
+          </div>
+
+          {/* Bottom stats */}
+          <div className="flex justify-between items-center text-[10px] text-gray-400 font-mono">
+            <span>0 Network Requests</span>
+            <span className="text-indigo-400 font-semibold">PDF Export Ready</span>
           </div>
         </div>
       );

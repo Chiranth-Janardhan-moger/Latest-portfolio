@@ -480,6 +480,59 @@ export const MOBILE_APPS: MobileApp[] = [
         type: "schedule"
       }
     ]
+  },
+  {
+    id: "latex-editor",
+    name: "LaTeX Editor Android",
+    category: "Academic & Developer Tools",
+    tagline: "Native Tectonic Typesetting & Offline PDF Compiler",
+    desc: "A blazing fast LaTeX editor and compiler built specifically for Android. Powered by a native port of the Tectonic typesetting engine, delivering zero-lag document authoring and instant local PDF generation with 100% offline compilation.",
+    detailedAbout: "LaTeX Editor Android bridges desktop-grade typesetting power to mobile devices. Built natively with Kotlin and modern Android architecture, the application integrates an embedded native port of the Tectonic TeX engine (cross-compiled via Android NDK). Unlike conventional mobile LaTeX tools that upload sensitive research or exam papers to slow cloud servers, LaTeX Editor compiles documents entirely on-device with zero network requests, complete TeX package bundling, live AST-backed syntax highlighting, and instantaneous vector PDF rendering.",
+    problemStatement: "Most existing Android LaTeX editors rely heavily on remote cloud compilation backends, resulting in 5–15 second latency per compile, broken workflows during connectivity drops, and privacy vulnerabilities when authoring proprietary research papers, confidential thesis drafts, or math notes.",
+    solutionStatement: "Integrated an embedded native build of the Tectonic engine directly into the Android runtime, eliminating all network dependency. Engineered a high-throughput, AST-driven token parser for zero-lag syntax highlighting and hot-reload PDF preview buffers.",
+    solutionPoints: [
+      "100% On-Device Compilation: Native Tectonic typesetting engine port runs locally without cloud latency or data transmission.",
+      "Zero-Lag Syntax Engine: Custom token highlighting parser optimized for complex, multi-thousand line .tex documents.",
+      "Local TeX Bundle & Font Sandbox: Automated dependency caching for AMS-LaTeX, TikZ, and custom font packages.",
+      "Real-Time PDF Hot Reload: Instantaneous vector rendering with synchronization between source lines and PDF viewports.",
+      "Distraction-Free Touch UI: Formula snippet shortcuts, auto-closing math delimiters, and clean dark/light themes."
+    ],
+    stack: ["Kotlin", "Android SDK", "Jetpack Compose", "Tectonic Engine (Rust)", "Android NDK / JNI", "TeX / PDF Rendering"],
+    iconUrl: "/latex-icon.svg",
+    features: [
+      "100% Offline TeX Compilation (No internet connection or cloud server required)",
+      "Embedded Native Tectonic Typesetting Engine cross-compiled for ARM64 & x86_64",
+      "High-Performance Syntax Highlighting with token parsing for large .tex files",
+      "Instant Vector PDF Preview with pinch-to-zoom and hot-reload buffer sync",
+      "Custom Math Keyboard & Quick Snippet Toolbar (\\frac, \\sum, \\int, \\matrix, Greek symbols)",
+      "Auto-closing math delimiters ($, $$, \\{ \\}, \\begin...\\end)",
+      "Local TeX Package & Font Cache Manager for standalone document portability",
+      "Export & Share high-resolution printable PDF and source .tex archives"
+    ],
+    status: "Open Source",
+    version: "v1.0.0-beta",
+    githubUrl: "https://github.com/Chiranth-Janardhan-moger/latex-editor-android",
+    architectureHighlights: [
+      "Embedded Rust Tectonic engine cross-compiled for ARM64 via Android NDK",
+      "Zero-copy memory mapped buffers for lightning-fast on-device PDF generation",
+      "AST-driven syntax highlighter with incremental delta parsing",
+      "Sandboxed local TeX bundle package repository"
+    ],
+    screenMockups: [
+      {
+        id: "l-screen-1",
+        title: "Split-Screen Code Editor & Math Toolbar",
+        description: "Zero-lag syntax highlighting with auto-pairing math delimiters and formula quick-access bars.",
+        type: "editor"
+      },
+      {
+        id: "l-screen-2",
+        title: "On-Device Tectonic PDF Compilation",
+        description: "Instantaneous vector rendering with zero cloud dependency and on-the-fly diagnostic logs.",
+        type: "compiler"
+      }
+    ]
   }
 ];
+
 

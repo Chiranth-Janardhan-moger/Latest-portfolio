@@ -83,30 +83,35 @@ export default function FluidCloud() {
         initial={{ y: -30, opacity: 0, scale: 0.9 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         transition={{
-          type: "spring",
-          stiffness: 520,
-          damping: 28,
-          mass: 0.8
+          layout: { type: "spring", stiffness: 340, damping: 30, mass: 0.5 },
+          y: { type: "spring", stiffness: 450, damping: 28 },
+          scale: { type: "spring", stiffness: 450, damping: 28 },
+          opacity: { duration: 0.2 }
         }}
-        className={`pointer-events-auto flex items-center justify-center transition-all duration-300 border border-black/[0.08] shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-2xl backdrop-saturate-200 bg-[#F6F5F2]/90 text-ink ${
-          activeAlert ? 'px-4 py-2 rounded-full gap-2.5 min-w-[200px]' : 'px-3.5 py-1.5 rounded-full gap-2 text-xs'
+        className={`pointer-events-auto flex items-center justify-center border border-black/[0.08] shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-2xl backdrop-saturate-200 bg-[#F6F5F2]/90 text-ink overflow-hidden ${
+          activeAlert ? 'px-4 py-2 rounded-full gap-2.5 min-w-[210px]' : 'px-3.5 py-1.5 rounded-full gap-2 text-xs'
         }`}
         id="fluid-cloud-capsule"
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout" initial={false}>
           {activeAlert ? (
             <motion.div
               key="alert-mode"
-              initial={{ opacity: 0, scale: 0.85, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, scale: 0.85, filter: 'blur(4px)' }}
-              transition={{ type: "spring", stiffness: 600, damping: 30 }}
-              className="flex items-center gap-2.5 max-w-[85vw] sm:max-w-md"
+              layout
+              initial={{ opacity: 0, scale: 0.92, y: 4 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: -4 }}
+              transition={{
+                layout: { type: "spring", stiffness: 340, damping: 30, mass: 0.5 },
+                opacity: { duration: 0.22, ease: "easeInOut" },
+                scale: { duration: 0.25, ease: "easeOut" }
+              }}
+              className="flex items-center gap-2.5 max-w-[85vw] sm:max-w-md whitespace-nowrap"
             >
               <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center shadow-2xs shrink-0">
                 {getIcon(activeAlert.type, activeAlert.icon)}
               </div>
-              <div className="flex flex-col min-w-0">
+              <div className="flex flex-col min-w-0 pr-1">
                 <span className="text-[11px] sm:text-xs font-semibold text-ink leading-tight truncate">
                   {activeAlert.title}
                 </span>
@@ -120,13 +125,18 @@ export default function FluidCloud() {
           ) : (
             <motion.div
               key="ambient-mode"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.2 }}
-              className="flex items-center gap-2 text-[10.5px] text-ink-soft"
+              layout
+              initial={{ opacity: 0, scale: 0.92, y: 4 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: -4 }}
+              transition={{
+                layout: { type: "spring", stiffness: 340, damping: 30, mass: 0.5 },
+                opacity: { duration: 0.22, ease: "easeInOut" },
+                scale: { duration: 0.25, ease: "easeOut" }
+              }}
+              className="flex items-center gap-2 text-[10.5px] text-ink-soft whitespace-nowrap"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
               <span className="font-semibold text-ink">Bengaluru, IN</span>
               <span className="opacity-40">·</span>
               <span>{currentTime || 'IST'}</span>

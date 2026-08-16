@@ -404,6 +404,7 @@ export const MOBILE_APPS: MobileApp[] = [
     status: "Live Release",
     version: "v1.3.4",
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager",
+    apkUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager/releases/download/v1.3.4/VaultX-v1.3.4-arm64-v8a.apk",
     architectureHighlights: [
       "Key derivation using PBKDF2 with SHA-256 and 100,000 iterations",
       "Transient memory buffers with automated zero-fill garbage collection",
@@ -516,7 +517,7 @@ export const MOBILE_APPS: MobileApp[] = [
     status: "Production",
     version: "v1.0.0",
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/latex-editor-android",
-    apkUrl: "/latex-editor-arm64.apk",
+    apkUrl: "https://github.com/Chiranth-Janardhan-moger/latex-editor-android/releases/download/v1.0.0/app-arm64-v8a-release.apk",
     architectureHighlights: [
       "Embedded Rust Tectonic engine cross-compiled for ARM64 via Android NDK",
       "Zero-copy memory mapped buffers for lightning-fast on-device PDF generation",

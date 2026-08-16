@@ -864,9 +864,6 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
       {/* Apple-Style High-Impact Call to Action */}
       <section className="border-t border-line/80 pt-16 pb-12 text-center" id="cta-connect">
         <div className="max-w-xl mx-auto rounded-3xl border border-line/80 bg-white/70 backdrop-blur-xl p-8 sm:p-10 shadow-[0_16px_40px_-12px_rgba(0,0,0,0.06)] space-y-4" id="cta-inner">
-          <p className="font-mono text-xs text-ink-soft uppercase tracking-widest" id="cta-subtitle">
-            Open for Engineering Opportunities
-          </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink" id="cta-title">
             Ready to Connect?
           </h2>

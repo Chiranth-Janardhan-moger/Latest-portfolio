@@ -6,6 +6,7 @@ import MobileAppsView from './components/MobileAppsView';
 import BlogView from './components/BlogView';
 import ContactView from './components/ContactView';
 import NotFoundView from './components/NotFoundView';
+import FluidDotGrid from './components/FluidDotGrid';
 
 type ViewMode = 'portfolio' | 'apps' | 'blog' | 'contact' | 'not-found';
 
@@ -186,7 +187,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen text-ink pb-28 font-sans selection:bg-ink selection:text-paper" id="app-root">
+    <div className="min-h-screen text-ink pb-28 font-sans selection:bg-ink selection:text-paper relative" id="app-root">
+
+      {/* Fluid Interactive Dot Grid Background */}
+      <FluidDotGrid />
 
       {isOffline && (
         <div className="fixed top-0 left-0 right-0 bg-amber-500/10 border-b border-amber-500/20 text-amber-500 font-mono text-[9px] sm:text-[10px] py-1.5 text-center select-none z-50 flex items-center justify-center gap-2" id="offline-banner">

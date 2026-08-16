@@ -372,15 +372,15 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
     return (
       <div className="py-8 space-y-12 animate-fade-in" id="app-detail-view">
         {/* Back Navigation Bar */}
-        <div className="flex items-center justify-between border-b border-line pb-4" id="app-detail-nav">
+        <div className="flex items-center justify-between border-b border-line/80 pb-4" id="app-detail-nav">
           <button
             onClick={() => handleSelectApp(null)}
-            className="w-9 h-9 rounded-full border border-line bg-cream/70 hover:bg-cream flex items-center justify-center text-ink shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer group"
+            className="w-9 h-9 rounded-full border border-line/80 bg-white/80 backdrop-blur-md hover:bg-ink hover:text-paper flex items-center justify-center text-ink shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer group"
             id="btn-back-to-apps"
             title="Back"
             aria-label="Back"
           >
-            <ChevronLeft size={18} className="text-ink transition-transform duration-200 group-hover:-translate-x-0.5" />
+            <ChevronLeft size={18} className="text-current transition-transform duration-200 group-hover:-translate-x-0.5" />
           </button>
           <span className="font-mono text-xs text-ink-soft">
             Apps / <span className="text-ink font-semibold">{selectedApp.name}</span>
@@ -388,9 +388,9 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
         </div>
 
         {/* Hero Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b border-line pb-8" id="app-hero-header">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b border-line/80 pb-8" id="app-hero-header">
           <div className="flex items-center gap-5">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border border-line bg-cream p-2 shadow-md flex items-center justify-center shrink-0">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border border-line/80 bg-white p-2.5 shadow-md flex items-center justify-center shrink-0">
               {selectedApp.iconUrl ? (
                 <img
                   src={selectedApp.iconUrl}
@@ -407,7 +407,7 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                   {selectedApp.name}
                 </h1>
                 {selectedApp.version && (
-                  <span className="font-mono text-[11px] text-ink-soft border border-line rounded-full px-2.5 py-0.5 bg-cream select-none">
+                  <span className="font-mono text-[11px] text-ink-soft border border-line/80 rounded-full px-2.5 py-0.5 bg-neutral-100 shadow-2xs select-none">
                     {selectedApp.version}
                   </span>
                 )}
@@ -418,14 +418,14 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
             </div>
           </div>
 
-          {/* Action Links with Android APK Download Button */}
+          {/* Apple SF Action Buttons */}
           <div className="flex flex-wrap items-center gap-3 font-mono text-xs w-full sm:w-auto">
             {selectedApp.githubUrl && (
               <a
                 href={selectedApp.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 border border-line rounded-lg px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 transition-all duration-200 ease-out btn-sweep"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 border border-line/80 bg-white/80 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep"
                 id="btn-app-source-detail"
               >
                 <Github size={14} />
@@ -436,7 +436,7 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
               href={selectedApp.apkUrl || selectedApp.githubUrl + '/releases'}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 border border-line rounded-lg px-4 py-2.5 bg-ink text-paper hover:bg-ink/85 hover:-translate-y-0.5 active:scale-95 transition-all duration-200 ease-out btn-sweep"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-ink text-paper rounded-full px-5 py-2.5 hover:bg-neutral-800 hover:-translate-y-0.5 active:scale-95 shadow-[0_2px_8px_rgba(0,0,0,0.12)] transition-all duration-200 ease-out btn-sweep font-semibold"
               id="btn-app-apk-download"
             >
               <AndroidIcon size={14} className="text-paper shrink-0" />
@@ -450,15 +450,15 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
           <h2 className="text-lg font-bold text-ink">
             About the Application
           </h2>
-          <p className="text-sm text-ink-soft leading-relaxed">
+          <p className="text-sm sm:text-[15px] text-ink-soft leading-relaxed max-w-[70ch]">
             {selectedApp.detailedAbout || selectedApp.desc}
           </p>
         </section>
 
-        {/* Problem Faced with animated top-to-bottom line on hover */}
+        {/* Problem Faced Card */}
         <section className="space-y-4" id="app-problem-faced-section">
-          <div className="relative group/problem border border-line rounded-xl p-6 bg-paper overflow-hidden transition-all duration-300 hover:border-ink">
-            {/* Animated Left Border Line (Draws Top to Bottom on Hover) */}
+          <div className="relative group/problem border border-line/80 rounded-2xl p-6 bg-white/80 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-ink shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] hover:shadow-md">
+            {/* Animated Left Border Line */}
             <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-ink scale-y-0 group-hover/problem:scale-y-100 origin-top transition-transform duration-500 ease-out pointer-events-none" />
 
             <div className="flex items-center gap-2 text-ink font-mono text-xs font-bold uppercase tracking-wider mb-3">
@@ -483,12 +483,12 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                 {selectedApp.screenshots.map((src, idx) => (
                   <div 
                     key={idx} 
-                    className="rounded-xl border border-line bg-[#0B0F17] overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-1"
+                    className="rounded-2xl border border-line/80 bg-[#0B0F17] overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-1.5"
                   >
                     <img
                       src={src}
                       alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
-                      className="w-full h-auto max-h-[480px] object-contain rounded-lg transition-transform duration-300 group-hover/img:scale-[1.01]"
+                      className="w-full h-auto max-h-[480px] object-contain rounded-xl transition-transform duration-300 group-hover/img:scale-[1.01]"
                       loading="lazy"
                     />
                   </div>
@@ -516,10 +516,10 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
             {selectedApp.features.map((feature, fIdx) => (
               <div
                 key={fIdx}
-                className="border border-line rounded-lg p-3.5 bg-paper flex items-start gap-2.5 text-xs text-ink"
+                className="border border-line/80 rounded-xl p-4 bg-white/90 backdrop-blur-sm flex items-start gap-3 text-xs text-ink shadow-2xs hover:border-ink/60 transition-colors"
               >
-                <CheckCircle2 size={14} className="text-ink shrink-0 mt-0.5" />
-                <span>{feature}</span>
+                <CheckCircle2 size={15} className="text-ink shrink-0 mt-0.5" />
+                <span className="leading-snug">{feature}</span>
               </div>
             ))}
           </div>
@@ -534,7 +534,7 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
             {selectedApp.stack.map((tech, tIdx) => (
               <span
                 key={tIdx}
-                className="font-mono text-xs text-ink border border-line rounded-md px-3 py-1 bg-cream/70"
+                className="font-mono text-xs text-ink border border-line/80 rounded-full px-3.5 py-1 bg-white shadow-2xs"
               >
                 {tech}
               </span>
@@ -545,11 +545,11 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
     );
   }
 
-  // Default Grid View: Clean cards with Logo, Name, and Tagline Description
+  // Default Grid View: Clean Apple Cards with Logo, Name, and Tagline Description
   return (
     <div className="py-8 space-y-10 animate-fade-in" id="mobile-apps-container">
       {/* Header */}
-      <div className="border-b border-line pb-6" id="mobile-header">
+      <div className="border-b border-line/80 pb-6" id="mobile-header">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-3" id="mobile-title">
           Mobile Applications
         </h1>
@@ -564,17 +564,17 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
           <div
             key={app.id}
             onClick={() => handleSelectApp(app.id)}
-            className="group border border-line rounded-2xl bg-paper overflow-hidden flex flex-col hover:border-ink transition-all duration-300 hover:shadow-md cursor-pointer"
+            className="group border border-line/80 rounded-3xl bg-white/80 backdrop-blur-md overflow-hidden flex flex-col hover:border-ink transition-all duration-300 hover:shadow-[0_16px_36px_-10px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] cursor-pointer"
             id={`app-card-${app.id}`}
           >
             {/* Top Showcase Banner with Big Logo */}
-            <div className="w-full h-48 sm:h-52 bg-cream/70 border-b border-line flex flex-col items-center justify-center p-6 relative overflow-hidden">
+            <div className="w-full h-48 sm:h-52 bg-[#F7F6F2]/80 border-b border-line/80 flex flex-col items-center justify-center p-6 relative overflow-hidden">
               {/* Subtle background decoration */}
               <div className="absolute inset-0 bg-[radial-gradient(#111_1px,transparent_1px)] [background-size:16px_16px] opacity-10 pointer-events-none" />
 
               {/* Category in Corner */}
               <div className="absolute top-3.5 left-3.5 z-10">
-                <span className="font-mono text-[10px] text-ink-soft bg-white/80 border border-line px-2 py-0.5 rounded-md">
+                <span className="font-mono text-[10px] text-ink-soft bg-white/90 border border-line/80 px-2.5 py-1 rounded-full shadow-2xs">
                   {app.category}
                 </span>
               </div>
@@ -598,11 +598,11 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
               <div>
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h2 className="text-xl font-bold text-ink" id={`app-name-${app.id}`}>
+                    <h2 className="text-xl font-bold text-ink tracking-tight" id={`app-name-${app.id}`}>
                       {app.name}
                     </h2>
                     {app.version && (
-                      <span className="font-mono text-[10px] text-ink-soft border border-line rounded-full px-2.5 py-0.5 bg-cream select-none">
+                      <span className="font-mono text-[10px] text-ink-soft border border-neutral-200 rounded-full px-2.5 py-0.5 bg-neutral-100 shadow-2xs select-none">
                         {app.version}
                       </span>
                     )}

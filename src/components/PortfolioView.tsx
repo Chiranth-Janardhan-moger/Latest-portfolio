@@ -14,7 +14,8 @@ import {
   Trophy,
   ChevronDown,
   FileText,
-  Download
+  Download,
+  ArrowUpRight
 } from 'lucide-react';
 import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
@@ -429,9 +430,10 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                       href={exp.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:underline transition-colors cursor-pointer"
+                      className="group/link inline-flex items-center gap-1 hover:text-ink transition-colors cursor-pointer"
                     >
-                      {exp.role}
+                      <span>{exp.role}</span>
+                      <ArrowUpRight size={14} className="text-ink-soft opacity-60 group-hover/link:opacity-100 group-hover/link:text-ink group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-all duration-200" />
                     </a>
                   ) : (
                     exp.role
@@ -477,9 +479,10 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                         href={exp.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:underline transition-colors cursor-pointer"
+                        className="group/link inline-flex items-center gap-1 hover:text-ink transition-colors cursor-pointer"
                       >
-                        {exp.role}
+                        <span>{exp.role}</span>
+                        <ArrowUpRight size={14} className="text-ink-soft opacity-60 group-hover/link:opacity-100 group-hover/link:text-ink group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-all duration-200" />
                       </a>
                     ) : (
                       exp.role

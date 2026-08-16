@@ -209,18 +209,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating subtle coordinates in corners for tech theme aesthetics */}
-      <div className="absolute top-4 left-4 font-mono text-[9px] text-red-500/80 pointer-events-none select-none hidden sm:block" id="coords-top-left">
-        LAT: 13.0827° N / LON: 77.5806° E · BENGALURU
-      </div>
-      <div className="absolute top-4 right-4 font-mono text-[9px] text-red-500/80 pointer-events-none select-none hidden sm:block" id="coords-top-right">
-        {activeView === 'not-found' 
-          ? 'SYS_STATUS: CRITICAL_PANIC // ε = NaN' 
-          : isOffline 
-            ? 'SYS_STATUS: OFFLINE_SANDBOX_ACTIVE // ε = 0.0' 
-            : 'SYS_STATUS: ONLINE // ε = 0.1'}
-      </div>
-
       <div className="max-w-3xl mx-auto px-6 sm:px-8 pt-12 sm:pt-16" id="content-wrapper">
         
         {/* View Router with native CSS-driven fade-in animations */}

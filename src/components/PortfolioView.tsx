@@ -15,7 +15,9 @@ import {
   ChevronDown,
   FileText,
   Download,
-  ArrowUpRight
+  ArrowUpRight,
+  X,
+  Activity
 } from 'lucide-react';
 import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
@@ -720,11 +722,12 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                         e.stopPropagation();
                         setIsPlaygroundExpanded(false);
                       }}
-                      className="font-mono text-[10px] text-ink-soft hover:text-ink hover:underline cursor-pointer flex items-center gap-1 shrink-0"
-                      title="Collapse Playground"
+                      className="w-6 h-6 rounded-full bg-cream border border-line/80 hover:bg-ink hover:text-paper active:scale-95 transition-all flex items-center justify-center text-ink shrink-0 cursor-pointer shadow-2xs"
+                      title="Close Inspector"
+                      aria-label="Close Inspector"
                       id="btn-collapse-playground"
                     >
-                      <span>[ Close Window ]</span>
+                      <X size={13} />
                     </button>
                   </div>
                   <p className="text-xs text-ink-soft mb-4 leading-relaxed">
@@ -837,9 +840,12 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-t border-line/40 pt-3 mt-3">
                     <button
                       onClick={toggleRecentThreats}
-                      className="font-mono text-[10px] text-ink-soft hover:text-ink underline cursor-pointer flex items-center gap-1 self-start"
+                      className="w-7 h-7 rounded-full bg-white border border-line/80 hover:bg-ink hover:text-paper active:scale-95 transition-all flex items-center justify-center text-ink cursor-pointer shadow-2xs group/log"
+                      title={showRecentThreats ? "Hide Live Logs" : "View Live Logs"}
+                      aria-label={showRecentThreats ? "Hide Live Logs" : "View Live Logs"}
+                      id="btn-toggle-threat-logs"
                     >
-                      <span>{showRecentThreats ? "Hide Logs" : "View Live Logs"}</span>
+                      <Activity size={13} className={showRecentThreats ? "text-emerald-500" : "text-current"} />
                     </button>
                     <span className="font-mono text-[9px] text-ink-soft self-start sm:self-auto">
                       Heuristics Sensitivity: Balanced

@@ -15,10 +15,8 @@ import {
   ChevronDown,
   FileText,
   Download
-} from 'lucide-react';
 import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
-import WaveformPulseBars from './WaveformPulseBars';
 
 interface PortfolioViewProps {
   onNavigateToContact: () => void;
@@ -168,16 +166,9 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
     <div className="space-y-16 py-8 animate-fade-in" id="portfolio-container">
       {/* Hero Section */}
       <section className="pt-8 pb-4" id="hero">
-        <div className="font-mono text-xs text-ink-soft mb-5 flex items-center justify-between gap-4 flex-wrap" id="prompt-line">
-          <div className="flex items-center gap-2">
-            <span>&gt; whoami</span>
-            <span className="w-2.5 h-4 bg-ink inline-block terminal-cursor" id="cursor-blink"></span>
-          </div>
-          <div className="flex items-center gap-2.5 border border-line rounded-full px-3 py-1 bg-cream/70 shadow-2xs select-none">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span className="text-[10px] text-ink-soft tracking-wider font-mono">LIVE_TELEMETRY</span>
-            <WaveformPulseBars barCount={5} />
-          </div>
+        <div className="font-mono text-xs text-ink-soft mb-5 flex items-center gap-2" id="prompt-line">
+          <span>&gt; whoami</span>
+          <span className="w-2.5 h-4 bg-ink inline-block terminal-cursor" id="cursor-blink"></span>
         </div>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-ink leading-none mb-4" id="name-header">
           Chiranth Moger

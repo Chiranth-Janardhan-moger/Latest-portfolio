@@ -522,20 +522,6 @@ export const MOBILE_APPS: MobileApp[] = [
       "Zero-copy memory mapped buffers for lightning-fast on-device PDF generation",
       "AST-driven syntax highlighter with incremental delta parsing",
       "Sandboxed local TeX bundle package repository"
-    ],
-    screenMockups: [
-      {
-        id: "l-screen-1",
-        title: "Split-Screen Code Editor & Math Toolbar",
-        description: "Zero-lag syntax highlighting with auto-pairing math delimiters and formula quick-access bars.",
-        type: "editor"
-      },
-      {
-        id: "l-screen-2",
-        title: "On-Device Tectonic PDF Compilation",
-        description: "Instantaneous vector rendering with zero cloud dependency and on-the-fly diagnostic logs.",
-        type: "compiler"
-      }
     ]
   }
 ];

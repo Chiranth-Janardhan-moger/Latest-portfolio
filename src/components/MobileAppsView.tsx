@@ -478,7 +478,7 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
               Screenshots
             </h2>
 
-            {selectedApp.screenshots && selectedApp.screenshots.length > 0 && (
+            {selectedApp.screenshots && selectedApp.screenshots.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                 {selectedApp.screenshots.map((src, idx) => (
                   <div 
@@ -494,20 +494,13 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                   </div>
                 ))}
               </div>
-            )}
-
-            {selectedApp.screenMockups && selectedApp.screenMockups.length > 0 && (
-              <div className="space-y-3 pt-4">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-ink-soft">
-                  Interactive UI & Engine Flow
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-                  {selectedApp.screenMockups.map((screen) => (
-                    <div key={screen.id} className="rounded-2xl border-2 border-line bg-ink p-1.5 shadow-md hover:border-ink/80 transition-all duration-300">
-                      {renderScreenMockup(screen.type, selectedApp.id)}
-                    </div>
-                  ))}
-                </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 pt-2">
+                {selectedApp.screenMockups?.map((screen) => (
+                  <div key={screen.id} className="rounded-2xl border-2 border-line bg-ink p-1.5 shadow-md hover:border-ink/80 transition-all duration-300">
+                    {renderScreenMockup(screen.type, selectedApp.id)}
+                  </div>
+                ))}
               </div>
             )}
           </section>

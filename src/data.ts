@@ -483,11 +483,11 @@ export const MOBILE_APPS: MobileApp[] = [
   },
   {
     id: "latex-editor",
-    name: "LaTeX Editor Android",
+    name: "LaTeX Editor",
     category: "Academic & Developer Tools",
     tagline: "Native Tectonic Typesetting & Offline PDF Compiler",
     desc: "A blazing fast LaTeX editor and compiler built specifically for Android. Powered by a native port of the Tectonic typesetting engine, delivering zero-lag document authoring and instant local PDF generation with 100% offline compilation.",
-    detailedAbout: "LaTeX Editor Android bridges desktop-grade typesetting power to mobile devices. Built natively with Kotlin and modern Android architecture, the application integrates an embedded native port of the Tectonic TeX engine (cross-compiled via Android NDK). Unlike conventional mobile LaTeX tools that upload sensitive research or exam papers to slow cloud servers, LaTeX Editor compiles documents entirely on-device with zero network requests, complete TeX package bundling, live AST-backed syntax highlighting, and instantaneous vector PDF rendering.",
+    detailedAbout: "LaTeX Editor bridges desktop-grade typesetting power to mobile devices. Built natively with Kotlin and modern Android architecture, the application integrates an embedded native port of the Tectonic TeX engine (cross-compiled via Android NDK). Unlike conventional mobile LaTeX tools that upload sensitive research or exam papers to slow cloud servers, LaTeX Editor compiles documents entirely on-device with zero network requests, complete TeX package bundling, live AST-backed syntax highlighting, and instantaneous vector PDF rendering.",
     problemStatement: "Most existing Android LaTeX editors rely heavily on remote cloud compilation backends, resulting in 5–15 second latency per compile, broken workflows during connectivity drops, and privacy vulnerabilities when authoring proprietary research papers, confidential thesis drafts, or math notes.",
     solutionStatement: "Integrated an embedded native build of the Tectonic engine directly into the Android runtime, eliminating all network dependency. Engineered a high-throughput, AST-driven token parser for zero-lag syntax highlighting and hot-reload PDF preview buffers.",
     solutionPoints: [
@@ -513,8 +513,8 @@ export const MOBILE_APPS: MobileApp[] = [
       "Local TeX Package & Font Cache Manager for standalone document portability",
       "Export & Share high-resolution printable PDF and source .tex archives"
     ],
-    status: "Open Source",
-    version: "v1.0.0-beta",
+    status: "Production",
+    version: "v1.0.0",
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/latex-editor-android",
     architectureHighlights: [
       "Embedded Rust Tectonic engine cross-compiled for ARM64 via Android NDK",

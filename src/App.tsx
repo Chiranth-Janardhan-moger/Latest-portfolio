@@ -257,15 +257,15 @@ export default function App() {
 
       </div>
 
-      {/* Floating Sticky Bottom Dock Navigation - Clean Path-Based Tabs */}
+      {/* Apple-Style Dynamic Glass Dock */}
       <nav 
-        className={`fixed bottom-6 left-1/2 bg-white/70 backdrop-blur-xl border border-line/80 rounded-full p-1.5 shadow-xl z-40 flex items-center gap-1 transition-all duration-300 ease-out ${
+        className={`fixed bottom-6 left-1/2 bg-[#F6F5F2]/80 backdrop-blur-2xl backdrop-saturate-180 border border-black/[0.08] rounded-full p-1.5 z-40 flex items-center gap-1 transition-all duration-300 ease-out select-none ${
           isMinimized ? 'scale-95 px-2' : ''
         }`}
         style={{ 
-          boxShadow: '0 10px 25px -5px rgba(17, 17, 17, 0.05), 0 8px 10px -6px rgba(17, 17, 17, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+          boxShadow: '0 20px 40px -12px rgba(0, 0, 0, 0.12), 0 8px 16px -4px rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.95), inset 0 -1px 1px rgba(0, 0, 0, 0.03)',
           transform: isMinimized ? 'translateX(-50%) translateY(20px)' : 'translateX(-50%) translateY(0px)',
-          opacity: isMinimized ? 0.5 : 1
+          opacity: isMinimized ? 0.6 : 1
         }}
         id="sticky-bottom-dock"
       >
@@ -278,35 +278,41 @@ export default function App() {
             <motion.button
               key={view}
               onClick={() => handleNav(view)}
-              whileTap={{ scale: 0.92 }}
-              className={`relative ${
-                isMinimized ? 'px-3 py-2.5' : 'px-3.5 sm:px-4 pt-2.5 pb-3.5'
-              } text-xs font-mono rounded-full transition-all duration-300 ease-out flex items-center gap-2 cursor-pointer z-10 select-none ${
-                isActive ? 'text-ink font-bold' : 'text-ink-soft hover:text-ink'
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.94 }}
+              className={`relative px-3.5 sm:px-4 py-2 text-xs rounded-full transition-colors duration-200 flex items-center gap-2 cursor-pointer select-none font-sans font-medium ${
+                isActive ? 'text-ink font-semibold' : 'text-ink-soft hover:text-ink'
               }`}
               id={`dock-tab-${view}`}
               title={label}
               aria-label={`Navigate to ${label}`}
             >
-              <div className="relative flex items-center justify-center">
-                <Icon size={14} className={isActive ? 'text-ink' : 'text-ink-soft'} />
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-dot"
-                    className="absolute top-[18px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-ink animate-pulse"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
+              {/* Apple Sliding Glass Capsule Indicator */}
+              {isActive && (
+                <motion.div
+                  layoutId="apple-active-pill"
+                  className="absolute inset-0 bg-white rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,1)] border border-black/[0.04]"
+                  transition={{ type: 'spring', stiffness: 440, damping: 32, mass: 0.7 }}
+                />
+              )}
+
+              {/* Icon & Label */}
+              <div className="relative z-10 flex items-center gap-1.5 sm:gap-2">
+                <Icon 
+                  size={15} 
+                  strokeWidth={isActive ? 2.2 : 1.8} 
+                  className={`transition-colors duration-200 ${isActive ? 'text-ink' : 'text-ink-soft'}`} 
+                />
+                <span className={`text-[12px] sm:text-[13px] tracking-tight transition-all duration-300 ease-out overflow-hidden flex items-center ${
+                  isMinimized 
+                    ? 'max-w-0 opacity-0' 
+                    : isActive 
+                      ? 'max-w-[100px] opacity-100' 
+                      : 'max-w-0 opacity-0 sm:max-w-[100px] sm:opacity-100'
+                }`}>
+                  {label}
+                </span>
               </div>
-              <span className={`transition-all duration-300 ease-out overflow-hidden flex items-center ${
-                isMinimized 
-                  ? 'max-w-0 opacity-0' 
-                  : isActive 
-                    ? 'max-w-[100px] opacity-100' 
-                    : 'max-w-0 opacity-0 sm:max-w-[100px] sm:opacity-100'
-              }`}>
-                {label}
-              </span>
             </motion.button>
           );
         })}

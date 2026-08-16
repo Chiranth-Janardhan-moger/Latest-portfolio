@@ -12,7 +12,8 @@ import {
   Clock,
   Radio,
   FileCode,
-  Zap
+  Zap,
+  ArrowUpRight
 } from 'lucide-react';
 import { MOBILE_APPS } from '../data';
 import { MobileApp } from '../types';
@@ -625,9 +626,8 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                       </span>
                     )}
                   </div>
-                  <span className="font-mono text-xs text-ink-soft group-hover:text-ink flex items-center gap-1 transition-transform duration-200 group-hover:translate-x-0.5">
-                    <span>Explore</span>
-                    <span>→</span>
+                  <span className="w-8 h-8 rounded-full border border-line/80 bg-white group-hover:bg-ink group-hover:text-paper flex items-center justify-center text-ink shrink-0 transition-all duration-200 shadow-2xs">
+                    <ArrowUpRight size={14} />
                   </span>
                 </div>
 

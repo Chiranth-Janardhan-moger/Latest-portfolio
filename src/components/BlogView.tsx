@@ -43,7 +43,7 @@ export default function BlogView() {
                   setSelectedPost(post);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="group border border-line/80 bg-white/80 backdrop-blur-md rounded-3xl p-6 sm:p-7 hover:border-ink hover:-translate-y-1.5 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_36px_-10px_rgba(0,0,0,0.1)] cursor-pointer flex flex-col justify-between h-full"
+                className="aquamorphic-card group border border-line/80 bg-white/80 backdrop-blur-md rounded-3xl p-6 sm:p-7 hover:border-ink hover:-translate-y-1.5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_36px_-10px_rgba(0,0,0,0.1)] cursor-pointer flex flex-col justify-between h-full"
                 id={`blog-card-${post.id}`}
               >
                 <div id={`blog-card-top-${post.id}`}>

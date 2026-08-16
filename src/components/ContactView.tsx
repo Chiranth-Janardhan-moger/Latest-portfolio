@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle2, AlertCircle, RefreshCw, Mail, Copy, Check } from 'lucide-react';
+import { triggerFluidCloud } from './FluidCloud';
 
 export default function ContactView() {
   const [name, setName] = useState('');
@@ -44,6 +45,12 @@ export default function ContactView() {
       }
 
       setSubmitSuccess(true);
+      triggerFluidCloud({
+        title: "Message Delivered",
+        subtitle: "Chiranth will respond to your inquiry shortly",
+        icon: "check",
+        type: "success"
+      });
       setName('');
       setEmail('');
       setSubject('');
@@ -59,6 +66,12 @@ export default function ContactView() {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedEmail(true);
+    triggerFluidCloud({
+      title: "Email Copied to Clipboard",
+      subtitle: text,
+      icon: "check",
+      type: "success"
+    });
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 

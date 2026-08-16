@@ -7,6 +7,7 @@ import BlogView from './components/BlogView';
 import ContactView from './components/ContactView';
 import NotFoundView from './components/NotFoundView';
 import FluidDotGrid from './components/FluidDotGrid';
+import FluidCloud, { triggerFluidCloud } from './components/FluidCloud';
 
 type ViewMode = 'portfolio' | 'apps' | 'blog' | 'contact' | 'not-found';
 
@@ -173,6 +174,12 @@ export default function App() {
     setActiveAppId(appId || null);
     setInvalidPath('');
 
+    // OxygenOS / OriginOS Fluid Cloud dynamic morphing status
+    if (view === 'portfolio') triggerFluidCloud({ title: "Portfolio Gateway", subtitle: "Systems, Compilers & Security", icon: "sparkles", type: "info" });
+    else if (view === 'apps') triggerFluidCloud({ title: appId ? `App · ${appId.toUpperCase()}` : "Mobile Engineering", subtitle: "Offline Engines & Android Architecture", icon: "smartphone", type: "info" });
+    else if (view === 'blog') triggerFluidCloud({ title: "Research & Writing", subtitle: "Deep Dives & Technical Papers", icon: "newspaper", type: "info" });
+    else if (view === 'contact') triggerFluidCloud({ title: "Direct Contact Gateway", subtitle: "chiranthmoger7@gmail.com", icon: "contact", type: "info" });
+
     let targetPath = '/';
     if (view === 'apps') targetPath = appId ? `/app/${appId}` : '/apps';
     else if (view === 'blog') targetPath = '/blog';
@@ -188,6 +195,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen text-ink pb-28 font-sans selection:bg-ink selection:text-paper relative" id="app-root">
+
+      {/* OriginOS & OxygenOS Fluid Cloud Dynamic Status Pill */}
+      <FluidCloud />
 
       {/* Fluid Interactive Dot Grid Background */}
       <FluidDotGrid />

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
+import { triggerFluidCloud } from './FluidCloud';
 
 interface PortfolioViewProps {
   onNavigateToContact: () => void;
@@ -102,6 +103,21 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
         ok,
         data
       });
+      if (ok) {
+        triggerFluidCloud({
+          title: "Payload Verified Safe",
+          subtitle: "Status: 200 OK · Zero AST threats detected",
+          icon: "shield",
+          type: "success"
+        });
+      } else {
+        triggerFluidCloud({
+          title: "Threat Intercepted",
+          subtitle: `Blocked: HTTP ${status} · AST anomaly detected`,
+          icon: "alert",
+          type: "warning"
+        });
+      }
       if (showRecentThreats) {
         setTimeout(fetchLogs, 500);
       }
@@ -114,6 +130,12 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
           error: status === 403 ? 'Forbidden' : 'Internal Connection Failure', 
           message: err.message 
         }
+      });
+      triggerFluidCloud({
+        title: "Heuristic Scan Completed",
+        subtitle: `Status: ${status} · AST validation evaluated`,
+        icon: "shield",
+        type: "info"
       });
     } finally {
       setIsScanning(false);
@@ -226,6 +248,14 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
             href="/assets/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => {
+              triggerFluidCloud({
+                title: "Opening Resume",
+                subtitle: "Chiranth_Moger_Resume.pdf",
+                icon: "download",
+                type: "success"
+              });
+            }}
             className="border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep"
             id="link-resume"
           >
@@ -247,7 +277,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
               <div 
                 key={idx} 
                 id={`edu-item-${idx}`} 
-                className="border border-line/80 rounded-2xl p-5 sm:p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] transition-all duration-300 ease-out flex items-start gap-4 group"
+                className="aquamorphic-card border border-line/80 rounded-2xl p-5 sm:p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] flex items-start gap-4 group"
               >
                 {edu.logo && (
                   <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 overflow-hidden shadow-2xs transition-transform duration-300 group-hover:scale-105 ${
@@ -324,7 +354,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
             return (
               <div
                 key={exp.id}
-                className="border border-line/80 rounded-2xl p-5 sm:p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] transition-all duration-300 ease-out flex items-start gap-4 group"
+                className="aquamorphic-card border border-line/80 rounded-2xl p-5 sm:p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] flex items-start gap-4 group"
                 id={`exp-item-${exp.id}`}
               >
                 {exp.logo && (
@@ -417,7 +447,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
           {EXPERIENCES.filter(exp => exp.id.startsWith("hackathon-")).map((exp) => (
             <div
               key={exp.id}
-              className="border border-line/80 rounded-2xl p-5 sm:p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] transition-all duration-300 ease-out"
+              className="aquamorphic-card border border-line/80 rounded-2xl p-5 sm:p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] transition-all duration-300 ease-out"
               id={`exp-card-${exp.id}`}
             >
               <div className="flex justify-between items-baseline gap-3 flex-wrap" id={`exp-header-${exp.id}`}>
@@ -459,7 +489,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
           {EXPERIENCES.filter(exp => !exp.id.startsWith("freelance-") && !exp.id.startsWith("hackathon-")).map((exp) => (
             <div
               key={exp.id}
-              className="border border-line/80 rounded-2xl p-5 sm:p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] transition-all duration-300 ease-out flex items-start gap-4 group"
+              className="aquamorphic-card border border-line/80 rounded-2xl p-5 sm:p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] flex items-start gap-4 group"
               id={`exp-item-${exp.id}`}
             >
               {exp.logo && (
@@ -530,7 +560,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
             return (
               <div
                 key={proj.id}
-                className="relative overflow-hidden border border-line/80 hover:border-ink rounded-2xl p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] transition-all duration-300 ease-out cursor-pointer group"
+                className="aquamorphic-card relative overflow-hidden border border-line/80 hover:border-ink rounded-2xl p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] cursor-pointer group"
                 id={`project-card-${proj.id}`}
                 onClick={() => {
                   toggleProjExpand(proj.id);

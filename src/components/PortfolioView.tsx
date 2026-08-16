@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
-import OscilloscopeWaveform from './OscilloscopeWaveform';
+import WaveformPulseBars from './WaveformPulseBars';
 
 interface PortfolioViewProps {
   onNavigateToContact: () => void;
@@ -175,8 +175,8 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
           </div>
           <div className="flex items-center gap-2.5 border border-line rounded-full px-3 py-1 bg-cream/70 shadow-2xs select-none">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span className="text-[10px] text-ink-soft tracking-wider font-mono">SIGNAL_CARRIER</span>
-            <OscilloscopeWaveform width={90} height={16} strokeWidth={1.5} color="#111111" />
+            <span className="text-[10px] text-ink-soft tracking-wider font-mono">LIVE_TELEMETRY</span>
+            <WaveformPulseBars barCount={5} />
           </div>
         </div>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-ink leading-none mb-4" id="name-header">

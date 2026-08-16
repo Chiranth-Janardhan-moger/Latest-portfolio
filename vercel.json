@@ -1,57 +1,60 @@
 {
   "version": 2,
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "/api"
+      "src": "/api/(.*)",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/admin",
-      "destination": "/api"
+      "src": "/admin",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/.env",
-      "destination": "/api"
+      "src": "/\\.env",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/wp-admin",
-      "destination": "/api"
+      "src": "/wp-admin",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/wp-login.php",
-      "destination": "/api"
+      "src": "/wp-login\\.php",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/.git",
-      "destination": "/api"
+      "src": "/\\.git",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/config",
-      "destination": "/api"
+      "src": "/config",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/config.json",
-      "destination": "/api"
+      "src": "/config\\.json",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/administrator",
-      "destination": "/api"
+      "src": "/administrator",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/.env.local",
-      "destination": "/api"
+      "src": "/\\.env\\.local",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/.env.production",
-      "destination": "/api"
+      "src": "/\\.env\\.production",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/etc/passwd",
-      "destination": "/api"
+      "src": "/etc/passwd",
+      "dest": "/api/index.ts"
     },
     {
-      "source": "/((?!api|admin|\\.env|wp-admin|wp-login\\.php|\\.git|config|config\\.json|administrator|\\.env\\.local|\\.env\\.production|etc/passwd).*).*",
-      "destination": "/index.html"
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }

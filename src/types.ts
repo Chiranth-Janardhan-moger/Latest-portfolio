@@ -12,6 +12,15 @@ export interface Project {
   }[];
 }
 
+export interface Education {
+  institution: string;
+  location?: string;
+  degree: string;
+  gpa?: string;
+  period?: string;
+  logo?: string;
+}
+
 export interface Experience {
   id: string;
   role: string;
@@ -19,6 +28,9 @@ export interface Experience {
   dates: string;
   desc: string;
   url?: string;
+  logo?: string;
+  certificate?: string;
+  certificateUrl?: string;
   links?: { label: string; url: string }[];
 }
 
@@ -41,4 +53,32 @@ export interface ContactSubmission {
   subject: string;
   message: string;
   createdAt: string;
+}
+
+export interface MobileApp {
+  id: string;
+  name: string;
+  category: string;
+  tagline: string;
+  desc: string;
+  stack: string[];
+  features: string[];
+  status: string;
+  version?: string;
+  iconUrl?: string;
+  githubUrl?: string;
+  apkUrl?: string;
+  demoUrl?: string;
+  architectureHighlights: string[];
+  problemStatement?: string;
+  solutionStatement?: string;
+  solutionPoints?: string[];
+  detailedAbout?: string;
+  screenshots?: string[];
+  screenMockups?: {
+    id: string;
+    title: string;
+    description: string;
+    type: 'pin' | 'vault' | 'totp' | 'map' | 'schedule';
+  }[];
 }

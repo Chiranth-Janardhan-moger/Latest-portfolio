@@ -1,44 +1,96 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { User, Newspaper, MessageSquare } from 'lucide-react';
+import { User, Smartphone, Newspaper, MessageSquare } from 'lucide-react';
 import PortfolioView from './components/PortfolioView';
+import MobileAppsView from './components/MobileAppsView';
 import BlogView from './components/BlogView';
 import ContactView from './components/ContactView';
 import NotFoundView from './components/NotFoundView';
 
-type ViewMode = 'portfolio' | 'blog' | 'contact' | 'not-found';
+type ViewMode = 'portfolio' | 'apps' | 'blog' | 'contact' | 'not-found';
+
+// Path parsing helper
+function parsePathToView(pathname: string, hash: string): { view: ViewMode; invalidPath?: string } {
+  // Check hash fallback first in case user arrived with a legacy #link
+  const cleanHash = hash.replace('#', '').toLowerCase();
+  if (cleanHash === 'portfolio') return { view: 'portfolio' };
+  if (cleanHash === 'apps' || cleanHash === 'mobile') return { view: 'apps' };
+  if (cleanHash === 'blog') return { view: 'blog' };
+  if (cleanHash === 'contact') return { view: 'contact' };
+
+  const cleanPath = pathname.toLowerCase().replace(/\/$/, '') || '/';
+
+  if (cleanPath === '/' || cleanPath === '/portfolio' || cleanPath === '/index.html') {
+    return { view: 'portfolio' };
+  }
+  if (cleanPath === '/apps' || cleanPath === '/mobile') {
+    return { view: 'apps' };
+  }
+  if (cleanPath === '/blog' || cleanPath.startsWith('/blog/')) {
+    return { view: 'blog' };
+  }
+  if (cleanPath === '/contact') {
+    return { view: 'contact' };
+  }
+  if (cleanPath.startsWith('/api') || cleanPath.startsWith('/assets')) {
+    return { view: 'portfolio' };
+  }
+
+  return { view: 'not-found', invalidPath: pathname };
+}
 
 export default function App() {
   const [activeView, setActiveView] = useState<ViewMode>(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash === 'portfolio' || hash === 'blog' || hash === 'contact') {
-      return hash as ViewMode;
-    } else if (hash) {
-      return 'not-found';
-    }
-    const pathname = window.location.pathname;
-    if (pathname !== '/' && pathname !== '/index.html' && !pathname.startsWith('/api')) {
-      return 'not-found';
-    }
-    return 'portfolio';
+    return parsePathToView(window.location.pathname, window.location.hash).view;
   });
 
   const [invalidPath, setInvalidPath] = useState<string>(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash && hash !== 'portfolio' && hash !== 'blog' && hash !== 'contact') {
-      return '#' + hash;
-    }
-    const pathname = window.location.pathname;
-    if (pathname !== '/' && pathname !== '/index.html' && !pathname.startsWith('/api')) {
-      return pathname;
-    }
-    return '';
+    return parsePathToView(window.location.pathname, window.location.hash).invalidPath || '';
   });
 
   const [visitCount, setVisitCount] = useState<number | null>(null);
   const [isOffline, setIsOffline] = useState<boolean>(() => !window.navigator.onLine);
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
 
+  // Clean legacy hashes and normalize URL to clean paths on initial mount
+  useEffect(() => {
+    const { view, invalidPath: badPath } = parsePathToView(window.location.pathname, window.location.hash);
+    setActiveView(view);
+    if (badPath) {
+      setInvalidPath(badPath);
+    } else {
+      setInvalidPath('');
+    }
+
+    // Normalize URL path in browser address bar without hashes
+    let targetPath = '/';
+    if (view === 'apps') targetPath = '/apps';
+    else if (view === 'blog') targetPath = '/blog';
+    else if (view === 'contact') targetPath = '/contact';
+    else if (view === 'portfolio') targetPath = '/';
+
+    if (window.location.hash || window.location.pathname === '/portfolio') {
+      window.history.replaceState({}, '', targetPath);
+    }
+  }, []);
+
+  // Handle browser Back/Forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      const { view, invalidPath: badPath } = parsePathToView(window.location.pathname, window.location.hash);
+      setActiveView(view);
+      if (badPath) {
+        setInvalidPath(badPath);
+      } else {
+        setInvalidPath('');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Scroll direction detection for minimizing bottom dock
   useEffect(() => {
     let lastScrollY = window.scrollY;
     let ticking = false;
@@ -72,6 +124,7 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Network offline/online listeners
   useEffect(() => {
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => setIsOffline(true);
@@ -85,32 +138,7 @@ export default function App() {
     };
   }, []);
 
-  useEffect(() => {
-    // Sync active view on external hash changes (e.g., forward/back button, page load)
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (hash === 'portfolio' || hash === 'blog' || hash === 'contact') {
-        setActiveView(hash as ViewMode);
-        setInvalidPath('');
-      } else if (hash) {
-        setActiveView('not-found');
-        setInvalidPath('#' + hash);
-      } else {
-        const pathname = window.location.pathname;
-        if (pathname !== '/' && pathname !== '/index.html' && !pathname.startsWith('/api')) {
-          setActiveView('not-found');
-          setInvalidPath(pathname);
-        } else {
-          setActiveView('portfolio');
-          setInvalidPath('');
-        }
-      }
-    };
-    
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
+  // Visit counter & console badge
   useEffect(() => {
     console.log(
       "%c🕵️‍♂️ Ah, a fellow engineer. Looking for vulnerabilities or just checking my React structure? Either way, you can find the raw source code here: github.com/Chiranth-Janardhan-moger",
@@ -127,13 +155,20 @@ export default function App() {
       .catch((err) => console.error('Failed to fetch visit count:', err));
   }, []);
 
-  // Switch navigation helper
+  // Clean path-based navigation handler
   const handleNav = (view: ViewMode) => {
     setActiveView(view);
-    if (view === 'not-found') {
-      window.location.hash = '404';
-    } else {
-      window.location.hash = view;
+    setInvalidPath('');
+
+    let targetPath = '/';
+    if (view === 'apps') targetPath = '/apps';
+    else if (view === 'blog') targetPath = '/blog';
+    else if (view === 'contact') targetPath = '/contact';
+    else if (view === 'portfolio') targetPath = '/';
+    else if (view === 'not-found') targetPath = '/404';
+
+    if (window.location.pathname !== targetPath || window.location.hash) {
+      window.history.pushState({}, '', targetPath);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -168,6 +203,9 @@ export default function App() {
             {activeView === 'portfolio' && (
               <PortfolioView onNavigateToContact={() => handleNav('contact')} />
             )}
+            {activeView === 'apps' && (
+              <MobileAppsView />
+            )}
             {activeView === 'blog' && (
               <BlogView />
             )}
@@ -193,7 +231,7 @@ export default function App() {
 
       </div>
 
-      {/* Floating Sticky Bottom Dock Navigation - Premium Interactive Sliding Pill Tabs */}
+      {/* Floating Sticky Bottom Dock Navigation - Clean Path-Based Tabs */}
       <nav 
         className={`fixed bottom-6 left-1/2 bg-white/70 backdrop-blur-xl border border-line/80 rounded-full p-1.5 shadow-xl z-40 flex items-center gap-1 transition-all duration-300 ease-out ${
           isMinimized ? 'scale-95 px-2' : ''
@@ -205,10 +243,10 @@ export default function App() {
         }}
         id="sticky-bottom-dock"
       >
-        {(['portfolio', 'blog', 'contact'] as const).map((view) => {
+        {(['portfolio', 'apps', 'blog', 'contact'] as const).map((view) => {
           const isActive = activeView === view;
-          const label = view === 'portfolio' ? 'Portfolio' : view === 'blog' ? 'Blog' : 'Contact';
-          const Icon = view === 'portfolio' ? User : view === 'blog' ? Newspaper : MessageSquare;
+          const label = view === 'portfolio' ? 'Portfolio' : view === 'apps' ? 'Apps' : view === 'blog' ? 'Blog' : 'Contact';
+          const Icon = view === 'portfolio' ? User : view === 'apps' ? Smartphone : view === 'blog' ? Newspaper : MessageSquare;
           
           return (
             <motion.button
@@ -216,7 +254,7 @@ export default function App() {
               onClick={() => handleNav(view)}
               whileTap={{ scale: 0.92 }}
               className={`relative ${
-                isMinimized ? 'px-3 py-2.5' : 'px-4 sm:px-5 pt-2.5 pb-3.5'
+                isMinimized ? 'px-3 py-2.5' : 'px-3.5 sm:px-4 pt-2.5 pb-3.5'
               } text-xs font-mono rounded-full transition-all duration-300 ease-out flex items-center gap-2 cursor-pointer z-10 select-none ${
                 isActive ? 'text-ink font-bold' : 'text-ink-soft hover:text-ink'
               }`}

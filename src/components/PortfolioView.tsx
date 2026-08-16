@@ -11,7 +11,9 @@ import {
   RefreshCw,
   Package,
   Container,
-  Trophy
+  Trophy,
+  ChevronDown,
+  FileText
 } from 'lucide-react';
 import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
@@ -32,6 +34,20 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
   const [recentThreats, setRecentThreats] = useState<any[]>([]);
   const [showRecentThreats, setShowRecentThreats] = useState<boolean>(false);
   const [isPlaygroundExpanded, setIsPlaygroundExpanded] = useState<boolean>(false);
+  const [expandedEduIndices, setExpandedEduIndices] = useState<number[]>([]);
+  const [expandedExpIds, setExpandedExpIds] = useState<string[]>([]);
+
+  const toggleEduExpand = (idx: number) => {
+    setExpandedEduIndices(prev => 
+      prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]
+    );
+  };
+
+  const toggleExpExpand = (id: string) => {
+    setExpandedExpIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
 
   const handleScanPayload = async () => {
     if (!testPayload.trim()) return;
@@ -152,7 +168,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
         <p className="font-mono text-sm sm:text-base text-ink-soft mb-6" id="title-roles">
           Applied ML <span className="text-line mx-1">/</span> Android <span className="text-line mx-1">/</span> Full Stack <span className="text-line mx-1">/</span> Cybersecurity
         </p>
-        <div className="text-base sm:text-lg text-ink-soft max-w-[65ch] leading-relaxed mb-8" id="intro-text">
+        <div className="text-[14px] text-ink-soft w-full leading-relaxed mb-8" id="intro-text">
           <p>
             Final-year B.E. Information Science & Engineering student at BMSIT, Bengaluru, specializing in applied machine learning, Android systems, and application security. I prioritize architectural transparency and rigorous testing, preferring to document a vulnerability or performance ceiling in my own work rather than leave it unaddressed.
           </p>
@@ -198,104 +214,173 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
 
       {/* Education */}
       <section className="border-t border-line pt-12" id="education">
-        <div className="font-mono text-xs tracking-wider uppercase text-ink-soft mb-6 flex items-center gap-3" id="edu-label">
-          <span>education</span>
-          <div className="h-[1px] bg-line flex-1"></div>
+        <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="edu-label">
+          <span>Education</span>
         </div>
         <div className="space-y-6" id="education-list">
-          {EDUCATION.map((edu, idx) => (
-            <div key={idx} id={`edu-item-${idx}`} className="ps-1">
-              <h3 className="font-bold text-lg text-ink" id={`edu-inst-${idx}`}>
-                {edu.institution === "BMS Institute of Technology and Management" ? (
-                  <a 
-                    href="https://bmsit.ac.in/" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="hover:underline transition-all"
-                  >
-                    {edu.institution} {edu.location && <span className="font-normal text-sm text-ink-soft ml-1">{edu.location}</span>}
-                  </a>
-                ) : (
-                  <span>
-                    {edu.institution} {edu.location && <span className="font-normal text-sm text-ink-soft ml-1">{edu.location}</span>}
-                  </span>
+          {EDUCATION.map((edu, idx) => {
+            const isSiddhartha = edu.institution.toLowerCase().includes("siddhartha");
+            const isExpanded = expandedEduIndices.includes(idx);
+            return (
+              <div key={idx} id={`edu-item-${idx}`} className="flex items-start gap-3 group transition-all duration-300">
+                {edu.logo && (
+                  <div className={`w-10 h-10 rounded-lg border flex items-center justify-center shrink-0 overflow-hidden shadow-xs grayscale group-hover:grayscale-0 transition-all duration-300 ease-out ${
+                    isSiddhartha 
+                      ? 'bg-[#033475] border-[#033475] p-0.5' 
+                      : 'bg-paper border-line p-1'
+                  }`}>
+                    <img 
+                      src={edu.logo} 
+                      alt={`${edu.institution} logo`} 
+                      className={`w-full h-full transition-all duration-300 ${isSiddhartha ? 'object-cover rounded-md' : 'object-contain'}`}
+                    />
+                  </div>
                 )}
-              </h3>
-              <p className="font-mono text-xs text-ink-soft mt-1.5" id={`edu-meta-${idx}`}>
-                {edu.degree}
-                {edu.gpa && ` — ${edu.gpa}`}
-                {edu.period && ` ${edu.period}`}
-              </p>
-            </div>
-          ))}
+                <div className="flex-1">
+                  <div className="flex justify-between items-baseline gap-2 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => toggleEduExpand(idx)}
+                      className="inline-flex items-center gap-1.5 text-left group/btn cursor-pointer py-0.5 focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2 rounded"
+                      aria-expanded={isExpanded}
+                      id={`edu-btn-${idx}`}
+                    >
+                      <h3 className="font-semibold text-sm sm:text-base text-ink flex items-center gap-1.5 flex-wrap" id={`edu-inst-${idx}`}>
+                        <span>{edu.institution}</span>
+                      </h3>
+                      <ChevronDown 
+                        size={14} 
+                        className={`text-ink-soft transition-all duration-200 opacity-0 group-hover:opacity-100 group-hover/btn:opacity-100 focus-visible:opacity-100 ${
+                          isExpanded ? 'rotate-180 opacity-100 text-ink' : ''
+                        }`} 
+                      />
+                    </button>
+                    {edu.period && (
+                      <span className="font-mono text-xs text-ink-soft shrink-0">{edu.period}</span>
+                    )}
+                  </div>
+                  <p className="font-mono text-[12px] text-ink-soft mt-0.5" id={`edu-meta-${idx}`}>
+                    {edu.degree}
+                  </p>
+                  <div className={`edu-expand-container ${isExpanded ? 'is-expanded' : ''}`}>
+                    <div className="edu-expand-content">
+                      {edu.gpa && (
+                        <p 
+                          className="font-mono text-[12px] text-ink-soft pt-1"
+                          id={`edu-details-${idx}`}
+                        >
+                          {edu.gpa}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* Experience */}
       <section className="border-t border-line pt-12" id="experience">
-        <div className="font-mono text-xs tracking-wider uppercase text-ink-soft mb-6 flex items-center gap-3" id="exp-label">
-          <span>experience</span>
-          <div className="h-[1px] bg-line flex-1"></div>
+        <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="exp-label">
+          <span>Experience</span>
         </div>
-        <div className="space-y-4" id="experience-list">
-          {EXPERIENCES.filter(exp => exp.id.startsWith("freelance-")).map((exp) => (
-            <div
-              key={exp.id}
-              className="border border-line rounded-xl p-5 bg-paper hover:-translate-y-1 hover:border-ink hover:shadow-md transition-all duration-300 ease-out"
-              id={`exp-card-${exp.id}`}
-            >
-              <div className="flex justify-between items-baseline gap-3 flex-wrap" id={`exp-header-${exp.id}`}>
-                <h3 className="font-bold text-base text-ink" id={`exp-role-${exp.id}`}>
-                  {exp.url ? (
-                    <a
-                      href={exp.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:underline transition-colors cursor-pointer"
-                    >
-                      {exp.role}
-                    </a>
-                  ) : (
-                    exp.role
-                  )}
-                </h3>
-                <span className="font-mono text-xs text-ink-soft" id={`exp-dates-${exp.id}`}>{exp.dates}</span>
-              </div>
-              {exp.company && (
-                <p className="font-mono text-xs text-ink-soft mt-1" id={`exp-company-${exp.id}`}>{exp.company}</p>
-              )}
-              <p className="text-sm text-ink-soft mt-3 leading-relaxed" id={`exp-desc-${exp.id}`}>{exp.desc}</p>
-              
-              {exp.links && (
-                <div className="mt-4 flex flex-wrap gap-2 text-xs font-mono" id={`exp-links-${exp.id}`}>
-                  {exp.links.map((link, idx) => {
-                    const isRepo = link.label.toLowerCase().includes('repo') || link.url.includes('github.com');
-                    return (
-                      <a
-                        key={idx}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-ink-soft hover:text-ink hover:underline inline-flex items-center gap-1.5 border border-line rounded px-2.5 py-1 bg-cream/30 hover:bg-cream transition-colors"
-                        id={`exp-link-${exp.id}-${idx}`}
+        <div className="space-y-6" id="experience-list">
+          {EXPERIENCES.filter(exp => exp.id.startsWith("freelance-")).map((exp) => {
+            const hasExpandable = Boolean(exp.certificate);
+            const isExpanded = expandedExpIds.includes(exp.id);
+            return (
+              <div
+                key={exp.id}
+                className="flex items-start gap-3 group transition-all duration-300"
+                id={`exp-item-${exp.id}`}
+              >
+                {exp.logo && (
+                  <div className="w-10 h-10 rounded-lg border border-line bg-paper flex items-center justify-center shrink-0 overflow-hidden shadow-xs p-1 grayscale group-hover:grayscale-0 transition-all duration-300 ease-out">
+                    <img 
+                      src={exp.logo} 
+                      alt={`${exp.role} logo`} 
+                      className="w-full h-full object-contain transition-all duration-300"
+                    />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <div className="flex justify-between items-baseline gap-2 flex-wrap" id={`exp-header-${exp.id}`}>
+                    {hasExpandable ? (
+                      <button
+                        type="button"
+                        onClick={() => toggleExpExpand(exp.id)}
+                        className="inline-flex items-center gap-1.5 text-left group/btn cursor-pointer py-0.5 focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2 rounded"
+                        aria-expanded={isExpanded}
+                        id={`exp-btn-${exp.id}`}
                       >
-                        {isRepo ? <Github size={10} /> : <ExternalLink size={10} />}
-                        <span>{link.label}</span>
-                      </a>
-                    );
-                  })}
+                        <h3 className="font-semibold text-sm sm:text-base text-ink flex items-center gap-1.5 flex-wrap" id={`exp-role-${exp.id}`}>
+                          <span>{exp.role}</span>
+                          {exp.company && <span className="font-normal text-xs text-ink-soft ml-1">({exp.company})</span>}
+                        </h3>
+                        <ChevronDown 
+                          size={14} 
+                          className={`text-ink-soft transition-all duration-200 opacity-0 group-hover:opacity-100 group-hover/btn:opacity-100 focus-visible:opacity-100 ${
+                            isExpanded ? 'rotate-180 opacity-100 text-ink' : ''
+                          }`} 
+                        />
+                      </button>
+                    ) : (
+                      <h3 className="font-semibold text-sm sm:text-base text-ink" id={`exp-role-${exp.id}`}>
+                        <span>{exp.role}</span>
+                        {exp.company && <span className="font-normal text-xs text-ink-soft ml-1">({exp.company})</span>}
+                      </h3>
+                    )}
+                    {exp.dates && (
+                      <span className="font-mono text-xs text-ink-soft shrink-0" id={`exp-dates-${exp.id}`}>{exp.dates}</span>
+                    )}
+                  </div>
+                  <p className="font-mono text-[12px] text-ink-soft mt-0.5" id={`exp-desc-${exp.id}`}>
+                    {exp.desc}
+                  </p>
+                  {hasExpandable && (
+                    <div className={`edu-expand-container ${isExpanded ? 'is-expanded' : ''}`}>
+                      <div className="edu-expand-content">
+                        {exp.certificate && (
+                          <div className="pt-2 flex items-center gap-2">
+                            {exp.certificateUrl ? (
+                              <a 
+                                href={exp.certificateUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group/cert font-mono text-[10px] text-ink-soft border border-line rounded-full px-2.5 py-0.5 bg-cream hover:border-ink hover:text-ink hover:shadow-xs transition-all duration-200 cursor-pointer select-none inline-flex items-center gap-1.5"
+                                id={`exp-cert-${exp.id}`}
+                              >
+                                <FileText size={11} className="shrink-0 text-ink-soft group-hover/cert:text-ink transition-colors" />
+                                <span>{exp.certificate}</span>
+                                <ExternalLink size={9} className="opacity-60 group-hover/cert:opacity-100 transition-opacity" />
+                              </a>
+                            ) : (
+                              <span 
+                                className="group/cert font-mono text-[10px] text-ink-soft border border-line rounded-full px-2.5 py-0.5 bg-cream hover:border-ink hover:text-ink hover:shadow-xs transition-all duration-200 cursor-pointer select-none inline-flex items-center gap-1.5"
+                                id={`exp-cert-${exp.id}`}
+                              >
+                                <FileText size={11} className="shrink-0 text-ink-soft group-hover/cert:text-ink transition-colors" />
+                                <span>{exp.certificate}</span>
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* Hackathons & Achievements */}
       <section className="border-t border-line pt-12" id="hackathons">
-        <div className="font-mono text-xs tracking-wider uppercase text-ink-soft mb-6 flex items-center gap-3" id="hackathons-label">
-          <span>hackathons & achievements</span>
-          <div className="h-[1px] bg-line flex-1"></div>
+        <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="hackathons-label">
+          <span>Hackathons & Achievements</span>
         </div>
         <div className="space-y-4" id="hackathons-list">
           {EXPERIENCES.filter(exp => exp.id.startsWith("hackathon-")).map((exp) => (
@@ -325,7 +410,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
               {exp.company && (
                 <p className="font-mono text-xs text-ink-soft mt-1" id={`exp-company-${exp.id}`}>{exp.company}</p>
               )}
-              <p className="text-sm text-ink-soft mt-3 leading-relaxed" id={`exp-desc-${exp.id}`}>{exp.desc}</p>
+              <p className="text-[12px] text-ink-soft mt-3 leading-relaxed" id={`exp-desc-${exp.id}`}>{exp.desc}</p>
             </div>
           ))}
         </div>
@@ -333,9 +418,8 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
 
       {/* Leadership & Activities */}
       <section className="border-t border-line pt-12" id="leadership">
-        <div className="font-mono text-xs tracking-wider uppercase text-ink-soft mb-6 flex items-center gap-3" id="leadership-label">
-          <span>leadership & activities</span>
-          <div className="h-[1px] bg-line flex-1"></div>
+        <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="leadership-label">
+          <span>Leadership & Activities</span>
         </div>
         <div className="space-y-4" id="leadership-list">
           {EXPERIENCES.filter(exp => !exp.id.startsWith("freelance-") && !exp.id.startsWith("hackathon-")).map((exp) => (
@@ -364,7 +448,6 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
               {exp.company && (
                 <p className="font-mono text-xs text-ink-soft mt-1" id={`exp-company-${exp.id}`}>{exp.company}</p>
               )}
-              <p className="text-sm text-ink-soft mt-3 leading-relaxed" id={`exp-desc-${exp.id}`}>{exp.desc}</p>
               
               {exp.links && (
                 <div className="mt-4 flex flex-wrap gap-2 text-xs font-mono" id={`exp-links-${exp.id}`}>
@@ -393,9 +476,8 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
 
       {/* Projects */}
       <section className="border-t border-line pt-12" id="projects">
-        <div className="font-mono text-xs tracking-wider uppercase text-ink-soft mb-6 flex items-center gap-3" id="projects-label">
-          <span>project log</span>
-          <div className="h-[1px] bg-line flex-1"></div>
+        <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="projects-label">
+          <span>Project Log</span>
         </div>
         <div className="space-y-6" id="projects-list">
           {PROJECTS.map((proj) => (
@@ -460,7 +542,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                 </div>
               </div>
 
-              <p className="text-sm text-ink-soft leading-relaxed mt-2 mb-4" id={`project-desc-${proj.id}`}>
+              <p className="text-[12px] text-ink-soft leading-relaxed mt-2 mb-4" id={`project-desc-${proj.id}`}>
                 {proj.desc}
               </p>
 

@@ -1,18 +1,20 @@
-import { Project, Experience, BlogPost } from './types';
+import { Project, Experience, BlogPost, Education, MobileApp } from './types';
 
-export const EDUCATION = [
+export const EDUCATION: Education[] = [
   {
     institution: "BMS Institute of Technology and Management",
     location: "Bengaluru",
     degree: "Bachelor of Engineering in Information Science and Engineering",
     gpa: "CGPA: 9.5",
-    period: "2023 – 2027"
+    period: "2023 – 2027",
+    logo: "/bmsit-logo.svg"
   },
   {
     institution: "Siddhartha College",
     degree: "Pre-University Course (PUC)",
     gpa: "Percentage: 94.33%",
-    period: "2021 – 2023"
+    period: "2021 – 2023",
+    logo: "/siddhartha-logo.svg"
   }
 ];
 
@@ -40,27 +42,36 @@ export const EXPERIENCES: Experience[] = [
     desc: "Ranked in the Top 8 out of 900+ competing teams nationally, showcasing advanced engineering concepts and working hardware/software prototypes to research and industry panels."
   },
   {
-    id: "freelance-client-1",
-    role: "Freelance Full-Stack Developer",
-    company: "Client 1 — EduManage (Tuition Management Suite)",
-    dates: "2024 – 2025",
-    desc: "Designed and engineered school management portals and student attendance/schedules trackers. Built EduManage, a production-ready React Native + Node.js fee and attendance administration application. Features a multi-role dashboard (Admin, Parent, Developer), smart joining-date-based fee cycles, leave application approvals, Socket.io real-time chat, feature toggles, and direct APK auto-updates with download resumption. Reduced load times by 60% and memory by 40% (handles 500+ active students).",
-    links: [
-      { label: "EduManage Repo", url: "https://github.com/Chiranth-Janardhan-moger/tuition-app" },
-      { label: "I-School Repo", url: "https://github.com/Chiranth-Janardhan-moger/Client-1-I-School" },
-      { label: "Live I-School App", url: "https://i-school-website.vercel.app/" }
-    ]
+    id: "freelance-optify",
+    role: "Optify",
+    company: "freelance",
+    dates: "2025 – 2026",
+    desc: "Full-Stack Development & Real-World Problem Solving",
+    logo: "/optify.png"
   },
   {
-    id: "freelance-client-2",
-    role: "Freelance Full-Stack Developer",
-    company: "Client 2 — dSK Mart (E-Commerce & Delivery Ecosystem)",
-    dates: "2025 – 2026",
-    desc: "Architected dSK Mart, a multi-platform e-commerce ecosystem consisting of a customer shopping portal and admin panel (React + Vite + TypeScript + Tailwind CSS), a delivery boy mobile app (React Native + Expo with QR scanning and location telemetry), and a backend REST API (Express + MongoDB Atlas).",
-    links: [
-      { label: "Admin Console Repo", url: "https://github.com/Chiranth-Janardhan-moger/Client-2_DSK_MART" },
-      { label: "Feedback Service Repo", url: "https://github.com/Chiranth-Janardhan-moger/feedback_dsk_mart" }
-    ]
+    id: "freelance-sarvagya-nirakar",
+    role: "Sarvagya Nirakar",
+    dates: "Jul 2025 – Oct 2025",
+    desc: "AI Engineer",
+    logo: "/sarvagya-nirakar.png",
+    certificate: "Certificate"
+  },
+  {
+    id: "freelance-gaotek",
+    role: "GAO Tek Inc.",
+    dates: "Mar 2025 – Jun 2025",
+    desc: "Web Development",
+    logo: "/gaotek-logo.png",
+    certificate: "Certificate"
+  },
+  {
+    id: "freelance-aigle-air",
+    role: "Aigle Air",
+    company: "startup",
+    dates: "2024 – 2025",
+    desc: "Web Development + Sensor Architecture",
+    logo: "/aigle-logo.png"
   },
   {
     id: "president-epoch",
@@ -352,5 +363,121 @@ We initially ran the Kalman Filter on the Express backend server before sending 
 By moving the Kalman filter calculation onto the tracking device itself (using a lightweight mobile utility) and only transmitting smoothed coordinates when they drifted more than 2 meters from the prior smoothed position, we reduced server packet ingress by **38%** while providing a buttery-smooth map experience.
 
 Read more in our [complete ConnectMe mobile repository documentation](https://github.com/Chiranth-Janardhan-moger/Connect_Me).`
+  }
+];
+
+export const MOBILE_APPS: MobileApp[] = [
+  {
+    id: "vaultx",
+    name: "VaultX",
+    category: "Security & Cryptography",
+    tagline: "Offline-First Android App Locker & Password Vault",
+    desc: "A zero-knowledge, offline-first mobile password manager and credential vault. Implements military-grade AES-256-GCM encryption with PBKDF2 key derivation, biometric authentication, and hardware-backed SecureStore keys. Zero internet permissions requested, ensuring total isolation from network attack vectors.",
+    detailedAbout: "VaultX is an open-source, privacy-first mobile password manager and secure wallet engineered with React Native and Expo. Your credentials never touch third-party servers, never synchronize to the cloud, and are protected with military-grade AES-256 authenticated encryption. Features include biometric authentication, built-in 2FA/TOTP authenticator generation, secure identity & payment card storage, native Android Autofill integration, and deterministic master password generation.",
+    problemStatement: "Mainstream password managers synchronize vault databases across remote centralized servers. When cloud providers suffer breaches, credential stuffing attacks, or subpoena seizures, user master hashes and encrypted vaults are exposed. Furthermore, many proprietary apps require recurring paid subscriptions, harvest telemetry logs, and expose users to server-side outage lockouts.",
+    solutionStatement: "VaultX enforces a strict 100% air-gapped, zero-network architecture by stripping all internet permissions from the Android manifest. The vault uses military-grade AES-256-GCM authenticated encryption paired with PBKDF2 (100,000 salt rounds) and hardware-isolated SecureStore keys. It includes biometric biometric lockouts, built-in offline 2FA/TOTP authenticator code generation, and auto-clearing clipboard watchers.",
+    solutionPoints: [
+      "Zero-Network Attack Surface: Stripped all internet permissions from the Android manifest, ensuring 100% air-gapped data persistence.",
+      "Client-Side Authenticated Encryption: Implemented military-grade AES-256-GCM encryption paired with PBKDF2 (100,000 salt iterations).",
+      "Hardware-Isolated Key Storage: Vault keys derived and protected inside hardware-backed SecureStore with zero plaintext memory leaks.",
+      "Biometric & Intruder Defense: Hardware biometric authentication with automatic front-camera intruder capture upon failed PIN attempts.",
+      "Built-in 2FA/TOTP Engine: Offline local HMAC-SHA1 generation with active clipboard auto-wipe watchers after 30 seconds."
+    ],
+    stack: ["React Native 0.74", "Expo 52", "TypeScript", "AES-256-GCM", "PBKDF2", "Biometrics", "SecureStore", "Reanimated 4"],
+    iconUrl: "/vaultx-icon.png",
+    screenshots: [
+      "https://github.com/user-attachments/assets/edabb54a-0e75-4449-ad95-3d84bbca057f",
+      "https://github.com/user-attachments/assets/a8ab23da-3adf-43d3-9fbc-1d8101ab833a"
+    ],
+    features: [
+      "Military-grade AES-256 Encryption & PBKDF2 Key Derivation with salt",
+      "100% Offline with Zero Network Permissions (No Cloud Dependency / Zero Backend)",
+      "Hardware Biometric Authentication (Fingerprint & Face ID) + 6-Digit PIN Lock",
+      "Built-in 2FA / TOTP Authenticator (Local HMAC-SHA1 generation from Base32 secrets)",
+      "Identity & Payment Cards Wallet (Passports, Driving Licenses, IDs, Credit/Debit Cards)",
+      "Native Android Autofill Integration to autofill logins in other apps and browsers",
+      "Deterministic Master Password System (Regenerate strong passwords consistently)",
+      "Screenshot Protection, Auto-Lockout Protection & Clipboard Monitor (Auto-wipe in 30s)",
+      "Smart Auto-Categorization (Google, Banking, Social Media, Shopping, Gaming, Work)"
+    ],
+    status: "Live Release",
+    version: "v1.3.4",
+    githubUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager",
+    architectureHighlights: [
+      "Key derivation using PBKDF2 with SHA-256 and 100,000 iterations",
+      "Transient memory buffers with automated zero-fill garbage collection",
+      "60 FPS smooth micro-interactions powered by React Native Reanimated v4",
+      "Tamper-resistant SQLite encrypted key-value storage engine"
+    ],
+    screenMockups: [
+      {
+        id: "v-screen-1",
+        title: "Biometric & Master PIN Shield",
+        description: "Hardware-level biometric verification and single-digit focused 6-digit cryptographic PIN pad.",
+        type: "pin"
+      },
+      {
+        id: "v-screen-2",
+        title: "Categorized Encrypted Vault",
+        description: "Zero-plaintext item browser with service-specific branding icons, quick copy, and strength audit metrics.",
+        type: "vault"
+      },
+      {
+        id: "v-screen-3",
+        title: "Offline 2FA / TOTP Authenticator",
+        description: "Native offline Time-based One-Time Password generator with animated circular sync indicators.",
+        type: "totp"
+      }
+    ]
+  },
+  {
+    id: "connectme",
+    name: "ConnectMe Mobile",
+    category: "Transit Telemetry & Mapping",
+    tagline: "Real-Time Campus Bus Tracking & ETA Prediction",
+    desc: "A real-time transit telemetry mobile app engineered for university shuttle tracking. Overcomes urban GPS multipath jitter using on-device Kalman filtering algorithms, coupled with live WebSockets for sub-second bus coordinate updates.",
+    detailedAbout: "ConnectMe was architected to eliminate transit uncertainty across the university campus. Designed as a comprehensive client-server ecosystem, the mobile app connects students with campus shuttle telemetry in real time. It calculates accurate arrival times based on historical transit segment speeds, traffic conditions, and campus perimeter geofences.",
+    problemStatement: "University students and faculty lost hours every week waiting for campus shuttles with unpredictable schedules. Standard GPS tracking suffered severe multipath reflections from concrete academic buildings, causing tracking bus icons to jitter erratically across map tiles, teleport across blocks, and miscalculate arrival ETAs.",
+    solutionStatement: "Engineered an on-device mathematical Kalman filter that predicts expected vehicle momentum and discounts noisy GPS telemetry anomalies. Position updates are streamed through lightweight Socket.io rooms directly to Upstash Redis geospatial clusters, reducing server packet ingress by 38% while delivering a smooth 60 FPS bus avatar animation.",
+    solutionPoints: [
+      "On-Device Kalman Filtering: Mathematical trajectory smoothing predicting momentum and discounting GPS reflections.",
+      "Sub-Second Bidirectional Telemetry: Live position coordinates streamed via Socket.io to Upstash Redis geospatial clusters.",
+      "Dynamic Arrival ETA Engine: Automated arrival forecasting calculated from real-time speed profiles and route geofences.",
+      "38% Ingress Compression: On-device coordinate delta filtering preventing redundant server database writes.",
+      "Resilient Offline Mode: Local SQLite timetable caching enabling full route navigation during cellular drops."
+    ],
+    stack: ["React Native", "Expo", "Socket.IO", "Redis Geo", "Leaflet / Mapbox", "Node.js", "Express", "TypeScript"],
+    iconUrl: "/connectme-icon.png",
+    features: [
+      "Live GPS telemetry with on-device Kalman filter motion smoothing",
+      "Sub-second bus avatar sync via Socket.io bidirectional channels",
+      "Automated ETA prediction based on dynamic route speed profiling",
+      "Geofenced arrival alerts and push notifications via Expo Push & Firebase",
+      "Offline timetable caching and fallback route navigation schedules",
+      "Driver dispatch telemetry console with live route adherence metrics"
+    ],
+    status: "Production",
+    version: "v2.1.0",
+    githubUrl: "https://github.com/Chiranth-Janardhan-moger/Connect_Me",
+    architectureHighlights: [
+      "Upstash Redis geospatial indexing (GEOADD & GEORADIUS query engine)",
+      "38% reduction in packet ingress through on-device telemetry compression",
+      "Graceful offline degradation with local SQLite schedule caches",
+      "Dynamic connection reconnect with exponential backoff on cell drops"
+    ],
+    screenMockups: [
+      {
+        id: "c-screen-1",
+        title: "Live Campus Radar & Route Map",
+        description: "Interactive real-time map displaying smoothed bus avatars, route polylines, and stop markers.",
+        type: "map"
+      },
+      {
+        id: "c-screen-2",
+        title: "Dynamic ETA & Stop Timeline",
+        description: "Live countdown board showing predicted arrivals, current occupancy, and next stop alerts.",
+        type: "schedule"
+      }
+    ]
   }
 ];

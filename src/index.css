@@ -102,4 +102,21 @@ html {
   animation: sweep 1.2s infinite ease-in-out;
 }
 
+/* Smooth Accordion Animation */
+.edu-expand-container {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 0;
+}
 
+.edu-expand-container.is-expanded {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 0.25rem;
+}
+
+.edu-expand-content {
+  overflow: hidden;
+}

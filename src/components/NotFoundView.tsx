@@ -3,7 +3,7 @@ import { Terminal, Home, BookOpen, MessageSquare, ArrowLeft } from 'lucide-react
 
 interface NotFoundViewProps {
   invalidPath: string;
-  onNavigate: (view: 'portfolio' | 'blog' | 'contact') => void;
+  onNavigate: (view: 'portfolio' | 'apps' | 'blog' | 'contact') => void;
 }
 
 export default function NotFoundView({ invalidPath, onNavigate }: NotFoundViewProps) {

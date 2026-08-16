@@ -82,19 +82,3 @@ export interface MobileApp {
     type: 'pin' | 'vault' | 'totp' | 'map' | 'schedule';
   }[];
 }
-
-export interface DesignProject {
-  id: string;
-  title: string;
-  category: 'Design System' | 'Mobile UI' | 'Web Architecture' | 'Security UX';
-  tagline: string;
-  description: string;
-  year: string;
-  figmaUrl?: string;
-  liveUrl?: string;
-  palette: { name: string; hex: string; desc: string }[];
-  typography: { role: string; family: string; size: string; weight: string }[];
-  keyHighlights: string[];
-  principles: { title: string; desc: string }[];
-  previewType: 'minimal-system' | 'crypto-vault' | 'transit-flow' | 'security-gateway';
-}

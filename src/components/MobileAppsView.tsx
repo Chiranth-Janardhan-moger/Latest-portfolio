@@ -478,29 +478,36 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
               Screenshots
             </h2>
 
-            {selectedApp.screenshots && selectedApp.screenshots.length > 0 ? (
-              <div className="space-y-4 pt-1">
+            {selectedApp.screenshots && selectedApp.screenshots.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                 {selectedApp.screenshots.map((src, idx) => (
                   <div 
                     key={idx} 
-                    className="rounded-xl border border-line bg-[#0B0F17] overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img"
+                    className="rounded-xl border border-line bg-[#0B0F17] overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-1"
                   >
                     <img
                       src={src}
                       alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
-                      className="w-full h-auto object-cover transition-transform duration-300 group-hover/img:scale-[1.005]"
+                      className="w-full h-auto max-h-[480px] object-contain rounded-lg transition-transform duration-300 group-hover/img:scale-[1.01]"
                       loading="lazy"
                     />
                   </div>
                 ))}
               </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 pt-2">
-                {selectedApp.screenMockups?.map((screen) => (
-                  <div key={screen.id} className="rounded-2xl border-2 border-line bg-ink p-1.5 shadow-md hover:border-ink/80 transition-all duration-300">
-                    {renderScreenMockup(screen.type, selectedApp.id)}
-                  </div>
-                ))}
+            )}
+
+            {selectedApp.screenMockups && selectedApp.screenMockups.length > 0 && (
+              <div className="space-y-3 pt-4">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-ink-soft">
+                  Interactive UI & Engine Flow
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                  {selectedApp.screenMockups.map((screen) => (
+                    <div key={screen.id} className="rounded-2xl border-2 border-line bg-ink p-1.5 shadow-md hover:border-ink/80 transition-all duration-300">
+                      {renderScreenMockup(screen.type, selectedApp.id)}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </section>

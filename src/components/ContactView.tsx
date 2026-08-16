@@ -94,15 +94,15 @@ export default function ContactView() {
           </div>
           <button
             onClick={() => copyToClipboard('chiranthmoger7@gmail.com')}
-            className="w-9 h-9 rounded-full border border-line/80 bg-white hover:bg-ink hover:text-paper hover:border-ink transition-all duration-200 active:scale-95 flex items-center justify-center shrink-0 shadow-2xs cursor-pointer"
+            className="group/copy w-9 h-9 rounded-full border border-line/80 bg-white hover:bg-ink hover:text-white hover:border-ink transition-all duration-200 active:scale-95 flex items-center justify-center shrink-0 shadow-2xs cursor-pointer"
             id="btn-copy-email"
             title={copiedEmail ? "Copied!" : "Copy Email"}
             aria-label="Copy Email"
           >
             {copiedEmail ? (
-              <Check size={14} className="text-emerald-600" />
+              <Check size={14} className="text-emerald-600 group-hover/copy:text-emerald-400 transition-colors" />
             ) : (
-              <Copy size={14} className="text-ink" />
+              <Copy size={14} className="text-ink group-hover/copy:text-white transition-colors" />
             )}
           </button>
         </div>

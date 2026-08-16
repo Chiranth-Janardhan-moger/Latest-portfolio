@@ -15,6 +15,7 @@ import {
   ChevronDown,
   FileText,
   Download
+} from 'lucide-react';
 import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
 

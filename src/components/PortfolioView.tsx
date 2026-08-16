@@ -13,16 +13,18 @@ import {
   Container,
   Trophy,
   ChevronDown,
-  FileText
+  FileText,
+  Download
 } from 'lucide-react';
 import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
 
 interface PortfolioViewProps {
   onNavigateToContact: () => void;
+  onNavigateToApps?: (appId?: string) => void;
 }
 
-export default function PortfolioView({ onNavigateToContact }: PortfolioViewProps) {
+export default function PortfolioView({ onNavigateToContact, onNavigateToApps }: PortfolioViewProps) {
   // SQLGuardJS Playground states
   const [testPayload, setTestPayload] = useState<string>('');
   const [scanResult, setScanResult] = useState<{
@@ -36,6 +38,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
   const [isPlaygroundExpanded, setIsPlaygroundExpanded] = useState<boolean>(false);
   const [expandedEduIndices, setExpandedEduIndices] = useState<number[]>([]);
   const [expandedExpIds, setExpandedExpIds] = useState<string[]>([]);
+  const [expandedProjIds, setExpandedProjIds] = useState<string[]>([]);
 
   const toggleEduExpand = (idx: number) => {
     setExpandedEduIndices(prev => 
@@ -45,6 +48,12 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
 
   const toggleExpExpand = (id: string) => {
     setExpandedExpIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
+  const toggleProjExpand = (id: string) => {
+    setExpandedProjIds(prev => 
       prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
   };
@@ -217,14 +226,18 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
         <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="edu-label">
           <span>Education</span>
         </div>
-        <div className="space-y-6" id="education-list">
+        <div className="space-y-4" id="education-list">
           {EDUCATION.map((edu, idx) => {
             const isSiddhartha = edu.institution.toLowerCase().includes("siddhartha");
             const isExpanded = expandedEduIndices.includes(idx);
             return (
-              <div key={idx} id={`edu-item-${idx}`} className="flex items-start gap-3 group transition-all duration-300">
+              <div 
+                key={idx} 
+                id={`edu-item-${idx}`} 
+                className="border border-line rounded-xl p-5 bg-paper hover:-translate-y-1 hover:border-ink hover:shadow-md transition-all duration-300 ease-out flex items-start gap-4 group"
+              >
                 {edu.logo && (
-                  <div className={`w-10 h-10 rounded-lg border flex items-center justify-center shrink-0 overflow-hidden shadow-xs grayscale group-hover:grayscale-0 transition-all duration-300 ease-out ${
+                  <div className={`w-11 h-11 rounded-lg border flex items-center justify-center shrink-0 overflow-hidden shadow-2xs transition-transform duration-300 group-hover:scale-105 ${
                     isSiddhartha 
                       ? 'bg-[#033475] border-[#033475] p-0.5' 
                       : 'bg-paper border-line p-1'
@@ -236,7 +249,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                     />
                   </div>
                 )}
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-baseline gap-2 flex-wrap">
                     <button
                       type="button"
@@ -245,33 +258,38 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                       aria-expanded={isExpanded}
                       id={`edu-btn-${idx}`}
                     >
-                      <h3 className="font-semibold text-sm sm:text-base text-ink flex items-center gap-1.5 flex-wrap" id={`edu-inst-${idx}`}>
+                      <h3 className="font-bold text-base text-ink flex items-center gap-1.5 flex-wrap" id={`edu-inst-${idx}`}>
                         <span>{edu.institution}</span>
                       </h3>
                       <ChevronDown 
-                        size={14} 
-                        className={`text-ink-soft transition-all duration-200 opacity-0 group-hover:opacity-100 group-hover/btn:opacity-100 focus-visible:opacity-100 ${
+                        size={15} 
+                        className={`text-ink-soft transition-all duration-200 opacity-60 group-hover/btn:opacity-100 group-hover/btn:text-ink focus-visible:opacity-100 ${
                           isExpanded ? 'rotate-180 opacity-100 text-ink' : ''
                         }`} 
                       />
                     </button>
-                    {edu.period && (
-                      <span className="font-mono text-xs text-ink-soft shrink-0">{edu.period}</span>
-                    )}
+                    <div className="flex items-center gap-2 flex-wrap shrink-0 font-mono text-xs">
+                      {edu.period && (
+                        <span className="text-ink-soft">{edu.period}</span>
+                      )}
+                    </div>
                   </div>
-                  <p className="font-mono text-[12px] text-ink-soft mt-0.5" id={`edu-meta-${idx}`}>
+                  <p className="font-mono text-xs text-ink-soft mt-1" id={`edu-meta-${idx}`}>
                     {edu.degree}
                   </p>
+                  
+                  {/* Expandable Details containing CGPA */}
                   <div className={`edu-expand-container ${isExpanded ? 'is-expanded' : ''}`}>
                     <div className="edu-expand-content">
-                      {edu.gpa && (
-                        <p 
-                          className="font-mono text-[12px] text-ink-soft pt-1"
-                          id={`edu-details-${idx}`}
-                        >
-                          {edu.gpa}
-                        </p>
-                      )}
+                      <div className="pt-2 flex flex-wrap items-center gap-2 font-mono text-xs text-ink-soft">
+                        {edu.gpa && (
+                          <div className="inline-flex items-center" id={`edu-gpa-${idx}`}>
+                            <span className="font-bold text-ink border border-line rounded-md px-2.5 py-0.5 bg-cream/70 text-[11px]">
+                              {edu.gpa}
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -286,18 +304,18 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
         <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="exp-label">
           <span>Experience</span>
         </div>
-        <div className="space-y-6" id="experience-list">
+        <div className="space-y-4" id="experience-list">
           {EXPERIENCES.filter(exp => exp.id.startsWith("freelance-")).map((exp) => {
             const hasExpandable = Boolean(exp.certificate);
             const isExpanded = expandedExpIds.includes(exp.id);
             return (
               <div
                 key={exp.id}
-                className="flex items-start gap-3 group transition-all duration-300"
+                className="border border-line rounded-xl p-5 bg-paper hover:-translate-y-1 hover:border-ink hover:shadow-md transition-all duration-300 ease-out flex items-start gap-4 group"
                 id={`exp-item-${exp.id}`}
               >
                 {exp.logo && (
-                  <div className="w-10 h-10 rounded-lg border border-line bg-paper flex items-center justify-center shrink-0 overflow-hidden shadow-xs p-1 grayscale group-hover:grayscale-0 transition-all duration-300 ease-out">
+                  <div className="w-11 h-11 rounded-lg border border-line bg-paper flex items-center justify-center shrink-0 overflow-hidden shadow-2xs p-1 transition-transform duration-300 group-hover:scale-105">
                     <img 
                       src={exp.logo} 
                       alt={`${exp.role} logo`} 
@@ -305,7 +323,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                     />
                   </div>
                 )}
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-baseline gap-2 flex-wrap" id={`exp-header-${exp.id}`}>
                     {hasExpandable ? (
                       <button
@@ -315,7 +333,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                         aria-expanded={isExpanded}
                         id={`exp-btn-${exp.id}`}
                       >
-                        <h3 className="font-semibold text-sm sm:text-base text-ink flex items-center gap-1.5 flex-wrap" id={`exp-role-${exp.id}`}>
+                        <h3 className="font-bold text-base text-ink flex items-center gap-1.5 flex-wrap" id={`exp-role-${exp.id}`}>
                           <span>{exp.role}</span>
                           {exp.company && <span className="font-normal text-xs text-ink-soft ml-1">({exp.company})</span>}
                         </h3>
@@ -327,7 +345,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                         />
                       </button>
                     ) : (
-                      <h3 className="font-semibold text-sm sm:text-base text-ink" id={`exp-role-${exp.id}`}>
+                      <h3 className="font-bold text-base text-ink" id={`exp-role-${exp.id}`}>
                         <span>{exp.role}</span>
                         {exp.company && <span className="font-normal text-xs text-ink-soft ml-1">({exp.company})</span>}
                       </h3>
@@ -336,7 +354,7 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                       <span className="font-mono text-xs text-ink-soft shrink-0" id={`exp-dates-${exp.id}`}>{exp.dates}</span>
                     )}
                   </div>
-                  <p className="font-mono text-[12px] text-ink-soft mt-0.5" id={`exp-desc-${exp.id}`}>
+                  <p className="font-mono text-xs text-ink-soft mt-1" id={`exp-desc-${exp.id}`}>
                     {exp.desc}
                   </p>
                   {hasExpandable && (
@@ -425,50 +443,60 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
           {EXPERIENCES.filter(exp => !exp.id.startsWith("freelance-") && !exp.id.startsWith("hackathon-")).map((exp) => (
             <div
               key={exp.id}
-              className="border border-line rounded-xl p-5 bg-paper hover:-translate-y-1 hover:border-ink hover:shadow-md transition-all duration-300 ease-out"
-              id={`exp-card-${exp.id}`}
+              className="border border-line rounded-xl p-5 bg-paper hover:-translate-y-1 hover:border-ink hover:shadow-md transition-all duration-300 ease-out flex items-start gap-4 group"
+              id={`exp-item-${exp.id}`}
             >
-              <div className="flex justify-between items-baseline gap-3 flex-wrap" id={`exp-header-${exp.id}`}>
-                <h3 className="font-bold text-base text-ink" id={`exp-role-${exp.id}`}>
-                  {exp.url ? (
-                    <a
-                      href={exp.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:underline transition-colors cursor-pointer"
-                    >
-                      {exp.role}
-                    </a>
-                  ) : (
-                    exp.role
-                  )}
-                </h3>
-                <span className="font-mono text-xs text-ink-soft" id={`exp-dates-${exp.id}`}>{exp.dates}</span>
-              </div>
-              {exp.company && (
-                <p className="font-mono text-xs text-ink-soft mt-1" id={`exp-company-${exp.id}`}>{exp.company}</p>
-              )}
-              
-              {exp.links && (
-                <div className="mt-4 flex flex-wrap gap-2 text-xs font-mono" id={`exp-links-${exp.id}`}>
-                  {exp.links.map((link, idx) => {
-                    const isRepo = link.label.toLowerCase().includes('repo') || link.url.includes('github.com');
-                    return (
-                      <a
-                        key={idx}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-ink-soft hover:text-ink hover:underline inline-flex items-center gap-1.5 border border-line rounded px-2.5 py-1 bg-cream/30 hover:bg-cream transition-colors"
-                        id={`exp-link-${exp.id}-${idx}`}
-                      >
-                        {isRepo ? <Github size={10} /> : <ExternalLink size={10} />}
-                        <span>{link.label}</span>
-                      </a>
-                    );
-                  })}
+              {exp.logo && (
+                <div className="w-11 h-11 rounded-lg border border-line bg-paper flex items-center justify-center shrink-0 overflow-hidden shadow-2xs p-1 transition-transform duration-300 group-hover:scale-105">
+                  <img
+                    src={exp.logo}
+                    alt={`${exp.role} logo`}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
               )}
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-baseline gap-2 flex-wrap" id={`exp-header-${exp.id}`}>
+                  <h3 className="font-bold text-base text-ink" id={`exp-role-${exp.id}`}>
+                    {exp.url ? (
+                      <a
+                        href={exp.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline transition-colors cursor-pointer"
+                      >
+                        {exp.role}
+                      </a>
+                    ) : (
+                      exp.role
+                    )}
+                  </h3>
+                  <span className="font-mono text-xs text-ink-soft shrink-0" id={`exp-dates-${exp.id}`}>{exp.dates}</span>
+                </div>
+                {exp.company && (
+                  <p className="font-mono text-xs text-ink-soft mt-1" id={`exp-company-${exp.id}`}>{exp.company}</p>
+                )}
+                {exp.links && (
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-mono" id={`exp-links-${exp.id}`}>
+                    {exp.links.map((link, idx) => {
+                      const isRepo = link.label.toLowerCase().includes('repo') || link.url.includes('github.com');
+                      return (
+                        <a
+                          key={idx}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-ink-soft hover:text-ink hover:underline inline-flex items-center gap-1.5 border border-line rounded px-2.5 py-0.5 bg-cream/30 hover:bg-cream transition-colors text-[11px]"
+                          id={`exp-link-${exp.id}-${idx}`}
+                        >
+                          {isRepo ? <Github size={10} /> : <ExternalLink size={10} />}
+                          <span>{link.label}</span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -477,95 +505,135 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
       {/* Projects */}
       <section className="border-t border-line pt-12" id="projects">
         <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="projects-label">
-          <span>Project Log</span>
+          <span>Projects</span>
         </div>
         <div className="space-y-6" id="projects-list">
-          {PROJECTS.map((proj) => (
-            <div
-               key={proj.id}
-               className={`relative overflow-hidden border border-line hover:border-ink rounded-xl p-6 bg-paper hover:-translate-y-1 hover:shadow-md transition-all duration-300 ease-out ${proj.id === 'sqlguardjs' && !isPlaygroundExpanded ? 'cursor-pointer focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2' : ''}`}
-              id={`project-card-${proj.id}`}
-              onClick={proj.id === 'sqlguardjs' && !isPlaygroundExpanded ? () => setIsPlaygroundExpanded(true) : undefined}
-              tabIndex={proj.id === 'sqlguardjs' && !isPlaygroundExpanded ? 0 : undefined}
-              role={proj.id === 'sqlguardjs' && !isPlaygroundExpanded ? 'button' : undefined}
-              aria-expanded={proj.id === 'sqlguardjs' ? isPlaygroundExpanded : undefined}
-              aria-label={proj.id === 'sqlguardjs' && !isPlaygroundExpanded ? 'SQLGuardJS Project. Click or press Enter to launch the live defense sandbox playground.' : undefined}
-              onKeyDown={
-                proj.id === 'sqlguardjs' && !isPlaygroundExpanded
-                  ? (e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        setIsPlaygroundExpanded(true);
-                      }
+          {PROJECTS.map((proj) => {
+            const isExpanded = expandedProjIds.includes(proj.id);
+            return (
+              <div
+                key={proj.id}
+                className="relative overflow-hidden border border-line hover:border-ink rounded-xl p-6 bg-paper hover:-translate-y-1 hover:shadow-md transition-all duration-300 ease-out cursor-pointer group"
+                id={`project-card-${proj.id}`}
+                onClick={() => {
+                  toggleProjExpand(proj.id);
+                  if (proj.id === 'sqlguardjs' && !isPlaygroundExpanded) {
+                    setIsPlaygroundExpanded(true);
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-expanded={isExpanded}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleProjExpand(proj.id);
+                    if (proj.id === 'sqlguardjs' && !isPlaygroundExpanded) {
+                      setIsPlaygroundExpanded(true);
                     }
-                  : undefined
-              }
-            >
-              {proj.id === 'sqlguardjs' && (
-                <div className="absolute top-0 left-0 w-16 h-16 overflow-hidden pointer-events-none z-20">
-                  <div className="absolute top-[12px] left-[-22px] w-[70px] h-[7px] bg-ink transform -rotate-45" />
-                </div>
-              )}
-              <div className="flex justify-between items-start gap-4 flex-wrap mb-2" id={`project-head-${proj.id}`}>
-                <div>
-                  <div className="flex items-center gap-2 flex-wrap" id={`project-title-wrapper-${proj.id}`}>
-                    <h3 className="text-xl font-bold text-ink" id={`project-name-${proj.id}`}>{proj.name}</h3>
+                  }
+                }}
+              >
+                {proj.id === 'sqlguardjs' && (
+                  <div className="absolute top-0 left-0 w-16 h-16 overflow-hidden pointer-events-none z-20">
+                    <div className="absolute top-[12px] left-[-22px] w-[70px] h-[7px] bg-ink transform -rotate-45" />
                   </div>
-                  <span className="font-mono text-xs text-ink-soft" id={`project-meta-${proj.id}`}>{proj.meta}</span>
-                </div>
-                <div className="flex gap-2" id={`project-links-${proj.id}`} onClick={(e) => e.stopPropagation()}>
-                  {proj.githubUrl && (
-                    <a
-                      href={proj.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink transition-all duration-300 ease-out btn-sweep"
-                      title="GitHub Repository"
-                      id={`project-gh-${proj.id}`}
-                    >
-                      <Github size={14} />
-                    </a>
-                  )}
-                  {proj.demoUrl && proj.demoUrl !== "#" && (
-                    <a
-                      href={proj.demoUrl}
-                      target="_blank"
-                      onClick={(e) => handleDemoClick(e, proj)}
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink transition-all duration-300 ease-out btn-sweep"
-                      title={proj.id === 'sqlguardjs' ? "npm Registry Package" : (proj.id === 'cloudpulse' ? "Docker Container Metrics" : "Live Project")}
-                      id={`project-demo-${proj.id}`}
-                    >
-                      {proj.id === 'sqlguardjs' ? <Package size={14} /> : (proj.id === 'cloudpulse' ? <Container size={14} /> : <ExternalLink size={14} />)}
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              <p className="text-[12px] text-ink-soft leading-relaxed mt-2 mb-4" id={`project-desc-${proj.id}`}>
-                {proj.desc}
-              </p>
-
-              <div className="flex flex-wrap gap-1.5 mb-5" id={`project-stack-${proj.id}`}>
-                {proj.stack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="font-mono text-[10px] text-ink-soft border border-line rounded-full px-2.5 py-0.5 bg-cream"
-                    id={`project-tech-${proj.id}-${tech.replace(/\s+/g, '-')}`}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <div className="space-y-2.5 border-t border-line/60 pt-4" id={`project-logs-${proj.id}`}>
-                {proj.logs.map((log, index) => (
-                  <div key={index} className="flex gap-2 items-start font-mono text-xs" id={`project-log-row-${proj.id}-${index}`}>
-                    <span className="text-ink-soft select-none mt-0.5 shrink-0" id={`log-bullet-${proj.id}-${index}`}>·</span>
-                    <span className="text-ink-soft leading-tight" id={`log-text-${proj.id}-${index}`}>{log.text}</span>
+                )}
+                <div className="flex justify-between items-start gap-4 flex-wrap mb-2" id={`project-head-${proj.id}`}>
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap" id={`project-title-wrapper-${proj.id}`}>
+                      <h3 className="text-xl font-bold text-ink flex items-center gap-2" id={`project-name-${proj.id}`}>
+                        <span>{proj.name}</span>
+                        <ChevronDown 
+                          size={16} 
+                          className={`text-ink-soft transition-transform duration-300 opacity-60 group-hover:opacity-100 ${
+                            isExpanded ? 'rotate-180 opacity-100 text-ink' : ''
+                          }`} 
+                        />
+                      </h3>
+                    </div>
+                    <span className="font-mono text-xs text-ink-soft" id={`project-meta-${proj.id}`}>{proj.meta}</span>
                   </div>
-                ))}
-              </div>
+                  <div className="flex gap-2" id={`project-links-${proj.id}`} onClick={(e) => e.stopPropagation()}>
+                    {proj.githubUrl && (
+                      <a
+                        href={proj.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink transition-all duration-300 ease-out btn-sweep"
+                        title="GitHub Repository"
+                        id={`project-gh-${proj.id}`}
+                      >
+                        <Github size={14} />
+                      </a>
+                    )}
+                    {proj.id === 'vaultx' && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (onNavigateToApps) {
+                            onNavigateToApps('vaultx');
+                          } else {
+                            window.history.pushState({}, '', '/app/vaultx');
+                            window.dispatchEvent(new PopStateEvent('popstate'));
+                          }
+                        }}
+                        className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink transition-all duration-300 ease-out btn-sweep cursor-pointer"
+                        title="Download VaultX APK"
+                        id="project-download-vaultx"
+                        aria-label="Download VaultX APK"
+                      >
+                        <Download size={14} />
+                      </button>
+                    )}
+                    {proj.demoUrl && proj.demoUrl !== "#" && (
+                      <a
+                        href={proj.demoUrl}
+                        target="_blank"
+                        onClick={(e) => handleDemoClick(e, proj)}
+                        rel="noopener noreferrer"
+                        className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink transition-all duration-300 ease-out btn-sweep"
+                        title={proj.id === 'sqlguardjs' ? "npm Registry Package" : (proj.id === 'cloudpulse' ? "Docker Container Metrics" : "Live Project")}
+                        id={`project-demo-${proj.id}`}
+                      >
+                        {proj.id === 'sqlguardjs' ? <Package size={14} /> : (proj.id === 'cloudpulse' ? <Container size={14} /> : <ExternalLink size={14} />)}
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-[12px] text-ink-soft leading-relaxed mt-2 mb-4" id={`project-desc-${proj.id}`}>
+                  {proj.desc}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 mb-2" id={`project-stack-${proj.id}`}>
+                  {proj.stack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="font-mono text-[10px] text-ink-soft border border-line rounded-full px-2.5 py-0.5 bg-cream"
+                      id={`project-tech-${proj.id}-${tech.replace(/\s+/g, '-')}`}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Expandable Verification Logs / Bullet Points */}
+                {proj.logs && proj.logs.length > 0 && (
+                  <div className={`edu-expand-container ${isExpanded ? 'is-expanded' : ''}`}>
+                    <div className="edu-expand-content">
+                      <div className="space-y-2.5 border-t border-line/60 pt-4 mt-3" id={`project-logs-${proj.id}`}>
+                        {proj.logs.map((log, index) => (
+                          <div key={index} className="flex gap-2 items-start font-mono text-xs" id={`project-log-row-${proj.id}-${index}`}>
+                            <span className="text-ink-soft select-none mt-0.5 shrink-0" id={`log-bullet-${proj.id}-${index}`}>·</span>
+                            <span className="text-ink-soft leading-tight" id={`log-text-${proj.id}-${index}`}>{log.text}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
 
               {proj.id === "sqlguardjs" && !isPlaygroundExpanded && (
                 <div 
@@ -768,7 +836,8 @@ export default function PortfolioView({ onNavigateToContact }: PortfolioViewProp
                 </div>
               )}
             </div>
-          ))}
+          );
+        })}
         </div>
       </section>
 

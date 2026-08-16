@@ -3,7 +3,6 @@ import { Project, Experience, BlogPost, Education, MobileApp } from './types';
 export const EDUCATION: Education[] = [
   {
     institution: "BMS Institute of Technology and Management",
-    location: "Bengaluru",
     degree: "Bachelor of Engineering in Information Science and Engineering",
     gpa: "CGPA: 9.5",
     period: "2023 – 2027",
@@ -77,9 +76,10 @@ export const EXPERIENCES: Experience[] = [
     id: "president-epoch",
     role: "President, Epoch Society",
     company: "BMSIT Technical Society",
-    dates: "2025 – Present",
+    dates: "2025 – 2026",
     desc: "Leading technical operations, organizing bootcamps and hackathons for 500+ student developers. Bridging industry engineers and students to collaborate on production-ready systems.",
-    url: "https://bmsit.ac.in/pdfs/students-club-29.pdf"
+    url: "https://bmsit.ac.in/pdfs/students-club-29.pdf",
+    logo: "/epoch-society.png"
   },
   {
     id: "vp-coding",
@@ -201,6 +201,7 @@ export const PROJECTS: Project[] = [
     stack: ["React Native", "Expo", "Expo Router", "AES-256", "PBKDF2", "Autofill API"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager",
     demoUrl: "https://chiranth-janardhan-moger.github.io/vaultx-offline-password-manager/",
+    appDeepLink: "/app/vaultx",
     logs: [
       { type: "VERIFIED", text: "Native Android Autofill Integration allowing safe, seamless credential insertion inside external applications" },
       { type: "VERIFIED", text: "Built-in 2FA/TOTP authenticator, clipboard clearing safety monitoring, and screenshot prevention overlays" }

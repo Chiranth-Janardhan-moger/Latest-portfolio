@@ -10,7 +10,7 @@ import NotFoundView from './components/NotFoundView';
 type ViewMode = 'portfolio' | 'apps' | 'blog' | 'contact' | 'not-found';
 
 // Path parsing helper
-function parsePathToView(pathname: string, hash: string): { view: ViewMode; invalidPath?: string } {
+function parsePathToView(pathname: string, hash: string): { view: ViewMode; appId?: string | null; invalidPath?: string } {
   // Check hash fallback first in case user arrived with a legacy #link
   const cleanHash = hash.replace('#', '').toLowerCase();
   if (cleanHash === 'portfolio') return { view: 'portfolio' };
@@ -23,8 +23,13 @@ function parsePathToView(pathname: string, hash: string): { view: ViewMode; inva
   if (cleanPath === '/' || cleanPath === '/portfolio' || cleanPath === '/index.html') {
     return { view: 'portfolio' };
   }
-  if (cleanPath === '/apps' || cleanPath === '/mobile') {
-    return { view: 'apps' };
+  if (cleanPath === '/apps' || cleanPath === '/app' || cleanPath === '/mobile') {
+    return { view: 'apps', appId: null };
+  }
+  if (cleanPath.startsWith('/apps/') || cleanPath.startsWith('/app/')) {
+    const segments = cleanPath.split('/');
+    const appId = segments[segments.length - 1] || null;
+    return { view: 'apps', appId };
   }
   if (cleanPath === '/blog' || cleanPath.startsWith('/blog/')) {
     return { view: 'blog' };
@@ -44,6 +49,10 @@ export default function App() {
     return parsePathToView(window.location.pathname, window.location.hash).view;
   });
 
+  const [activeAppId, setActiveAppId] = useState<string | null>(() => {
+    return parsePathToView(window.location.pathname, window.location.hash).appId || null;
+  });
+
   const [invalidPath, setInvalidPath] = useState<string>(() => {
     return parsePathToView(window.location.pathname, window.location.hash).invalidPath || '';
   });
@@ -54,8 +63,9 @@ export default function App() {
 
   // Clean legacy hashes and normalize URL to clean paths on initial mount
   useEffect(() => {
-    const { view, invalidPath: badPath } = parsePathToView(window.location.pathname, window.location.hash);
+    const { view, appId, invalidPath: badPath } = parsePathToView(window.location.pathname, window.location.hash);
     setActiveView(view);
+    setActiveAppId(appId || null);
     if (badPath) {
       setInvalidPath(badPath);
     } else {
@@ -64,7 +74,7 @@ export default function App() {
 
     // Normalize URL path in browser address bar without hashes
     let targetPath = '/';
-    if (view === 'apps') targetPath = '/apps';
+    if (view === 'apps') targetPath = appId ? `/app/${appId}` : '/apps';
     else if (view === 'blog') targetPath = '/blog';
     else if (view === 'contact') targetPath = '/contact';
     else if (view === 'portfolio') targetPath = '/';
@@ -77,8 +87,9 @@ export default function App() {
   // Handle browser Back/Forward navigation
   useEffect(() => {
     const handlePopState = () => {
-      const { view, invalidPath: badPath } = parsePathToView(window.location.pathname, window.location.hash);
+      const { view, appId, invalidPath: badPath } = parsePathToView(window.location.pathname, window.location.hash);
       setActiveView(view);
+      setActiveAppId(appId || null);
       if (badPath) {
         setInvalidPath(badPath);
       } else {
@@ -156,12 +167,13 @@ export default function App() {
   }, []);
 
   // Clean path-based navigation handler
-  const handleNav = (view: ViewMode) => {
+  const handleNav = (view: ViewMode, appId?: string | null) => {
     setActiveView(view);
+    setActiveAppId(appId || null);
     setInvalidPath('');
 
     let targetPath = '/';
-    if (view === 'apps') targetPath = '/apps';
+    if (view === 'apps') targetPath = appId ? `/app/${appId}` : '/apps';
     else if (view === 'blog') targetPath = '/blog';
     else if (view === 'contact') targetPath = '/contact';
     else if (view === 'portfolio') targetPath = '/';
@@ -201,10 +213,20 @@ export default function App() {
         <main id="app-main-content">
           <div key={activeView} className="animate-fade-in" id={`view-wrapper-${activeView}`}>
             {activeView === 'portfolio' && (
-              <PortfolioView onNavigateToContact={() => handleNav('contact')} />
+              <PortfolioView 
+                onNavigateToContact={() => handleNav('contact')} 
+                onNavigateToApps={(appId) => handleNav('apps', appId)}
+              />
             )}
             {activeView === 'apps' && (
-              <MobileAppsView />
+              <MobileAppsView 
+                initialAppId={activeAppId} 
+                onSelectApp={(appId) => {
+                  setActiveAppId(appId);
+                  const targetPath = appId ? `/app/${appId}` : '/apps';
+                  window.history.pushState({}, '', targetPath);
+                }} 
+              />
             )}
             {activeView === 'blog' && (
               <BlogView />

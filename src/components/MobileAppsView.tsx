@@ -15,8 +15,37 @@ import {
 import { MOBILE_APPS } from '../data';
 import { MobileApp } from '../types';
 
-export default function MobileAppsView() {
-  const [selectedAppId, setSelectedAppId] = useState<string | null>(null);
+interface MobileAppsViewProps {
+  initialAppId?: string | null;
+  onSelectApp?: (appId: string | null) => void;
+}
+
+export default function MobileAppsView({ initialAppId, onSelectApp }: MobileAppsViewProps = {}) {
+  const [selectedAppId, setSelectedAppId] = useState<string | null>(() => {
+    if (initialAppId) return initialAppId;
+    const path = window.location.pathname.toLowerCase();
+    if (path === '/app/vaultx' || path === '/apps/vaultx') return 'vaultx';
+    if (path === '/app/connectme' || path === '/apps/connectme') return 'connectme';
+    if (path.startsWith('/app/')) return path.split('/app/')[1] || null;
+    if (path.startsWith('/apps/')) return path.split('/apps/')[1] || null;
+    return null;
+  });
+
+  useEffect(() => {
+    if (initialAppId !== undefined) {
+      setSelectedAppId(initialAppId);
+    }
+  }, [initialAppId]);
+
+  const handleSelectApp = (id: string | null) => {
+    setSelectedAppId(id);
+    if (onSelectApp) {
+      onSelectApp(id);
+    } else {
+      const targetPath = id ? `/app/${id}` : '/apps';
+      window.history.pushState({}, '', targetPath);
+    }
+  };
 
   // Sync with window scroll on open
   useEffect(() => {
@@ -273,7 +302,7 @@ export default function MobileAppsView() {
         {/* Back Navigation Bar */}
         <div className="flex items-center justify-between border-b border-line pb-4" id="app-detail-nav">
           <button
-            onClick={() => setSelectedAppId(null)}
+            onClick={() => handleSelectApp(null)}
             className="w-9 h-9 rounded-full border border-line bg-cream/70 hover:bg-cream flex items-center justify-center text-ink shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer group"
             id="btn-back-to-apps"
             title="Back"
@@ -462,7 +491,7 @@ export default function MobileAppsView() {
         {MOBILE_APPS.map((app: MobileApp) => (
           <div
             key={app.id}
-            onClick={() => setSelectedAppId(app.id)}
+            onClick={() => handleSelectApp(app.id)}
             className="group border border-line rounded-2xl bg-paper overflow-hidden flex flex-col hover:border-ink transition-all duration-300 hover:shadow-md cursor-pointer"
             id={`app-card-${app.id}`}
           >

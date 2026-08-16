@@ -516,6 +516,7 @@ export const MOBILE_APPS: MobileApp[] = [
     status: "Production",
     version: "v1.0.0",
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/latex-editor-android",
+    apkUrl: "/latex-editor-arm64.apk",
     architectureHighlights: [
       "Embedded Rust Tectonic engine cross-compiled for ARM64 via Android NDK",
       "Zero-copy memory mapped buffers for lightning-fast on-device PDF generation",

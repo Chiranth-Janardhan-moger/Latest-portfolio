@@ -5,6 +5,7 @@ import { BlogPost } from '../types';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import TiltCard from './TiltCard';
+import LazyImage from './LazyImage';
 
 export default function BlogView() {
   const [blogs, setBlogs] = useState<BlogPost[]>(INITIAL_BLOGS);
@@ -156,10 +157,11 @@ export default function BlogView() {
                 },
                 img: ({node, src, alt, ...props}) => (
                   <span className="block my-6 text-center">
-                    <img 
-                      src={src} 
-                      alt={alt} 
+                    <LazyImage 
+                      src={src || ''} 
+                      alt={alt || ''} 
                       className="mx-auto rounded-2xl border border-line/80 max-w-full max-h-[440px] object-contain shadow-md" 
+                      wrapperClassName="mx-auto max-w-full rounded-2xl"
                       referrerPolicy="no-referrer" 
                       {...props}
                     />

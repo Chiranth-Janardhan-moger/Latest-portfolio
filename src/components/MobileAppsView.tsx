@@ -18,6 +18,7 @@ import {
 import { MOBILE_APPS } from '../data';
 import { MobileApp } from '../types';
 import TiltCard from './TiltCard';
+import LazyImage from './LazyImage';
 
 interface MobileAppsViewProps {
   initialAppId?: string | null;
@@ -488,11 +489,11 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                       key={idx} 
                       className="w-full flex justify-center items-center"
                     >
-                      <img
+                      <LazyImage
                         src={src}
                         alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
                         className="w-full h-auto max-h-[680px] object-contain rounded-2xl transition-transform duration-300 hover:scale-[1.005]"
-                        loading="lazy"
+                        wrapperClassName="w-full flex justify-center items-center rounded-2xl min-h-[300px]"
                       />
                     </div>
                   ))}
@@ -504,11 +505,11 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                       key={idx} 
                       className="rounded-2xl border border-line/80 bg-[#0B0F17] overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-1.5"
                     >
-                      <img
+                      <LazyImage
                         src={src}
                         alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
                         className="w-full h-auto max-h-[480px] object-contain rounded-xl transition-transform duration-300 group-hover/img:scale-[1.01]"
-                        loading="lazy"
+                        wrapperClassName="w-full flex justify-center items-center rounded-xl min-h-[260px]"
                       />
                     </div>
                   ))}

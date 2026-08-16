@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { User, Smartphone, Newspaper, MessageSquare } from 'lucide-react';
+import { User, Smartphone, Palette, Newspaper, MessageSquare } from 'lucide-react';
 import PortfolioView from './components/PortfolioView';
 import MobileAppsView from './components/MobileAppsView';
+import DesignsView from './components/DesignsView';
 import BlogView from './components/BlogView';
 import ContactView from './components/ContactView';
 import NotFoundView from './components/NotFoundView';
 import FluidDotGrid from './components/FluidDotGrid';
 
-type ViewMode = 'portfolio' | 'apps' | 'blog' | 'contact' | 'not-found';
+type ViewMode = 'portfolio' | 'apps' | 'designs' | 'blog' | 'contact' | 'not-found';
 
 // Path parsing helper
 function parsePathToView(pathname: string, hash: string): { view: ViewMode; appId?: string | null; invalidPath?: string } {
@@ -16,6 +17,7 @@ function parsePathToView(pathname: string, hash: string): { view: ViewMode; appI
   const cleanHash = hash.replace('#', '').toLowerCase();
   if (cleanHash === 'portfolio') return { view: 'portfolio' };
   if (cleanHash === 'apps' || cleanHash === 'mobile') return { view: 'apps' };
+  if (cleanHash === 'designs' || cleanHash === 'design') return { view: 'designs' };
   if (cleanHash === 'blog') return { view: 'blog' };
   if (cleanHash === 'contact') return { view: 'contact' };
 
@@ -31,6 +33,9 @@ function parsePathToView(pathname: string, hash: string): { view: ViewMode; appI
     const segments = cleanPath.split('/');
     const appId = segments[segments.length - 1] || null;
     return { view: 'apps', appId };
+  }
+  if (cleanPath === '/designs' || cleanPath === '/design') {
+    return { view: 'designs' };
   }
   if (cleanPath === '/blog' || cleanPath.startsWith('/blog/')) {
     return { view: 'blog' };
@@ -76,6 +81,7 @@ export default function App() {
     // Normalize URL path in browser address bar without hashes
     let targetPath = '/';
     if (view === 'apps') targetPath = appId ? `/app/${appId}` : '/apps';
+    else if (view === 'designs') targetPath = '/designs';
     else if (view === 'blog') targetPath = '/blog';
     else if (view === 'contact') targetPath = '/contact';
     else if (view === 'portfolio') targetPath = '/';
@@ -175,6 +181,7 @@ export default function App() {
 
     let targetPath = '/';
     if (view === 'apps') targetPath = appId ? `/app/${appId}` : '/apps';
+    else if (view === 'designs') targetPath = '/designs';
     else if (view === 'blog') targetPath = '/blog';
     else if (view === 'contact') targetPath = '/contact';
     else if (view === 'portfolio') targetPath = '/';
@@ -232,6 +239,9 @@ export default function App() {
                 }} 
               />
             )}
+            {activeView === 'designs' && (
+              <DesignsView />
+            )}
             {activeView === 'blog' && (
               <BlogView />
             )}
@@ -269,10 +279,10 @@ export default function App() {
         }}
         id="sticky-bottom-dock"
       >
-        {(['portfolio', 'apps', 'blog', 'contact'] as const).map((view) => {
+        {(['portfolio', 'apps', 'designs', 'blog', 'contact'] as const).map((view) => {
           const isActive = activeView === view;
-          const label = view === 'portfolio' ? 'Portfolio' : view === 'apps' ? 'Apps' : view === 'blog' ? 'Blog' : 'Contact';
-          const Icon = view === 'portfolio' ? User : view === 'apps' ? Smartphone : view === 'blog' ? Newspaper : MessageSquare;
+          const label = view === 'portfolio' ? 'Portfolio' : view === 'apps' ? 'Apps' : view === 'designs' ? 'Designs' : view === 'blog' ? 'Blog' : 'Contact';
+          const Icon = view === 'portfolio' ? User : view === 'apps' ? Smartphone : view === 'designs' ? Palette : view === 'blog' ? Newspaper : MessageSquare;
           
           return (
             <motion.button
@@ -280,8 +290,8 @@ export default function App() {
               onClick={() => handleNav(view)}
               whileTap={{ scale: 0.92 }}
               className={`relative ${
-                isMinimized ? 'px-3 py-2.5' : 'px-3.5 sm:px-4 pt-2.5 pb-3.5'
-              } text-xs font-mono rounded-full transition-all duration-300 ease-out flex items-center gap-2 cursor-pointer z-10 select-none ${
+                isMinimized ? 'px-2.5 py-2' : 'px-3 sm:px-3.5 pt-2.5 pb-3.5'
+              } text-xs font-mono rounded-full transition-all duration-300 ease-out flex items-center gap-1.5 sm:gap-2 cursor-pointer z-10 select-none ${
                 isActive ? 'text-ink font-bold' : 'text-ink-soft hover:text-ink'
               }`}
               id={`dock-tab-${view}`}

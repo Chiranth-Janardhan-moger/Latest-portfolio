@@ -1,4 +1,4 @@
-import { Project, Experience, BlogPost, Education, MobileApp } from './types';
+import { Project, Experience, BlogPost, Education, MobileApp, DesignProject } from './types';
 
 export const EDUCATION: Education[] = [
   {
@@ -482,3 +482,129 @@ export const MOBILE_APPS: MobileApp[] = [
     ]
   }
 ];
+
+export const DESIGNS: DesignProject[] = [
+  {
+    id: "monocraft-design-system",
+    title: "MonoCraft Design System",
+    category: "Design System",
+    tagline: "Tokenized high-contrast typography-first design language for developer engineering tools",
+    description: "A functional design system built on high-contrast ink-on-paper foundations, optical kerning rules, and fluid mathematical layout scales. Built to eliminate decorative slop and elevate engineering utility.",
+    year: "2025 – 2026",
+    liveUrl: "/",
+    palette: [
+      { name: "Paper", hex: "#FCFBF9", desc: "Warm high-legibility base surface" },
+      { name: "Cream", hex: "#F3EFEA", desc: "Secondary elevation card surface" },
+      { name: "Line", hex: "#E7E2DA", desc: "Precision structural 1px divider stroke" },
+      { name: "Ink Soft", hex: "#706E6B", desc: "Low-strain secondary metadata text" },
+      { name: "Ink Black", hex: "#121212", desc: "Deep contrast primary typography" }
+    ],
+    typography: [
+      { role: "Primary Sans", family: "Inter / system-ui", size: "14px – 48px", weight: "400, 600, 700" },
+      { role: "Terminal Mono", family: "JetBrains Mono / monospace", size: "11px – 13px", weight: "500, 700" }
+    ],
+    keyHighlights: [
+      "Sub-pixel crisp 1px border tokens with subtle contrast hierarchy",
+      "Zero decorative gradients or ungrounded purple-on-dark clichés",
+      "GPU-accelerated micro-interactions with button sweep and elastic spring physics",
+      "Accessible color contrast ratios exceeding WCAG 2.1 AAA standards"
+    ],
+    principles: [
+      { title: "Utility Over Decoration", desc: "Every pixel, border, and whitespace token exists to serve information hierarchy." },
+      { title: "Tactile Responsiveness", desc: "Interactive elements provide immediate visual and spatial feedback on hover and active states." }
+    ],
+    previewType: "minimal-system"
+  },
+  {
+    id: "vaultx-security-ux",
+    title: "VaultX Mobile Security UX",
+    category: "Mobile UI",
+    tagline: "High-security zero-knowledge mobile interface with hardware-backed biometric feedback",
+    description: "A mobile application interface designed around the principles of trust, zero-leak visual feedback, and sub-second credential access. Features biometric authentication flows, dynamic PIN scrambling, and automated clipboard safety indicators.",
+    year: "2025",
+    liveUrl: "/app/vaultx",
+    palette: [
+      { name: "Void Dark", hex: "#0B0F19", desc: "Deep privacy canvas background" },
+      { name: "Slate Surface", hex: "#1A2234", desc: "Container elevation cards" },
+      { name: "Emerald Shield", hex: "#10B981", desc: "Verified encryption status state" },
+      { name: "Amber Warning", hex: "#F59E0B", desc: "Clipboard decay countdown indicator" },
+      { name: "Crimson Threat", hex: "#EF4444", desc: "Breached credential severity alert" }
+    ],
+    typography: [
+      { role: "Interface Display", family: "Inter Display", size: "16px – 32px", weight: "600, 700" },
+      { role: "Cipher Mono", family: "SF Mono / JetBrains Mono", size: "12px – 14px", weight: "500" }
+    ],
+    keyHighlights: [
+      "Scrambled numeric PIN keypads to prevent shoulder-surfing and smudge attacks",
+      "Dynamic auto-fill quick-action sheets with single-tap credential insertion",
+      "Real-time password strength entropy visualizers with PBKDF2 iteration counters",
+      "Screenshot and screen-recording prevention security overlays"
+    ],
+    principles: [
+      { title: "Zero-Leak Architecture", desc: "Sensitive data is hidden behind biometric barriers with automatic inactivity timeouts." },
+      { title: "Effortless Authentication", desc: "Biometric unlock completes in under 200ms with tactile physical confirmation." }
+    ],
+    previewType: "crypto-vault"
+  },
+  {
+    id: "transit-radar-flow",
+    title: "ConnectMe Transit Telemetry Radar",
+    category: "Mobile UI",
+    tagline: "Sub-second bus tracking radar and dynamic ETA timeline interface",
+    description: "An intuitive mobile transit interface combining live geospatial radar mapping with dynamic arrival timeline predictions. Designed for effortless one-handed use during active campus commute.",
+    year: "2025",
+    liveUrl: "/app/connectme",
+    palette: [
+      { name: "Deep Map Canvas", hex: "#091B2C", desc: "Night navigation contrast map" },
+      { name: "Transit Blue", hex: "#3B82F6", desc: "Active vehicle marker beacon" },
+      { name: "Live Beacon", hex: "#34D399", desc: "Real-time 1Hz GPS broadcast pulse" },
+      { name: "Route Polyline", hex: "#60A5FA", desc: "Interpolated transit path" }
+    ],
+    typography: [
+      { role: "Navigation Display", family: "Inter", size: "14px – 24px", weight: "700" },
+      { role: "Telemetry Numbers", family: "JetBrains Mono", size: "11px – 13px", weight: "700" }
+    ],
+    keyHighlights: [
+      "Kalman-filter smoothed vehicle avatars moving fluidly without jitter",
+      "Dynamic stop countdown cards displaying calculated ETA and occupancy stats",
+      "Single-tap route switching with high-contrast color-coded transit corridors",
+      "Offline SQLite cached schedules accessible in zero-connectivity tunnels"
+    ],
+    principles: [
+      { title: "Glanceable Clarity", desc: "Critical arrival information is decipherable in under 1 second while in motion." },
+      { title: "Sub-Second Feedback", desc: "Live telemetry coordinates update at 1Hz over persistent WebSocket tunnels." }
+    ],
+    previewType: "transit-flow"
+  },
+  {
+    id: "sqlguard-security-gateway",
+    title: "SQLGuard Threat Defense Dashboard",
+    category: "Security UX",
+    tagline: "Real-time AST parsing visualizer and heuristic security inspection interface",
+    description: "An interactive developer security dashboard providing real-time telemetry into blocked SQL injections, AST syntax tree scores, and gateway defense latencies with sub-millisecond precision.",
+    year: "2025",
+    liveUrl: "/#projects",
+    palette: [
+      { name: "Terminal Charcoal", hex: "#111827", desc: "Low-strain security radar backdrop" },
+      { name: "Radar Green", hex: "#22C55E", desc: "Passed sanitized query signature" },
+      { name: "Threat Red", hex: "#F43F5E", desc: "Blocked injection AST anomaly" },
+      { name: "Accent Cyan", hex: "#06B6D4", desc: "Lexical token scoring gauge" }
+    ],
+    typography: [
+      { role: "Dashboard Body", family: "Inter", size: "13px – 18px", weight: "500, 600" },
+      { role: "AST Code Inspector", family: "JetBrains Mono", size: "11px – 13px", weight: "500" }
+    ],
+    keyHighlights: [
+      "Live interactive payload sandbox with instant heuristic threat scoring",
+      "Interactive AST visualizer highlighting dangerous Union, Boolean, and Stacked query tokens",
+      "Real-time event stream logging blocked payloads with IP attribution",
+      "Single-click npm middleware integration snippets"
+    ],
+    principles: [
+      { title: "Immediate Visibility", desc: "Threats are categorized, scored, and explained with syntax-level transparency." },
+      { title: "Actionable Defense", desc: "Developers can test attack vectors safely and inspect exact rule trigger signatures." }
+    ],
+    previewType: "security-gateway"
+  }
+];
+

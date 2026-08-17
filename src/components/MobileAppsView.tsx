@@ -236,10 +236,10 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
 
           {/* Bus Avatar Marker on Map */}
           <div className="relative z-10 my-auto flex flex-col items-center justify-center">
-            <div className="w-10 h-10 rounded-full bg-blue-500 border-2 border-white shadow-lg flex items-center justify-center animate-bounce">
-              <span className="text-white font-mono text-xs font-bold">BUS</span>
+            <div className="w-12 h-12 rounded-2xl bg-white border border-line/80 shadow-lg flex items-center justify-center p-1.5 animate-bounce">
+              <img src="/connectme-bus.png" alt="ConnectMe Bus Icon" className="w-full h-full object-contain" />
             </div>
-            <span className="bg-black/70 px-2 py-0.5 rounded text-[10px] font-mono mt-1 border border-white/20">
+            <span className="bg-black/70 px-2 py-0.5 rounded text-[10px] font-mono mt-1.5 border border-white/20">
               Shuttle #02 · Kalman Smoothed
             </span>
           </div>

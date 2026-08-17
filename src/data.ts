@@ -434,7 +434,7 @@ export const MOBILE_APPS: MobileApp[] = [
   },
   {
     id: "connectme",
-    name: "ConnectMe Mobile",
+    name: "ConnectMe",
     category: "Transit Telemetry & Mapping",
     tagline: "Real-Time Campus Bus Tracking & ETA Prediction",
     desc: "A real-time transit telemetry mobile app engineered for university shuttle tracking. Overcomes urban GPS multipath jitter using on-device Kalman filtering algorithms, coupled with live WebSockets for sub-second bus coordinate updates.",

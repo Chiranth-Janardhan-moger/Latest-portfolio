@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
-import { triggerFluidCloud } from './FluidCloud';
+import { triggerFluidCloud } from '../utils/fluidCloud';
 import TiltCard from './TiltCard';
 
 interface PortfolioViewProps {

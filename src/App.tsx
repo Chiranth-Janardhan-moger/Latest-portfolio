@@ -7,7 +7,8 @@ import BlogView from './components/BlogView';
 import ContactView from './components/ContactView';
 import NotFoundView from './components/NotFoundView';
 import FluidDotGrid from './components/FluidDotGrid';
-import FluidCloud, { triggerFluidCloud } from './components/FluidCloud';
+import FluidCloud from './components/FluidCloud';
+import { triggerFluidCloud } from './utils/fluidCloud';
 
 type ViewMode = 'portfolio' | 'apps' | 'blog' | 'contact' | 'not-found';
 

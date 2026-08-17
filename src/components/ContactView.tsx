@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle2, AlertCircle, RefreshCw, Mail, Copy, Check } from 'lucide-react';
-import { triggerFluidCloud } from './FluidCloud';
+import { triggerFluidCloud } from '../utils/fluidCloud';
 
 export default function ContactView() {
   const [name, setName] = useState('');

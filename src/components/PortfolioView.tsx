@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { 
   Mail, 
   Github, 
+  Linkedin,
   ExternalLink,
   Shield,
   Terminal,
@@ -233,19 +234,21 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
             href="https://github.com/Chiranth-Janardhan-moger"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep"
+            className="flex items-center gap-2 border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep group"
             id="link-github"
           >
-            GitHub
+            <Github size={14} className="shrink-0 text-ink group-hover:text-paper transition-colors" />
+            <span>GitHub</span>
           </a>
           <a
             href="https://www.linkedin.com/in/chiranth-moger-01a867316/"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep"
+            className="flex items-center gap-2 border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep group"
             id="link-linkedin"
           >
-            LinkedIn
+            <Linkedin size={14} className="shrink-0 text-ink group-hover:text-paper transition-colors" />
+            <span>LinkedIn</span>
           </a>
           <a
             href="/assets/resume.pdf"
@@ -259,10 +262,11 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                 type: "success"
               });
             }}
-            className="border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep"
+            className="flex items-center gap-2 border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep group"
             id="link-resume"
           >
-            Resume
+            <FileText size={14} className="shrink-0 text-ink group-hover:text-paper transition-colors" />
+            <span>Resume</span>
           </a>
         </div>
       </section>

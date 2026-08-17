@@ -152,6 +152,29 @@ export default function App() {
     };
   }, []);
 
+  // Global clipboard copy event listener for Dynamic Island
+  useEffect(() => {
+    const handleGlobalCopy = () => {
+      const selected = window.getSelection()?.toString().trim();
+      const preview = selected
+        ? selected.length > 32
+          ? `"${selected.substring(0, 29)}..."`
+          : `"${selected}"`
+        : 'Copied to clipboard';
+
+      triggerFluidCloud({
+        title: "Copied successfully",
+        subtitle: preview,
+        icon: "check",
+        type: "success",
+        duration: 2600,
+      });
+    };
+
+    document.addEventListener('copy', handleGlobalCopy);
+    return () => document.removeEventListener('copy', handleGlobalCopy);
+  }, []);
+
   // Visit counter & console badge
   useEffect(() => {
     console.log(

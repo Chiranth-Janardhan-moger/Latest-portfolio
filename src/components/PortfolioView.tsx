@@ -859,8 +859,14 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                         <span className="font-mono text-[10px] text-ink font-bold uppercase tracking-wider">
                           Intercepted In-Memory Logs
                         </span>
-                        <button onClick={fetchLogs} className="text-[9px] text-ink-soft hover:text-ink underline cursor-pointer">
-                          Refresh
+                        <button 
+                          onClick={fetchLogs} 
+                          className="w-5 h-5 rounded-full bg-cream/70 border border-line/80 hover:bg-ink hover:text-paper active:scale-95 transition-all flex items-center justify-center text-ink-soft hover:text-white cursor-pointer shadow-2xs group"
+                          title="Refresh live logs"
+                          aria-label="Refresh live logs"
+                          id="btn-refresh-threat-logs"
+                        >
+                          <RefreshCw size={10} className="transition-transform duration-300 group-hover:rotate-180" />
                         </button>
                       </div>
                       {recentThreats.length === 0 ? (

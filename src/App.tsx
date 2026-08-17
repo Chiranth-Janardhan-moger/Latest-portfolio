@@ -199,7 +199,7 @@ export default function App() {
     setInvalidPath('');
 
     // OxygenOS / OriginOS Fluid Cloud dynamic morphing status
-    if (view === 'portfolio') triggerFluidCloud({ title: "Portfolio Gateway", subtitle: "Systems, Compilers & Security", icon: "sparkles", type: "info" });
+    if (view === 'portfolio') triggerFluidCloud({ title: "Portfolio", subtitle: "Systems, Compilers & Security", icon: "user", type: "info" });
     else if (view === 'apps') triggerFluidCloud({ title: appId ? `App · ${appId.toUpperCase()}` : "Mobile Engineering", subtitle: "Offline Engines & Android Architecture", icon: "smartphone", type: "info" });
     else if (view === 'blog') triggerFluidCloud({ title: "Research & Writing", subtitle: "Deep Dives & Technical Papers", icon: "newspaper", type: "info" });
     else if (view === 'contact') triggerFluidCloud({ title: "Direct Contact Gateway", subtitle: "chiranthmoger7@gmail.com", icon: "contact", type: "info" });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Check, Info, AlertTriangle, Sparkles, Shield, Smartphone, Newspaper, MessageSquare, Download } from 'lucide-react';
+import { Check, Info, AlertTriangle, Sparkles, Shield, Smartphone, Newspaper, MessageSquare, Download, User } from 'lucide-react';
 import { FluidCloudPayload } from '../utils/fluidCloud';
 
 export default function FluidCloud() {
@@ -51,6 +51,7 @@ export default function FluidCloud() {
   }, []);
 
   const getIcon = (type?: string, iconKey?: string) => {
+    if (iconKey === 'user') return <User size={13} className="text-ink shrink-0" />;
     if (iconKey === 'check' || type === 'success') return <Check size={13} className="text-emerald-600 shrink-0" />;
     if (iconKey === 'shield') return <Shield size={13} className="text-blue-600 shrink-0" />;
     if (iconKey === 'smartphone') return <Smartphone size={13} className="text-purple-600 shrink-0" />;

@@ -1,7 +1,7 @@
 export interface FluidCloudPayload {
   title: string;
   subtitle?: string;
-  icon?: 'check' | 'info' | 'alert' | 'sparkles' | 'shield' | 'smartphone' | 'newspaper' | 'contact' | 'download';
+  icon?: 'check' | 'info' | 'alert' | 'sparkles' | 'shield' | 'smartphone' | 'newspaper' | 'contact' | 'download' | 'user';
   type?: 'default' | 'success' | 'warning' | 'info';
   duration?: number;
 }

@@ -449,7 +449,7 @@ export const MOBILE_APPS: MobileApp[] = [
       "Resilient Offline Mode: Local SQLite timetable caching enabling full route navigation during cellular drops."
     ],
     stack: ["React Native", "Expo", "Socket.IO", "Redis Geo", "Leaflet / Mapbox", "Node.js", "Express", "TypeScript"],
-    iconUrl: "/connectme-icon.png",
+    iconUrl: "/connectme-bus.png",
     features: [
       "Live GPS telemetry with on-device Kalman filter motion smoothing",
       "Sub-second bus avatar sync via Socket.io bidirectional channels",

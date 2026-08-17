@@ -220,54 +220,69 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
           </p>
         </div>
 
-        {/* Apple-style Action Buttons */}
-        <div className="flex flex-wrap items-center gap-3 font-mono text-xs" id="hero-actions">
-          <button
-            onClick={onNavigateToContact}
-            className="flex items-center gap-2 bg-ink text-paper rounded-full px-5 py-2.5 hover:bg-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:shadow-[0_4px_14px_rgba(0,0,0,0.18)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer btn-sweep font-semibold"
-            id="btn-contact-me"
-          >
-            <Mail size={14} className="shrink-0" />
-            <span>Connect</span>
-          </button>
-          <a
-            href="https://github.com/Chiranth-Janardhan-moger"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-ink text-paper rounded-full px-4.5 py-2.5 hover:bg-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:shadow-[0_4px_14px_rgba(0,0,0,0.18)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer btn-sweep font-semibold"
-            id="link-github"
-          >
-            <Github size={14} className="shrink-0" />
-            <span>GitHub</span>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/chiranth-moger-01a867316/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-ink text-paper rounded-full px-4.5 py-2.5 hover:bg-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:shadow-[0_4px_14px_rgba(0,0,0,0.18)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer btn-sweep font-semibold"
-            id="link-linkedin"
-          >
-            <Linkedin size={14} className="shrink-0" />
-            <span>LinkedIn</span>
-          </a>
-          <a
-            href="/assets/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-              triggerFluidCloud({
-                title: "Opening Resume",
-                subtitle: "Chiranth_Moger_Resume.pdf",
-                icon: "download",
-                type: "success"
-              });
-            }}
-            className="flex items-center gap-2 bg-ink text-paper rounded-full px-4.5 py-2.5 hover:bg-neutral-800 shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:shadow-[0_4px_14px_rgba(0,0,0,0.18)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer btn-sweep font-semibold"
-            id="link-resume"
-          >
-            <FileText size={14} className="shrink-0" />
-            <span>Resume</span>
-          </a>
+        {/* Apple-style Action Buttons with RGB Chroma Ambient Shadow */}
+        <div className="flex flex-wrap items-center gap-3.5 font-mono text-xs" id="hero-actions">
+          {/* Connect */}
+          <div className="rgb-glow-wrapper">
+            <button
+              onClick={onNavigateToContact}
+              className="relative z-10 flex items-center gap-2 bg-[#0D0F14] text-paper rounded-full px-5 py-2.5 hover:bg-neutral-900 shadow-[0_2px_8px_rgba(0,0,0,0.2)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer btn-sweep font-semibold"
+              id="btn-contact-me"
+            >
+              <Mail size={14} className="shrink-0" />
+              <span>Connect</span>
+            </button>
+          </div>
+
+          {/* GitHub */}
+          <div className="rgb-glow-wrapper">
+            <a
+              href="https://github.com/Chiranth-Janardhan-moger"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative z-10 flex items-center gap-2 bg-[#0D0F14] text-paper rounded-full px-4.5 py-2.5 hover:bg-neutral-900 shadow-[0_2px_8px_rgba(0,0,0,0.2)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer btn-sweep font-semibold"
+              id="link-github"
+            >
+              <Github size={14} className="shrink-0" />
+              <span>GitHub</span>
+            </a>
+          </div>
+
+          {/* LinkedIn */}
+          <div className="rgb-glow-wrapper">
+            <a
+              href="https://www.linkedin.com/in/chiranth-moger-01a867316/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative z-10 flex items-center gap-2 bg-[#0D0F14] text-paper rounded-full px-4.5 py-2.5 hover:bg-neutral-900 shadow-[0_2px_8px_rgba(0,0,0,0.2)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer btn-sweep font-semibold"
+              id="link-linkedin"
+            >
+              <Linkedin size={14} className="shrink-0" />
+              <span>LinkedIn</span>
+            </a>
+          </div>
+
+          {/* Resume */}
+          <div className="rgb-glow-wrapper">
+            <a
+              href="/assets/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                triggerFluidCloud({
+                  title: "Opening Resume",
+                  subtitle: "Chiranth_Moger_Resume.pdf",
+                  icon: "download",
+                  type: "success"
+                });
+              }}
+              className="relative z-10 flex items-center gap-2 bg-[#0D0F14] text-paper rounded-full px-4.5 py-2.5 hover:bg-neutral-900 shadow-[0_2px_8px_rgba(0,0,0,0.2)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer btn-sweep font-semibold"
+              id="link-resume"
+            >
+              <FileText size={14} className="shrink-0" />
+              <span>Resume</span>
+            </a>
+          </div>
         </div>
       </section>
 

@@ -16,6 +16,7 @@ import {
   ChevronDown,
   FileText,
   Download,
+  ArrowRight,
   ArrowUpRight,
   X,
   Activity
@@ -935,15 +936,18 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
           <p className="text-xs sm:text-[13px] text-ink-soft max-w-[42ch] mx-auto leading-relaxed">
             Let's discuss applied ML, Android systems, security architecture, or engineering leadership.
           </p>
-          <div className="pt-2">
-            <button
-              onClick={onNavigateToContact}
-              className="inline-flex items-center gap-2 bg-ink text-paper rounded-full px-6 py-3 font-mono text-xs font-semibold hover:bg-neutral-800 shadow-[0_4px_16px_rgba(0,0,0,0.15)] active:scale-95 transition-all duration-200 cursor-pointer btn-sweep"
-              id="cta-main-trigger"
-            >
-              <Mail size={14} className="shrink-0" />
-              <span>Get in Touch →</span>
-            </button>
+          <div className="pt-2 flex justify-center">
+            <div className="rgb-glow-wrapper group">
+              <button
+                onClick={onNavigateToContact}
+                className="relative z-10 inline-flex items-center gap-2.5 bg-[#0D0F14] text-paper rounded-full px-7 py-3 font-mono text-xs font-semibold hover:bg-neutral-900 shadow-[0_4px_16px_rgba(0,0,0,0.25)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+                id="cta-main-trigger"
+              >
+                <Mail size={14} className="shrink-0" />
+                <span>Get in Touch</span>
+                <ArrowRight size={14} className="shrink-0 transition-transform duration-200 group-hover:translate-x-1" />
+              </button>
+            </div>
           </div>
         </div>
       </section>

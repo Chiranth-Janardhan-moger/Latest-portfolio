@@ -475,57 +475,69 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
         </section>
 
         {/* UI Screenshots / Gallery */}
-        {((selectedApp.screenshots && selectedApp.screenshots.length > 0) || (selectedApp.screenMockups && selectedApp.screenMockups.length > 0)) && (
-          <section className="space-y-4" id="app-screens-section">
-            <h2 className="text-lg font-bold text-ink">
-              Screenshots
-            </h2>
+        <section className="space-y-4" id="app-screens-section">
+          <h2 className="text-lg font-bold text-ink">
+            Screenshots
+          </h2>
 
-            {selectedApp.screenshots && selectedApp.screenshots.length > 0 ? (
-              selectedApp.id === 'vaultx' ? (
-                <div className="flex flex-col gap-8 pt-2">
-                  {selectedApp.screenshots.map((src, idx) => (
-                    <div 
-                      key={idx} 
-                      className="w-full flex justify-center items-center"
-                    >
-                      <LazyImage
-                        src={src}
-                        alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
-                        className="w-full h-auto max-h-[680px] object-contain rounded-2xl transition-transform duration-300 hover:scale-[1.005]"
-                        wrapperClassName="w-full flex justify-center items-center rounded-2xl min-h-[300px]"
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-                  {selectedApp.screenshots.map((src, idx) => (
-                    <div 
-                      key={idx} 
-                      className="rounded-2xl border border-line/80 bg-[#0B0F17] overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-1.5"
-                    >
-                      <LazyImage
-                        src={src}
-                        alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
-                        className="w-full h-auto max-h-[480px] object-contain rounded-xl transition-transform duration-300 group-hover/img:scale-[1.01]"
-                        wrapperClassName="w-full flex justify-center items-center rounded-xl min-h-[260px]"
-                      />
-                    </div>
-                  ))}
-                </div>
-              )
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 pt-2">
-                {selectedApp.screenMockups?.map((screen) => (
-                  <div key={screen.id} className="rounded-2xl border-2 border-line bg-ink p-1.5 shadow-md hover:border-ink/80 transition-all duration-300">
-                    {renderScreenMockup(screen.type, selectedApp.id)}
+          {selectedApp.screenshots && selectedApp.screenshots.length > 0 ? (
+            selectedApp.id === 'vaultx' ? (
+              <div className="flex flex-col gap-8 pt-2">
+                {selectedApp.screenshots.map((src, idx) => (
+                  <div 
+                    key={idx} 
+                    className="w-full flex justify-center items-center"
+                  >
+                    <LazyImage
+                      src={src}
+                      alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
+                      className="w-full h-auto max-h-[680px] object-contain rounded-2xl transition-transform duration-300 hover:scale-[1.005]"
+                      wrapperClassName="w-full flex justify-center items-center rounded-2xl min-h-[300px]"
+                    />
                   </div>
                 ))}
               </div>
-            )}
-          </section>
-        )}
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                {selectedApp.screenshots.map((src, idx) => (
+                  <div 
+                    key={idx} 
+                    className="rounded-2xl border border-line/80 bg-[#0B0F17] overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-1.5"
+                  >
+                    <LazyImage
+                      src={src}
+                      alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
+                      className="w-full h-auto max-h-[480px] object-contain rounded-xl transition-transform duration-300 group-hover/img:scale-[1.01]"
+                      wrapperClassName="w-full flex justify-center items-center rounded-xl min-h-[260px]"
+                    />
+                  </div>
+                ))}
+              </div>
+            )
+          ) : selectedApp.screenMockups && selectedApp.screenMockups.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 pt-2">
+              {selectedApp.screenMockups.map((screen) => (
+                <div key={screen.id} className="rounded-2xl border-2 border-line bg-ink p-1.5 shadow-md hover:border-ink/80 transition-all duration-300">
+                  {renderScreenMockup(screen.type, selectedApp.id)}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-line/80 bg-white/70 backdrop-blur-md p-8 text-center flex flex-col items-center justify-center gap-3 shadow-2xs">
+              <div className="w-12 h-12 rounded-2xl bg-black/[0.04] border border-black/[0.08] flex items-center justify-center text-ink shadow-2xs">
+                <Clock size={20} className="text-ink-soft animate-pulse" />
+              </div>
+              <div className="space-y-1">
+                <span className="font-mono text-xs text-ink font-bold uppercase tracking-wider block">
+                  Screenshots Coming Soon
+                </span>
+                <p className="text-xs text-ink-soft max-w-sm mx-auto">
+                  Production interface captures and telemetry recordings will be published in the upcoming release.
+                </p>
+              </div>
+            </div>
+          )}
+        </section>
 
         {/* Comprehensive Capabilities Checklist */}
         <section className="space-y-4" id="app-features-section">

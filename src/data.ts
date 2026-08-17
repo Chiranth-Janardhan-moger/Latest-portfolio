@@ -466,20 +466,6 @@ export const MOBILE_APPS: MobileApp[] = [
       "38% reduction in packet ingress through on-device telemetry compression",
       "Graceful offline degradation with local SQLite schedule caches",
       "Dynamic connection reconnect with exponential backoff on cell drops"
-    ],
-    screenMockups: [
-      {
-        id: "c-screen-1",
-        title: "Live Campus Radar & Route Map",
-        description: "Interactive real-time map displaying smoothed bus avatars, route polylines, and stop markers.",
-        type: "map"
-      },
-      {
-        id: "c-screen-2",
-        title: "Dynamic ETA & Stop Timeline",
-        description: "Live countdown board showing predicted arrivals, current occupancy, and next stop alerts.",
-        type: "schedule"
-      }
     ]
   },
   {

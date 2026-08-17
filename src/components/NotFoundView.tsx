@@ -116,29 +116,23 @@ export default function NotFoundView({ invalidPath, onNavigate }: NotFoundViewPr
           {/* Card 1: Safe Reboot */}
           <TiltCard
             onClick={() => onNavigate('portfolio')}
-            className="aquamorphic-card border border-line/80 rounded-2xl p-5 bg-white/80 backdrop-blur-md hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 group cursor-pointer flex flex-col justify-between"
+            className="aquamorphic-card border border-line/80 rounded-2xl p-4 sm:p-4.5 bg-white/80 backdrop-blur-md hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 group cursor-pointer flex flex-col justify-between"
             id="btn-recover-portfolio"
           >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-8 h-8 rounded-xl bg-neutral-100 border border-neutral-200/80 flex items-center justify-center text-ink shadow-2xs group-hover:scale-105 transition-transform">
-                  <Home size={15} />
-                </div>
-                <kbd className="font-mono text-[10px] font-semibold bg-white border border-line/80 px-2 py-0.5 rounded-md text-ink shadow-2xs">
-                  G
-                </kbd>
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-8 h-8 rounded-xl bg-neutral-100 border border-neutral-200/80 flex items-center justify-center text-ink shadow-2xs group-hover:scale-105 transition-transform">
+                <Home size={15} />
               </div>
-              <h2 className="text-sm font-bold text-ink mb-1 group-hover:text-ink-soft transition-colors">
-                Portfolio Home
-              </h2>
-              <p className="text-[11px] text-ink-soft leading-relaxed">
-                Reboot into primary profile, featured engineering systems, and live AST shield inspector.
-              </p>
+              <kbd className="font-mono text-[10px] font-semibold bg-white border border-line/80 px-2 py-0.5 rounded-md text-ink shadow-2xs">
+                G
+              </kbd>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-line/60 flex items-center justify-between text-ink">
-              <span className="font-mono text-[10px] text-ink-soft group-hover:text-ink transition-colors font-medium">Reboot</span>
-              <span className="w-6 h-6 rounded-full border border-line/80 bg-white group-hover:bg-ink group-hover:text-paper flex items-center justify-center transition-all shadow-2xs">
+            <div className="pt-2.5 border-t border-line/60 flex items-center justify-between text-ink gap-2">
+              <h2 className="text-sm font-bold text-ink group-hover:text-ink-soft transition-colors truncate">
+                Portfolio Home
+              </h2>
+              <span className="w-6 h-6 rounded-full border border-line/80 bg-white group-hover:bg-ink group-hover:text-paper flex items-center justify-center transition-all shadow-2xs shrink-0">
                 <ArrowUpRight size={11} />
               </span>
             </div>
@@ -147,29 +141,23 @@ export default function NotFoundView({ invalidPath, onNavigate }: NotFoundViewPr
           {/* Card 2: Research Logs */}
           <TiltCard
             onClick={() => onNavigate('blog')}
-            className="aquamorphic-card border border-line/80 rounded-2xl p-5 bg-white/80 backdrop-blur-md hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 group cursor-pointer flex flex-col justify-between"
+            className="aquamorphic-card border border-line/80 rounded-2xl p-4 sm:p-4.5 bg-white/80 backdrop-blur-md hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 group cursor-pointer flex flex-col justify-between"
             id="btn-recover-blog"
           >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-8 h-8 rounded-xl bg-neutral-100 border border-neutral-200/80 flex items-center justify-center text-ink shadow-2xs group-hover:scale-105 transition-transform">
-                  <BookOpen size={15} />
-                </div>
-                <kbd className="font-mono text-[10px] font-semibold bg-white border border-line/80 px-2 py-0.5 rounded-md text-ink shadow-2xs">
-                  B
-                </kbd>
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-8 h-8 rounded-xl bg-neutral-100 border border-neutral-200/80 flex items-center justify-center text-ink shadow-2xs group-hover:scale-105 transition-transform">
+                <BookOpen size={15} />
               </div>
-              <h2 className="text-sm font-bold text-ink mb-1 group-hover:text-ink-soft transition-colors">
-                Research & Blog
-              </h2>
-              <p className="text-[11px] text-ink-soft leading-relaxed">
-                Read engineering deep dives on AST security analyzers, compilation engines, and telemetry.
-              </p>
+              <kbd className="font-mono text-[10px] font-semibold bg-white border border-line/80 px-2 py-0.5 rounded-md text-ink shadow-2xs">
+                B
+              </kbd>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-line/60 flex items-center justify-between text-ink">
-              <span className="font-mono text-[10px] text-ink-soft group-hover:text-ink transition-colors font-medium">Explore</span>
-              <span className="w-6 h-6 rounded-full border border-line/80 bg-white group-hover:bg-ink group-hover:text-paper flex items-center justify-center transition-all shadow-2xs">
+            <div className="pt-2.5 border-t border-line/60 flex items-center justify-between text-ink gap-2">
+              <h2 className="text-sm font-bold text-ink group-hover:text-ink-soft transition-colors truncate">
+                Research & Blog
+              </h2>
+              <span className="w-6 h-6 rounded-full border border-line/80 bg-white group-hover:bg-ink group-hover:text-paper flex items-center justify-center transition-all shadow-2xs shrink-0">
                 <ArrowUpRight size={11} />
               </span>
             </div>
@@ -178,29 +166,23 @@ export default function NotFoundView({ invalidPath, onNavigate }: NotFoundViewPr
           {/* Card 3: Direct Channel */}
           <TiltCard
             onClick={() => onNavigate('contact')}
-            className="aquamorphic-card border border-line/80 rounded-2xl p-5 bg-white/80 backdrop-blur-md hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 group cursor-pointer flex flex-col justify-between"
+            className="aquamorphic-card border border-line/80 rounded-2xl p-4 sm:p-4.5 bg-white/80 backdrop-blur-md hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 group cursor-pointer flex flex-col justify-between"
             id="btn-recover-contact"
           >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-8 h-8 rounded-xl bg-neutral-100 border border-neutral-200/80 flex items-center justify-center text-ink shadow-2xs group-hover:scale-105 transition-transform">
-                  <MessageSquare size={15} />
-                </div>
-                <kbd className="font-mono text-[10px] font-semibold bg-white border border-line/80 px-2 py-0.5 rounded-md text-ink shadow-2xs">
-                  C
-                </kbd>
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-8 h-8 rounded-xl bg-neutral-100 border border-neutral-200/80 flex items-center justify-center text-ink shadow-2xs group-hover:scale-105 transition-transform">
+                <MessageSquare size={15} />
               </div>
-              <h2 className="text-sm font-bold text-ink mb-1 group-hover:text-ink-soft transition-colors">
-                Ping Chiranth
-              </h2>
-              <p className="text-[11px] text-ink-soft leading-relaxed">
-                Open a direct encrypted message transmission channel to send inquiries or report dead links.
-              </p>
+              <kbd className="font-mono text-[10px] font-semibold bg-white border border-line/80 px-2 py-0.5 rounded-md text-ink shadow-2xs">
+                C
+              </kbd>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-line/60 flex items-center justify-between text-ink">
-              <span className="font-mono text-[10px] text-ink-soft group-hover:text-ink transition-colors font-medium">Connect</span>
-              <span className="w-6 h-6 rounded-full border border-line/80 bg-white group-hover:bg-ink group-hover:text-paper flex items-center justify-center transition-all shadow-2xs">
+            <div className="pt-2.5 border-t border-line/60 flex items-center justify-between text-ink gap-2">
+              <h2 className="text-sm font-bold text-ink group-hover:text-ink-soft transition-colors truncate">
+                Ping Chiranth
+              </h2>
+              <span className="w-6 h-6 rounded-full border border-line/80 bg-white group-hover:bg-ink group-hover:text-paper flex items-center justify-center transition-all shadow-2xs shrink-0">
                 <ArrowUpRight size={11} />
               </span>
             </div>

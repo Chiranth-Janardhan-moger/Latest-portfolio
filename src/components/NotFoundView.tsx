@@ -56,7 +56,7 @@ export default function NotFoundView({ invalidPath, onNavigate }: NotFoundViewPr
           </span>
         </div>
 
-        {/* 404 Spatial Typography */}
+        {/* 404 Spatial Typography with Chromatic Glitch Effect */}
         <div 
           className="relative select-none py-2 transition-transform duration-200 ease-out"
           style={{
@@ -64,7 +64,10 @@ export default function NotFoundView({ invalidPath, onNavigate }: NotFoundViewPr
           }}
           id="glitch-wrapper"
         >
-          <div className="text-8xl sm:text-9xl font-black tracking-tight text-ink font-mono opacity-90 select-none">
+          <div 
+            className="glitch-text text-8xl sm:text-9xl font-black tracking-tight text-ink font-mono opacity-90 select-none cursor-pointer"
+            data-text="404"
+          >
             404
           </div>
         </div>

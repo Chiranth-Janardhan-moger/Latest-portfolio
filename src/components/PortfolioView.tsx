@@ -234,20 +234,20 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
             href="https://github.com/Chiranth-Janardhan-moger"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep group"
+            className="flex items-center gap-2 border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep group text-ink"
             id="link-github"
           >
-            <Github size={14} className="shrink-0 text-ink group-hover:text-paper transition-colors" />
+            <Github size={14} className="shrink-0 text-black group-hover:text-white transition-colors" />
             <span>GitHub</span>
           </a>
           <a
             href="https://www.linkedin.com/in/chiranth-moger-01a867316/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep group"
+            className="flex items-center gap-2 border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep group text-ink"
             id="link-linkedin"
           >
-            <Linkedin size={14} className="shrink-0 text-ink group-hover:text-paper transition-colors" />
+            <Linkedin size={14} className="shrink-0 text-black group-hover:text-white transition-colors" />
             <span>LinkedIn</span>
           </a>
           <a
@@ -262,10 +262,10 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                 type: "success"
               });
             }}
-            className="flex items-center gap-2 border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep group"
+            className="flex items-center gap-2 border border-line/80 bg-white/70 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep group text-ink"
             id="link-resume"
           >
-            <FileText size={14} className="shrink-0 text-ink group-hover:text-paper transition-colors" />
+            <FileText size={14} className="shrink-0 text-black group-hover:text-white transition-colors" />
             <span>Resume</span>
           </a>
         </div>

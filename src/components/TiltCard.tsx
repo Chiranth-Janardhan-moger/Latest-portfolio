@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
+import { motion, useMotionValue, useSpring, useTransform, HTMLMotionProps } from 'motion/react';
 
-interface TiltCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface TiltCardProps extends HTMLMotionProps<'div'> {
   children: React.ReactNode;
   className?: string;
   maxTilt?: number;

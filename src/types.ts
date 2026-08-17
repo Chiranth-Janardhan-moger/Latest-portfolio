@@ -6,6 +6,7 @@ export interface Project {
   stack: string[];
   githubUrl?: string;
   demoUrl?: string;
+  appDeepLink?: string;
   logs: {
     type: 'VERIFIED' | 'FLAGGED' | 'NOTE';
     text: string;

@@ -103,96 +103,134 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HONEYPOT DETECTED // SQLGUARD SHIELD</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
 
     :root {
       --color-paper: #FFFFFF;
       --color-ink: #111111;
       --color-ink-soft: #6B6B6B;
       --color-line: #E7E3D8;
-      --color-cream: #F7F4EC;
+      --color-cream: #F7F5EE;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      background-color: var(--color-paper);
+      background-color: #F7F6F2;
+      background-image: radial-gradient(circle at 50% 0%, rgba(245, 230, 202, 0.4) 0%, transparent 60%);
       color: var(--color-ink);
-      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 2rem 1rem;
-      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+      padding: 2.5rem 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      box-sizing: border-box;
     }
 
-    .card {
-      max-width: 600px;
+    .apple-card {
+      max-width: 560px;
       width: 100%;
-      background-color: var(--color-paper);
-      border: 1px solid var(--color-line);
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(17, 17, 17, 0.04);
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 28px;
+      box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.02);
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .card-header {
-      background-color: var(--color-cream);
-      border-bottom: 1px solid var(--color-line);
-      padding: 1.25rem 1.5rem;
+      background: rgba(245, 244, 240, 0.6);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 1rem 1.4rem;
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .header-icon {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: #EF4444; /* Alert color */
-      flex-shrink: 0;
+    .traffic-lights {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background-color: #FF5F56; border: 1px solid rgba(224, 68, 62, 0.4); }
+    .dot-yellow { background-color: #FFBD2E; border: 1px solid rgba(222, 161, 35, 0.4); }
+    .dot-green { background-color: #27C93F; border: 1px solid rgba(26, 171, 41, 0.4); }
 
     .header-title {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--color-ink);
+      letter-spacing: 0.04em;
+      color: var(--color-ink-soft);
     }
 
     .card-content {
-      padding: 2rem 1.5rem;
+      padding: 2rem 1.6rem;
+    }
+
+    .alert-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: #DC2626;
+      border-radius: 9999px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .ping-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #EF4444;
     }
 
     h1 {
       font-size: 1.5rem;
-      font-weight: 600;
-      margin-top: 0;
-      margin-bottom: 0.75rem;
-      letter-spacing: -0.02em;
+      font-weight: 700;
+      letter-spacing: -0.025em;
       color: var(--color-ink);
+      margin-bottom: 0.5rem;
     }
 
     .description {
-      font-size: 0.95rem;
-      line-height: 1.6;
+      font-size: 0.88rem;
+      line-height: 1.55;
       color: var(--color-ink-soft);
       margin-bottom: 1.5rem;
     }
 
     .info-box {
-      background-color: var(--color-cream);
-      border: 1px solid var(--color-line);
-      border-radius: 8px;
-      padding: 1.25rem;
-      margin-bottom: 2rem;
-      /* Slightly offset visual effect */
-      transform: translate(2px, 2px);
-      box-shadow: -2px -2px 0px var(--color-line);
+      background: rgba(0, 0, 0, 0.025);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 18px;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 1.75rem;
     }
 
     .info-row {
@@ -200,8 +238,8 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
       justify-content: space-between;
       align-items: flex-start;
       gap: 16px;
-      padding: 0.5rem 0;
-      border-bottom: 1px dashed var(--color-line);
+      padding: 0.45rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
     }
 
     .info-row:last-child {
@@ -210,7 +248,7 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
 
     .info-label {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       color: var(--color-ink-soft);
       text-transform: uppercase;
@@ -220,53 +258,108 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
 
     .info-value {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       font-weight: 500;
       color: var(--color-ink);
       word-break: break-all;
       text-align: right;
     }
 
-    .ctf-button {
+    .status-active {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #059669;
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+    }
+
+    .btn-cluster {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .apple-pill-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      box-sizing: border-box;
-      padding: 0.85rem 1.5rem;
+      padding: 0.75rem 1.5rem;
       background-color: var(--color-ink);
       color: var(--color-paper);
       border: 1px solid var(--color-ink);
-      border-radius: 6px;
+      border-radius: 9999px;
       text-decoration: none;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      transition: all 0.2s ease-out;
+      letter-spacing: -0.01em;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .ctf-button:hover {
-      background-color: var(--color-ink-soft);
-      border-color: var(--color-ink-soft);
+    .apple-pill-btn:hover {
+      background-color: #262626;
+      border-color: #262626;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+    }
+
+    .apple-pill-btn:active {
+      transform: scale(0.98);
+    }
+
+    .apple-secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.7rem 1.5rem;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--color-ink);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .apple-secondary-btn:hover {
+      background-color: #FFFFFF;
+      border-color: var(--color-ink);
       transform: translateY(-1px);
     }
 
-    .ctf-button:active {
-      transform: translateY(0);
+    .apple-secondary-btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
-  <div class="card">
+  <div class="apple-card">
     <div class="card-header">
-      <div class="header-icon"></div>
-      <div class="header-title">Security Honeypot Shield Active</div>
+      <div class="traffic-lights">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+      </div>
+      <div class="header-title">honeypot_shield // telemetry_trap</div>
     </div>
     <div class="card-content">
+      <div class="alert-pill">
+        <span class="ping-dot"></span>
+        <span>Honeypot Triggered</span>
+      </div>
+
       <h1>Nice try. This is a honeypot.</h1>
-      <p class="description">Your request triggered our security honeypot. We log resource probes targeting non-public systems to better protect the core platform.</p>
+      <p class="description">Your request triggered our security honeypot trap. Resource probes targeting private administrative namespaces are recorded to harden defenses.</p>
       
       <div class="info-box">
         <div class="info-row">
@@ -287,13 +380,18 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
         </div>
         <div class="info-row">
           <span class="info-label">Defense Core</span>
-          <span class="info-value">SQLGuardJS (Armed)</span>
+          <span class="info-value status-active"><span class="status-dot"></span> SQLGuardJS Armed</span>
         </div>
       </div>
       
-      <a href="https://cftweb-security.vercel.app/" class="ctf-button" target="_blank" rel="noopener noreferrer">
-        Want to play CTF? Click here
-      </a>
+      <div class="btn-cluster">
+        <a href="https://cftweb-security.vercel.app/" class="apple-pill-btn" target="_blank" rel="noopener noreferrer">
+          Want to play CTF? Launch Challenge ↗
+        </a>
+        <a href="/" class="apple-secondary-btn">
+          Return to Portfolio Root
+        </a>
+      </div>
     </div>
   </div>
 </body>

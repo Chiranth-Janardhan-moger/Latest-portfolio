@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Home, BookOpen, MessageSquare, ArrowLeft } from 'lucide-react';
+import { Terminal, Home, BookOpen, MessageSquare, ArrowUpRight, ArrowLeft, ShieldAlert } from 'lucide-react';
+import TiltCard from './TiltCard';
 
 interface NotFoundViewProps {
   invalidPath: string;
@@ -8,9 +9,8 @@ interface NotFoundViewProps {
 
 export default function NotFoundView({ invalidPath, onNavigate }: NotFoundViewProps) {
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-  const [ambient, setAmbient] = useState(0);
 
-  // Hook up physical keyboard triggers for navigation
+  // Keyboard shortcut recovery listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
@@ -27,162 +27,182 @@ export default function NotFoundView({ invalidPath, onNavigate }: NotFoundViewPr
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onNavigate]);
 
-  // Track mouse position relative to center of screen
+  // Subtle interactive parallax offset
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) - 0.5;
       const y = (e.clientY / window.innerHeight) - 0.5;
-      // Scale coordinates to maximum displacement in pixels (up to 30px translation)
-      setMouseOffset({ x: x * 35, y: y * 35 });
+      setMouseOffset({ x: x * 20, y: y * 20 });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Soft continuous ambient oscillation so it vibrates even when mouse is still
-  useEffect(() => {
-    let frame: number;
-    const tick = () => {
-      setAmbient(Math.sin(Date.now() / 120) * 1.5);
-      frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
   return (
-    <div className="py-12 flex flex-col items-center justify-center text-center space-y-10 animate-fade-in max-w-2xl mx-auto" id="not-found-container">
-      {/* Hero Glitch 404 Outlined Text */}
-      <div className="relative group select-none py-6 cursor-default" id="glitch-wrapper">
-        {/* Underlay Chromatic Aberration 1: Red Glitch Offset (Mouse-controlled & Skewed) */}
-        <div 
-          className="absolute inset-0 flex items-center justify-center text-8xl sm:text-9xl font-black tracking-widest text-red-500/30 font-mono opacity-70 pointer-events-none"
-          style={{ 
-            WebkitTextStroke: '2px rgba(239, 68, 68, 0.4)',
-            transform: `translate(${-mouseOffset.x + ambient}px, ${-mouseOffset.y - ambient}px) skew(${-mouseOffset.x * 0.6}deg) scale(${1 + Math.abs(mouseOffset.x) * 0.005})`,
-            transition: 'transform 0.15s cubic-bezier(0.25, 0.8, 0.25, 1)'
-          }}
-          aria-hidden="true"
-        >
-          404
-        </div>
-
-        {/* Underlay Chromatic Aberration 2: Cyan Glitch Offset (Mouse-controlled & Opposite Skew) */}
-        <div 
-          className="absolute inset-0 flex items-center justify-center text-8xl sm:text-9xl font-black tracking-widest text-cyan-400/30 font-mono opacity-70 pointer-events-none"
-          style={{ 
-            WebkitTextStroke: '2px rgba(34, 211, 238, 0.4)',
-            transform: `translate(${mouseOffset.x - ambient}px, ${mouseOffset.y + ambient}px) skew(${mouseOffset.x * 0.6}deg) scale(${1 + Math.abs(mouseOffset.y) * 0.005})`,
-            transition: 'transform 0.15s cubic-bezier(0.25, 0.8, 0.25, 1)'
-          }}
-          aria-hidden="true"
-        >
-          404
-        </div>
-
-        {/* Main Clean Outline 404 text - crisp and fully legible */}
-        <div 
-          className="relative text-8xl sm:text-9xl font-black tracking-widest text-transparent font-mono transition-transform duration-300 group-hover:scale-105"
-          style={{ 
-            WebkitTextStroke: '2px var(--color-ink, currentColor)',
-            color: 'transparent'
-          }}
-          id="main-outlined-404"
-        >
-          404
-        </div>
-      </div>
-
-      {/* Diagnostic Message */}
-      <div className="space-y-4 px-4" id="diagnostic-header">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/30 text-red-500 rounded-full font-mono text-[10px] uppercase tracking-wider" id="panic-badge">
-          <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
-          <span>Error: Segmentation Fault</span>
-        </div>
-
-        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-ink" id="not-found-title">
-          Address Space Dereferenced
-        </h1>
-
-        <p className="text-xs sm:text-sm text-ink-soft max-w-md mx-auto leading-relaxed" id="not-found-desc">
-          The requested memory segment or route <code className="bg-line/20 px-1.5 py-0.5 rounded text-ink font-mono font-bold break-all">"{invalidPath || '/'}"</code> points to an unmapped memory page.
-        </p>
-      </div>
-
-      {/* Safe Navigation & Recovery Menu */}
-      <div className="w-full pt-4 space-y-6" id="navigation-menu">
-        <div className="flex items-center justify-center gap-2 text-ink-soft border-b border-line/40 pb-2 max-w-xs mx-auto" id="diagnostic-footer-label">
-          <Terminal size={12} />
-          <span className="font-mono text-[10px] font-bold uppercase tracking-widest">
-            Recovery Subsystem
+    <div className="py-8 sm:py-12 animate-fade-in max-w-2xl mx-auto space-y-8" id="not-found-container">
+      {/* Apple-Style Frosted Glass Hero Container */}
+      <div className="aquamorphic-card rounded-3xl border border-line/80 bg-white/80 backdrop-blur-2xl p-7 sm:p-10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.08)] flex flex-col items-center text-center relative overflow-hidden">
+        
+        {/* macOS Traffic Light Status Capsule */}
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-100/90 border border-neutral-200/80 shadow-2xs mb-8">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] border border-[#E0443E]/40" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] border border-[#DEA123]/40" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] border border-[#1AAB29]/40" />
+          </div>
+          <span className="text-[10.5px] font-mono font-semibold text-ink-soft">
+            system_panic // 404_page_not_found
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 px-4 w-full" id="navigation-grid">
+        {/* 404 Spatial Typography */}
+        <div 
+          className="relative select-none py-2 transition-transform duration-200 ease-out"
+          style={{
+            transform: `translate3d(${mouseOffset.x}px, ${mouseOffset.y}px, 0)`
+          }}
+          id="glitch-wrapper"
+        >
+          <div className="text-8xl sm:text-9xl font-black tracking-tight text-ink font-mono opacity-90 select-none">
+            404
+          </div>
+        </div>
+
+        {/* Diagnostic Heading & Details */}
+        <div className="space-y-3 max-w-lg mt-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-600 rounded-full font-mono text-[10.5px] font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
+            <span>Unmapped Memory Address</span>
+          </div>
+
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink" id="not-found-title">
+            Page Not Found
+          </h1>
+
+          <p className="text-xs sm:text-[13px] text-ink-soft leading-relaxed" id="not-found-desc">
+            The requested destination <code className="bg-neutral-100 border border-neutral-200 px-2 py-0.5 rounded-md text-ink font-mono text-[11px] font-semibold">{invalidPath || '/'}</code> does not exist on this server or has been relocated.
+          </p>
+        </div>
+
+        {/* Primary Apple Pill Button */}
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={() => onNavigate('portfolio')}
-            className="border border-line hover:border-ink rounded-lg p-4 bg-paper hover:bg-cream/20 text-left transition-all duration-300 group cursor-pointer flex flex-col justify-between h-28"
+            className="inline-flex items-center gap-2 bg-ink text-paper rounded-full px-6 py-2.5 text-xs sm:text-sm font-semibold hover:bg-neutral-800 hover:-translate-y-0.5 active:scale-95 shadow-[0_2px_10px_rgba(0,0,0,0.14)] transition-all duration-200 cursor-pointer btn-sweep"
+            id="btn-return-home-pill"
+          >
+            <Home size={14} />
+            <span>Return to Dashboard</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Recovery Navigation Cluster (3 Apple Glass Mini Cards) */}
+      <div className="space-y-3" id="navigation-menu">
+        <div className="flex items-center justify-between px-2 text-ink-soft">
+          <span className="font-mono text-[11px] font-bold uppercase tracking-wider">
+            Quick Recovery Shortcuts
+          </span>
+          <span className="font-mono text-[10px] text-ink-soft/70">
+            Press [G], [B], or [C] on keyboard
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5" id="navigation-grid">
+          {/* Card 1: Safe Reboot */}
+          <TiltCard
+            onClick={() => onNavigate('portfolio')}
+            className="aquamorphic-card border border-line/80 rounded-2xl p-5 bg-white/80 backdrop-blur-md hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 group cursor-pointer flex flex-col justify-between"
             id="btn-recover-portfolio"
           >
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-ink uppercase tracking-wider text-[10px] font-mono">
-                  [G] - Safe Reboot
-                </span>
-                <Home size={14} className="text-ink-soft group-hover:text-ink transition-colors" />
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-8 h-8 rounded-xl bg-neutral-100 border border-neutral-200/80 flex items-center justify-center text-ink shadow-2xs group-hover:scale-105 transition-transform">
+                  <Home size={15} />
+                </div>
+                <kbd className="font-mono text-[10px] font-semibold bg-white border border-line/80 px-2 py-0.5 rounded-md text-ink shadow-2xs">
+                  G
+                </kbd>
               </div>
-              <p className="text-[10px] text-ink-soft leading-normal">
-                Restart the virtual page registry and boot safely back into the primary Portfolio dashboard.
+              <h2 className="text-sm font-bold text-ink mb-1 group-hover:text-ink-soft transition-colors">
+                Portfolio Home
+              </h2>
+              <p className="text-[11px] text-ink-soft leading-relaxed">
+                Reboot into primary profile, featured engineering systems, and live AST shield inspector.
               </p>
             </div>
-          </button>
 
-          <button
+            <div className="mt-4 pt-3 border-t border-line/60 flex items-center justify-between text-ink">
+              <span className="font-mono text-[10px] text-ink-soft group-hover:text-ink transition-colors font-medium">Reboot</span>
+              <span className="w-6 h-6 rounded-full border border-line/80 bg-white group-hover:bg-ink group-hover:text-paper flex items-center justify-center transition-all shadow-2xs">
+                <ArrowUpRight size={11} />
+              </span>
+            </div>
+          </TiltCard>
+
+          {/* Card 2: Research Logs */}
+          <TiltCard
             onClick={() => onNavigate('blog')}
-            className="border border-line hover:border-ink rounded-lg p-4 bg-paper hover:bg-cream/20 text-left transition-all duration-300 group cursor-pointer flex flex-col justify-between h-28"
+            className="aquamorphic-card border border-line/80 rounded-2xl p-5 bg-white/80 backdrop-blur-md hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 group cursor-pointer flex flex-col justify-between"
             id="btn-recover-blog"
           >
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-ink uppercase tracking-wider text-[10px] font-mono">
-                  [B] - View Logs
-                </span>
-                <BookOpen size={14} className="text-ink-soft group-hover:text-ink transition-colors" />
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-8 h-8 rounded-xl bg-neutral-100 border border-neutral-200/80 flex items-center justify-center text-ink shadow-2xs group-hover:scale-105 transition-transform">
+                  <BookOpen size={15} />
+                </div>
+                <kbd className="font-mono text-[10px] font-semibold bg-white border border-line/80 px-2 py-0.5 rounded-md text-ink shadow-2xs">
+                  B
+                </kbd>
               </div>
-              <p className="text-[10px] text-ink-soft leading-normal">
-                Bypass routing checks to load developer logs, journals, and security research dossiers.
+              <h2 className="text-sm font-bold text-ink mb-1 group-hover:text-ink-soft transition-colors">
+                Research & Blog
+              </h2>
+              <p className="text-[11px] text-ink-soft leading-relaxed">
+                Read engineering deep dives on AST security analyzers, compilation engines, and telemetry.
               </p>
             </div>
-          </button>
 
-          <button
+            <div className="mt-4 pt-3 border-t border-line/60 flex items-center justify-between text-ink">
+              <span className="font-mono text-[10px] text-ink-soft group-hover:text-ink transition-colors font-medium">Explore</span>
+              <span className="w-6 h-6 rounded-full border border-line/80 bg-white group-hover:bg-ink group-hover:text-paper flex items-center justify-center transition-all shadow-2xs">
+                <ArrowUpRight size={11} />
+              </span>
+            </div>
+          </TiltCard>
+
+          {/* Card 3: Direct Channel */}
+          <TiltCard
             onClick={() => onNavigate('contact')}
-            className="border border-line hover:border-ink rounded-lg p-4 bg-paper hover:bg-cream/20 text-left transition-all duration-300 group cursor-pointer flex flex-col justify-between h-28"
+            className="aquamorphic-card border border-line/80 rounded-2xl p-5 bg-white/80 backdrop-blur-md hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] transition-all duration-300 group cursor-pointer flex flex-col justify-between"
             id="btn-recover-contact"
           >
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-ink uppercase tracking-wider text-[10px] font-mono">
-                  [C] - Ping Admin
-                </span>
-                <MessageSquare size={14} className="text-ink-soft group-hover:text-ink transition-colors" />
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-8 h-8 rounded-xl bg-neutral-100 border border-neutral-200/80 flex items-center justify-center text-ink shadow-2xs group-hover:scale-105 transition-transform">
+                  <MessageSquare size={15} />
+                </div>
+                <kbd className="font-mono text-[10px] font-semibold bg-white border border-line/80 px-2 py-0.5 rounded-md text-ink shadow-2xs">
+                  C
+                </kbd>
               </div>
-              <p className="text-[10px] text-ink-soft leading-normal">
-                Establish a telemetry bridge to transmit error parameters and send a message directly to Chiranth.
+              <h2 className="text-sm font-bold text-ink mb-1 group-hover:text-ink-soft transition-colors">
+                Ping Chiranth
+              </h2>
+              <p className="text-[11px] text-ink-soft leading-relaxed">
+                Open a direct encrypted message transmission channel to send inquiries or report dead links.
               </p>
             </div>
-          </button>
-        </div>
 
-        <button
-          onClick={() => onNavigate('portfolio')}
-          className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-wider hover:underline text-ink-soft hover:text-ink transition-colors"
-          id="btn-back-to-home"
-        >
-          <ArrowLeft size={12} />
-          Return to root
-        </button>
+            <div className="mt-4 pt-3 border-t border-line/60 flex items-center justify-between text-ink">
+              <span className="font-mono text-[10px] text-ink-soft group-hover:text-ink transition-colors font-medium">Connect</span>
+              <span className="w-6 h-6 rounded-full border border-line/80 bg-white group-hover:bg-ink group-hover:text-paper flex items-center justify-center transition-all shadow-2xs">
+                <ArrowUpRight size={11} />
+              </span>
+            </div>
+          </TiltCard>
+        </div>
       </div>
     </div>
   );

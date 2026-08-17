@@ -203,7 +203,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
         
         {/* Apple-style Role Badges */}
         <div className="flex flex-wrap gap-2 mb-6" id="title-roles">
-          {['Applied ML', 'Android Systems', 'Full Stack', 'Cybersecurity'].map((role) => (
+          {['Agentic AI', 'Applied ML', 'Android Systems', 'Application Security'].map((role) => (
             <span 
               key={role} 
               className="font-mono text-xs text-ink-soft bg-black/[0.03] border border-black/[0.08] px-3 py-1 rounded-full shadow-2xs select-none"
@@ -215,7 +215,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
 
         <div className="text-[15px] sm:text-[16px] text-ink-soft/90 w-full leading-relaxed mb-8 max-w-[65ch]" id="intro-text">
           <p>
-            Final-year B.E. Information Science & Engineering student at BMSIT, Bengaluru, specializing in applied machine learning, Android systems, and application security. I prioritize architectural transparency and rigorous testing, preferring to document a vulnerability or performance ceiling in my own work rather than leave it unaddressed.
+            Final-year B.E. Information Science & Engineering student at BMSIT, Bengaluru, exploring the intersection of Agentic AI, applied machine learning, Android systems, and application security. Interested in building practical, intelligent systems and understanding how emerging technologies can solve real-world problems.
           </p>
         </div>
 

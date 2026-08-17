@@ -847,8 +847,8 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                           </div>
                         )}
                         <div className="border-t border-line/60 pt-2.5 mt-2">
-                          <span className="text-[10px] text-ink-soft uppercase tracking-wider">Gateway Response Payload:</span>
-                          <pre className="mt-1.5 bg-cream/40 p-2.5 rounded-lg text-[10px] text-ink overflow-x-auto max-h-24 leading-relaxed border border-line/40">
+                          <span className="text-[10px] text-ink-soft uppercase tracking-wider font-semibold">Gateway Response Payload:</span>
+                          <pre className="mt-1.5 bg-cream/40 p-3 rounded-xl text-[10px] sm:text-[10.5px] text-ink leading-relaxed border border-line/40 font-mono whitespace-pre-wrap break-all select-text">
                             {JSON.stringify(scanResult.data, null, 2)}
                           </pre>
                         </div>

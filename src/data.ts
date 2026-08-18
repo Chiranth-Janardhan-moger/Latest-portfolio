@@ -225,7 +225,7 @@ export const INITIAL_BLOGS: BlogPost[] = [
   {
     id: "blog-1",
     title: "The Next Shift in AI: Building Context-Aware Agents with Model Context Protocol (MCP)",
-    slug: "ai-agents-model-context-protocol",
+    slug: "mcp",
     summary: "An exploration of Model Context Protocol (MCP), why it is replacing static API boundaries for LLMs, and how we built the orchestration pipeline for MCPPro.",
     category: "AI Engineering",
     publishedAt: "2026-07-15",
@@ -251,7 +251,7 @@ By integrating the Model Context Protocol, the AI agents can dynamically discove
   {
     id: "blog-2",
     title: "Running Rust at 60 FPS: Porting the Tectonic LaTeX Engine to Android via JNI",
-    slug: "tectonic-latex-android-jni",
+    slug: "rust",
     summary: "Inside the systems-engineering challenges of porting a Rust-based LaTeX compiler to compile documents 100% offline inside a mobile Jetpack Compose app.",
     category: "Systems Engineering",
     publishedAt: "2026-06-18",
@@ -277,7 +277,7 @@ Offline document compilation now completes in under two seconds, showing that hi
   {
     id: "blog-3",
     title: "SQLGuardJS: A Heuristic Web Application Firewall (WAF) Middleware for Express",
-    slug: "sqlguardjs-waf-middleware-express",
+    slug: "sqlguard",
     summary: "Inside the development of our open-source request verification WAF middleware to shield Express gateways from SQLi, XSS, and NoSQL injection vulnerabilities.",
     category: "Cybersecurity",
     publishedAt: "2026-05-20",
@@ -335,7 +335,7 @@ By deploying a heuristic defensive layout, applications can filter out the vast 
   {
     id: "blog-4",
     title: "Kalman Filtering for GPS Jitter in Mobile App Development",
-    slug: "kalman-filtering-gps-jitter",
+    slug: "kalman",
     summary: "How we implemented real-time location smoothing in the ConnectMe bus tracking system to prevent jumps and erratic animations.",
     category: "Systems Engineering",
     publishedAt: "2026-04-10",

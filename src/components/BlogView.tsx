@@ -24,13 +24,16 @@ export function findPostBySlugOrAlias(posts: BlogPost[], query?: string | null):
 
   // 2. Semantic short aliases
   if (['rust', 'latex', 'tectonic', 'android-rust', 'jni'].includes(q)) {
-    return posts.find(p => p.id === 'blog-2' || p.slug.includes('tectonic')) || null;
+    return posts.find(p => p.id === 'blog-2' || p.slug === 'rust' || p.slug.includes('tectonic')) || null;
   }
   if (['mcp', 'mcppro', 'ai', 'agents', 'rag'].includes(q)) {
-    return posts.find(p => p.id === 'blog-1' || p.slug.includes('model-context-protocol')) || null;
+    return posts.find(p => p.id === 'blog-1' || p.slug === 'mcp' || p.slug.includes('model-context-protocol')) || null;
   }
   if (['sqlguard', 'sqlguardjs', 'waf', 'cybersecurity', 'security', 'firewall'].includes(q)) {
-    return posts.find(p => p.id === 'blog-3' || p.slug.includes('sqlguardjs')) || null;
+    return posts.find(p => p.id === 'blog-3' || p.slug === 'sqlguard' || p.slug.includes('sqlguardjs')) || null;
+  }
+  if (['kalman', 'kalman-filter', 'gps', 'connectme', 'smoothing'].includes(q)) {
+    return posts.find(p => p.id === 'blog-4' || p.slug === 'kalman' || p.slug.includes('kalman')) || null;
   }
 
   // 3. Substring match
@@ -199,12 +202,16 @@ export default function BlogView({ initialBlogSlug, onSelectBlog }: BlogViewProp
             <Markdown
               remarkPlugins={[remarkGfm]}
               components={{
-                table: ({node, ...props}) => <div className="overflow-x-auto my-6 border border-line/80 rounded-2xl shadow-xs"><table className="min-w-full border-collapse text-sm" {...props} /></div>,
+                table: ({node, ...props}) => (
+                  <div className="overflow-x-auto my-6 border border-line/80 rounded-2xl shadow-xs bg-white [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                    <table className="w-full border-collapse text-xs sm:text-sm table-auto" {...props} />
+                  </div>
+                ),
                 thead: ({node, ...props}) => <thead className="bg-[#F7F6F2] border-b border-line/80" {...props} />,
                 tbody: ({node, ...props}) => <tbody className="divide-y divide-line/60 bg-white" {...props} />,
                 tr: ({node, ...props}) => <tr className="hover:bg-cream/20 transition-colors" {...props} />,
-                th: ({node, ...props}) => <th className="px-4 py-3 text-left font-semibold text-ink text-[11px] uppercase tracking-wider border-r border-line/60 last:border-r-0" {...props} />,
-                td: ({node, ...props}) => <td className="px-4 py-3 text-ink-soft text-xs leading-relaxed border-r border-line/60 last:border-r-0" {...props} />,
+                th: ({node, ...props}) => <th className="px-2.5 sm:px-4 py-2.5 sm:py-3 text-left font-semibold text-ink text-[10px] sm:text-[11px] uppercase tracking-wider border-r border-line/60 last:border-r-0 whitespace-normal" {...props} />,
+                td: ({node, ...props}) => <td className="px-2.5 sm:px-4 py-2.5 sm:py-3 text-ink-soft text-[10.5px] sm:text-xs leading-relaxed border-r border-line/60 last:border-r-0 break-words" {...props} />,
                 h1: ({node, ...props}) => <h1 className="text-3xl font-bold text-ink mt-10 mb-4 tracking-tight" {...props} />,
                 h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-ink mt-8 mb-3 tracking-tight" {...props} />,
                 h3: ({node, ...props}) => <h3 className="text-xl font-bold text-ink mt-6 mb-2 tracking-tight" {...props} />,

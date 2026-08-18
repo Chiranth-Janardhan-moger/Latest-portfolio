@@ -6,11 +6,12 @@ import MobileAppsView from './components/MobileAppsView';
 import BlogView from './components/BlogView';
 import ContactView from './components/ContactView';
 import NotFoundView from './components/NotFoundView';
+import HoneypotView from './components/HoneypotView';
 import FluidDotGrid from './components/FluidDotGrid';
 import FluidCloud from './components/FluidCloud';
 import { triggerFluidCloud } from './utils/fluidCloud';
 
-type ViewMode = 'portfolio' | 'apps' | 'blog' | 'contact' | 'not-found';
+type ViewMode = 'portfolio' | 'apps' | 'blog' | 'contact' | 'not-found' | 'honeypot';
 
 // Path parsing helper
 function parsePathToView(pathname: string, hash: string): { view: ViewMode; appId?: string | null; blogSlug?: string | null; invalidPath?: string } {
@@ -20,8 +21,15 @@ function parsePathToView(pathname: string, hash: string): { view: ViewMode; appI
   if (cleanHash === 'apps' || cleanHash === 'mobile') return { view: 'apps' };
   if (cleanHash === 'blog') return { view: 'blog' };
   if (cleanHash === 'contact') return { view: 'contact' };
+  if (cleanHash === 'admin' || cleanHash === 'honeypot') return { view: 'honeypot', invalidPath: '#' + cleanHash };
 
   const cleanPath = pathname.toLowerCase().replace(/\/$/, '') || '/';
+
+  // Honeypot security trap route matching
+  const HONEYPOT_PATHS = ['/admin', '/.env', '/wp-admin', '/wp-login.php', '/.git', '/config', '/config.json', '/administrator', '/.env.local', '/.env.production', '/etc/passwd', '/honeypot'];
+  if (HONEYPOT_PATHS.some(p => cleanPath === p || cleanPath.startsWith(p + '/'))) {
+    return { view: 'honeypot', invalidPath: pathname };
+  }
 
   if (cleanPath === '/' || cleanPath === '/portfolio' || cleanPath === '/index.html') {
     return { view: 'portfolio' };
@@ -115,7 +123,7 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Scroll direction detection for minimizing bottom dock
+  // Scroll direction detection for sliding bottom dock down
   useEffect(() => {
     let lastScrollY = window.scrollY;
     let ticking = false;
@@ -123,14 +131,14 @@ export default function App() {
     const updateScrollDirection = () => {
       const scrollY = window.scrollY;
 
-      if (Math.abs(scrollY - lastScrollY) < 10) {
+      if (Math.abs(scrollY - lastScrollY) < 6) {
         ticking = false;
         return;
       }
 
-      if (scrollY > lastScrollY && scrollY > 80) {
+      if (scrollY > lastScrollY && scrollY > 60) {
         setIsMinimized(true);
-      } else {
+      } else if (scrollY < lastScrollY) {
         setIsMinimized(false);
       }
 
@@ -145,7 +153,7 @@ export default function App() {
       }
     };
 
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -271,6 +279,7 @@ export default function App() {
               <PortfolioView 
                 onNavigateToContact={() => handleNav('contact')} 
                 onNavigateToApps={(appId) => handleNav('apps', appId)}
+                onNavigateToBlog={(blogSlug) => handleNav('blog', null, blogSlug)}
               />
             )}
             {activeView === 'apps' && (
@@ -296,6 +305,9 @@ export default function App() {
             {activeView === 'contact' && (
               <ContactView />
             )}
+            {activeView === 'honeypot' && (
+              <HoneypotView invalidPath={invalidPath} onNavigate={handleNav} />
+            )}
             {activeView === 'not-found' && (
               <NotFoundView invalidPath={invalidPath} onNavigate={handleNav} />
             )}
@@ -315,60 +327,68 @@ export default function App() {
 
       </div>
 
-      {/* Floating Sticky Bottom Dock Navigation - Clean Path-Based Tabs */}
-      <nav 
-        className={`fixed bottom-6 left-1/2 bg-white/70 backdrop-blur-xl border border-line/80 rounded-full p-1.5 shadow-xl z-40 flex items-center gap-1 transition-all duration-300 ease-out ${
-          isMinimized ? 'scale-95 px-2' : ''
-        }`}
-        style={{ 
-          boxShadow: '0 10px 25px -5px rgba(17, 17, 17, 0.05), 0 8px 10px -6px rgba(17, 17, 17, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
-          transform: isMinimized ? 'translateX(-50%) translateY(20px)' : 'translateX(-50%) translateY(0px)',
-          opacity: isMinimized ? 0.5 : 1
-        }}
-        id="sticky-bottom-dock"
-      >
-        {(['portfolio', 'apps', 'blog', 'contact'] as const).map((view) => {
-          const isActive = activeView === view;
-          const label = view === 'portfolio' ? 'Portfolio' : view === 'apps' ? 'Apps' : view === 'blog' ? 'Blog' : 'Contact';
-          const Icon = view === 'portfolio' ? User : view === 'apps' ? Smartphone : view === 'blog' ? Newspaper : MessageSquare;
-          
-          return (
-            <motion.button
-              key={view}
-              onClick={() => handleNav(view)}
-              whileTap={{ scale: 0.92 }}
-              className={`relative ${
-                isMinimized ? 'px-3 py-2.5' : 'px-3.5 sm:px-4 pt-2.5 pb-3.5'
-              } text-xs font-mono rounded-full transition-all duration-300 ease-out flex items-center gap-2 cursor-pointer z-10 select-none ${
-                isActive ? 'text-ink font-bold' : 'text-ink-soft hover:text-ink'
-              }`}
-              id={`dock-tab-${view}`}
-              title={label}
-              aria-label={`Navigate to ${label}`}
-            >
-              <div className="relative flex items-center justify-center">
-                <Icon size={14} className={isActive ? 'text-ink' : 'text-ink-soft'} />
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-dot"
-                    className="absolute top-[18px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-ink animate-pulse"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </div>
-              <span className={`transition-all duration-300 ease-out overflow-hidden flex items-center ${
-                isMinimized 
-                  ? 'max-w-0 opacity-0' 
-                  : isActive 
-                    ? 'max-w-[100px] opacity-100' 
-                    : 'max-w-0 opacity-0 sm:max-w-[100px] sm:opacity-100'
-              }`}>
-                {label}
-              </span>
-            </motion.button>
-          );
-        })}
-      </nav>
+      {/* Apple Floating Glass Dock Navigation - Hidden on 404 and Honeypot */}
+      {activeView !== 'not-found' && activeView !== 'honeypot' && (
+        <nav 
+          className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-40 select-none transition-all duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+            isMinimized ? 'translate-y-[120px] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100 pointer-events-auto'
+          }`}
+          id="apple-nav-dock"
+          role="navigation"
+          aria-label="Main Navigation"
+        >
+          <div 
+            className="flex items-center gap-1 p-1.5 rounded-full border border-black/[0.08] bg-white/80 backdrop-blur-2xl shadow-[0_20px_45px_-10px_rgba(0,0,0,0.12),0_6px_16px_-4px_rgba(0,0,0,0.06)] font-sans text-xs"
+            style={{
+              backdropFilter: 'blur(28px) saturate(190%) contrast(105%)',
+              WebkitBackdropFilter: 'blur(28px) saturate(190%) contrast(105%)',
+              boxShadow: `
+                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95),
+                inset 0 -1px 1px 0 rgba(0, 0, 0, 0.03),
+                0 20px 45px -10px rgba(0, 0, 0, 0.12),
+                0 6px 16px -4px rgba(0, 0, 0, 0.06),
+                0 0 0 1px rgba(255, 255, 255, 0.75)
+              `
+            }}
+          >
+            {(['portfolio', 'apps', 'blog', 'contact'] as const).map((view) => {
+              const isActive = activeView === view;
+              const label = view === 'portfolio' ? 'Portfolio' : view === 'apps' ? 'Apps' : view === 'blog' ? 'Blogs' : 'Contact';
+              const Icon = view === 'portfolio' ? User : view === 'apps' ? Smartphone : view === 'blog' ? Newspaper : MessageSquare;
+              
+              return (
+                <motion.button
+                  key={view}
+                  onClick={() => handleNav(view)}
+                  whileTap={{ scale: 0.94 }}
+                  className={`relative px-3.5 sm:px-4.5 py-2 rounded-full transition-colors duration-200 flex items-center gap-1.5 cursor-pointer z-10 font-medium tracking-tight ${
+                    isActive ? 'text-ink font-semibold' : 'text-ink-soft hover:text-ink hover:bg-black/[0.03]'
+                  }`}
+                  id={`dock-tab-${view}`}
+                  title={label}
+                  aria-label={`Navigate to ${label}`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="apple-active-pill"
+                      className="absolute inset-0 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] border border-black/[0.05] -z-10"
+                      transition={{
+                        type: 'spring',
+                        stiffness: 500,
+                        damping: 38,
+                        mass: 0.7
+                      }}
+                    />
+                  )}
+                  <Icon size={14} className="shrink-0" />
+                  <span className="leading-none text-[12px]">{label}</span>
+                </motion.button>
+              );
+            })}
+          </div>
+        </nav>
+      )}
 
     </div>
   );

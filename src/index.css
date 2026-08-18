@@ -316,3 +316,22 @@ html {
   animation-duration: 2.5s;
 }
 
+/* Universal Image Smoothing & Hardware Acceleration */
+img {
+  image-rendering: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* Smooth Icon Micro-Interactions */
+svg.lucide {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease, opacity 0.2s ease;
+  will-change: transform;
+}
+
+/* Smooth Line and Border Transitions */
+hr, .border-line, [class*="border-line"] {
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+

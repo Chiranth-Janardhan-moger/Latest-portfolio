@@ -246,8 +246,8 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
 
           {/* Bus Avatar Marker on Map */}
           <div className="relative z-10 my-auto flex flex-col items-center justify-center">
-            <div className="w-12 h-12 rounded-2xl bg-white border border-line/80 shadow-lg flex items-center justify-center p-1.5 animate-bounce">
-              <img src="/bus-icon.webp" alt="ConnectMe Bus Icon" className="w-full h-full object-contain" />
+            <div className="w-12 h-12 rounded-2xl bg-white border border-line/80 shadow-lg flex items-center justify-center p-1.5 animate-bounce overflow-hidden">
+              <LazyImage src="/bus-icon.webp" alt="ConnectMe Bus Icon" className="w-full h-full object-contain" wrapperClassName="w-full h-full flex items-center justify-center" />
             </div>
             <span className="bg-black/70 px-2 py-0.5 rounded text-[10px] font-mono mt-1.5 border border-white/20">
               Shuttle #02 · Kalman Smoothed
@@ -405,10 +405,11 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
           <div className="flex items-center gap-5">
             <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border border-line/80 bg-white p-2.5 shadow-md flex items-center justify-center shrink-0">
               {selectedApp.iconUrl ? (
-                <img
+                <LazyImage
                   src={selectedApp.iconUrl}
                   alt={`${selectedApp.name} icon`}
                   className="w-full h-full object-contain rounded-xl"
+                  wrapperClassName="w-full h-full flex items-center justify-center"
                 />
               ) : (
                 <Smartphone size={36} className="text-ink" />
@@ -625,10 +626,11 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
               {/* Big App Logo */}
               <div className="relative z-10 w-22 h-22 sm:w-24 sm:h-24 rounded-2xl border border-line/80 bg-white p-2.5 shadow-md flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                 {app.iconUrl ? (
-                  <img
+                  <LazyImage
                     src={app.iconUrl}
                     alt={`${app.name} icon`}
                     className="w-full h-full object-contain rounded-xl"
+                    wrapperClassName="w-full h-full flex items-center justify-center"
                   />
                 ) : (
                   <Smartphone size={36} className="text-ink" />

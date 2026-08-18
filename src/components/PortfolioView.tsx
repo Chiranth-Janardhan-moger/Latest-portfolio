@@ -25,13 +25,15 @@ import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
 import { Project } from '../types';
 import { triggerFluidCloud } from '../utils/fluidCloud';
 import TiltCard from './TiltCard';
+import LazyImage from './LazyImage';
 
 interface PortfolioViewProps {
   onNavigateToContact: () => void;
   onNavigateToApps?: (appId?: string) => void;
+  onNavigateToBlog?: (blogSlug?: string) => void;
 }
 
-export default function PortfolioView({ onNavigateToContact, onNavigateToApps }: PortfolioViewProps) {
+export default function PortfolioView({ onNavigateToContact, onNavigateToApps, onNavigateToBlog }: PortfolioViewProps) {
   // SQLGuardJS Playground states
   const [testPayload, setTestPayload] = useState<string>('');
   const [scanResult, setScanResult] = useState<{
@@ -308,10 +310,11 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                       ? 'bg-[#033475] border-[#033475] p-1' 
                       : 'bg-white border-line/80 p-1.5'
                   }`}>
-                    <img 
+                    <LazyImage 
                       src={edu.logo} 
                       alt={`${edu.institution} logo`} 
                       className={`w-full h-full transition-all duration-300 ${isSiddhartha ? 'object-cover rounded-lg' : 'object-contain'}`}
+                      wrapperClassName="w-full h-full flex items-center justify-center"
                     />
                   </div>
                 )}
@@ -396,10 +399,11 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
               >
                 {exp.logo && (
                   <div className="w-12 h-12 rounded-2xl border border-line/80 bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-2xs p-1.5 transition-transform duration-300 group-hover:scale-105">
-                    <img 
+                    <LazyImage 
                       src={exp.logo} 
                       alt={`${exp.role} logo`} 
                       className="w-full h-full object-contain transition-all duration-300"
+                      wrapperClassName="w-full h-full flex items-center justify-center"
                     />
                   </div>
                 )}
@@ -531,10 +535,11 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
             >
               {exp.logo && (
                 <div className="w-12 h-12 rounded-2xl border border-line/80 bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-2xs p-1.5 transition-transform duration-300 group-hover:scale-105">
-                  <img
+                  <LazyImage
                     src={exp.logo}
                     alt={`${exp.role} logo`}
                     className="w-full h-full object-contain"
+                    wrapperClassName="w-full h-full flex items-center justify-center"
                   />
                 </div>
               )}
@@ -685,6 +690,26 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                       >
                         {proj.id === 'sqlguardjs' ? <Package size={14} /> : (proj.id === 'cloudpulse' ? <Container size={14} /> : <ExternalLink size={14} />)}
                       </a>
+                    )}
+                    {proj.id === 'sqlguardjs' && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (onNavigateToBlog) {
+                            onNavigateToBlog('sqlguard');
+                          } else {
+                            window.history.pushState({}, '', '/blog/sqlguard');
+                            window.dispatchEvent(new PopStateEvent('popstate'));
+                          }
+                        }}
+                        className="w-8 h-8 rounded-full border border-line/80 bg-white flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink shadow-2xs active:scale-95 transition-all duration-200 ease-out btn-sweep cursor-pointer"
+                        title="Read SQLGuardJS Deep Dive Blog Post"
+                        id="project-blog-sqlguard"
+                        aria-label="Read SQLGuardJS Deep Dive Blog Post"
+                      >
+                        <ExternalLink size={14} />
+                      </button>
                     )}
                   </div>
                 </div>

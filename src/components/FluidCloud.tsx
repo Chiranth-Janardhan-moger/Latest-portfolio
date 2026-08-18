@@ -7,22 +7,21 @@ export default function FluidCloud() {
   const [activeAlert, setActiveAlert] = useState<FluidCloudPayload | null>(null);
   const [currentTime, setCurrentTime] = useState('');
 
-  // Keep live time updated every 1 second
+  // Keep live time updated without seconds
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
       setCurrentTime(
         now.toLocaleTimeString('en-US', {
-          hour: '2-digit',
+          hour: 'numeric',
           minute: '2-digit',
-          second: '2-digit',
           hour12: true,
           timeZone: 'Asia/Kolkata'
         })
       );
     };
     updateTime();
-    const interval = setInterval(updateTime, 1000);
+    const interval = setInterval(updateTime, 10000);
     return () => clearInterval(interval);
   }, []);
 
@@ -52,11 +51,11 @@ export default function FluidCloud() {
 
   const getIcon = (type?: string, iconKey?: string) => {
     if (iconKey === 'user') return <User size={13} className="text-ink shrink-0" />;
+    if (iconKey === 'smartphone') return <Smartphone size={13} className="text-ink shrink-0" />;
+    if (iconKey === 'newspaper') return <Newspaper size={13} className="text-ink shrink-0" />;
+    if (iconKey === 'contact') return <MessageSquare size={13} className="text-ink shrink-0" />;
     if (iconKey === 'check' || type === 'success') return <Check size={13} className="text-emerald-600 shrink-0" />;
     if (iconKey === 'shield') return <Shield size={13} className="text-blue-600 shrink-0" />;
-    if (iconKey === 'smartphone') return <Smartphone size={13} className="text-purple-600 shrink-0" />;
-    if (iconKey === 'newspaper') return <Newspaper size={13} className="text-amber-600 shrink-0" />;
-    if (iconKey === 'contact') return <MessageSquare size={13} className="text-emerald-600 shrink-0" />;
     if (iconKey === 'download') return <Download size={13} className="text-indigo-600 shrink-0" />;
     if (iconKey === 'alert' || type === 'warning') return <AlertTriangle size={13} className="text-amber-600 shrink-0" />;
     if (iconKey === 'sparkles') return <Sparkles size={13} className="text-amber-500 shrink-0" />;

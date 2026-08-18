@@ -19,10 +19,10 @@ export default function LazyImage({
 
   return (
     <div className={`relative overflow-hidden ${wrapperClassName}`}>
-      {/* Animated Skeleton Placeholder while loading */}
+      {/* Animated Skeleton Shimmer Placeholder while loading */}
       {!isLoaded && !hasError && (
-        <div className="absolute inset-0 bg-[#EFECE6]/80 animate-pulse rounded-[inherit] flex items-center justify-center">
-          <div className="w-6 h-6 rounded-full border-2 border-ink/20 border-t-ink animate-spin" />
+        <div className="absolute inset-0 bg-[#F0EDE6]/80 animate-pulse rounded-[inherit] flex items-center justify-center z-10">
+          <div className="w-5 h-5 rounded-full border-[1.5px] border-ink/15 border-t-ink animate-spin" />
         </div>
       )}
 
@@ -33,8 +33,10 @@ export default function LazyImage({
         decoding="async"
         onLoad={() => setIsLoaded(true)}
         onError={() => setHasError(true)}
-        className={`transition-all duration-500 ease-out ${
-          isLoaded ? 'opacity-100 scale-100 blur-0' : 'opacity-0 scale-[0.98] blur-xs'
+        className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isLoaded 
+            ? 'opacity-100 scale-100 filter-none' 
+            : 'opacity-0 scale-[1.02] blur-xs'
         } ${className}`}
         {...props}
       />

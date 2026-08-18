@@ -315,72 +315,59 @@ export default function App() {
 
       </div>
 
-      {/* Floating Apple-Style Bottom Glass Dock */}
+      {/* Floating Sticky Bottom Dock Navigation - Premium Interactive Sliding Pill Tabs */}
       <nav 
-        className={`fixed bottom-6 inset-x-0 mx-auto w-fit z-50 transition-all duration-300 ${
-          isMinimized ? 'translate-y-16 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
+        className={`fixed bottom-6 left-1/2 bg-white/70 backdrop-blur-xl border border-line/80 rounded-full p-1.5 shadow-xl z-40 flex items-center gap-1 transition-all duration-300 ease-out ${
+          isMinimized ? 'scale-95 px-2' : ''
         }`}
-        id="bottom-dock-nav"
-        role="navigation"
-        aria-label="Main Navigation"
+        style={{ 
+          boxShadow: '0 10px 25px -5px rgba(17, 17, 17, 0.05), 0 8px 10px -6px rgba(17, 17, 17, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+          transform: isMinimized ? 'translateX(-50%) translateY(20px)' : 'translateX(-50%) translateY(0px)',
+          opacity: isMinimized ? 0.5 : 1
+        }}
+        id="sticky-bottom-dock"
       >
-        <div className="flex items-center gap-1 sm:gap-1.5 px-3 py-2 rounded-full border border-black/[0.08] bg-white/80 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] text-xs font-mono select-none" id="dock-capsule">
-          <button
-            onClick={() => handleNav('portfolio')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-pointer font-medium ${
-              activeView === 'portfolio'
-                ? 'bg-ink text-paper shadow-xs font-semibold'
-                : 'text-ink-soft hover:text-ink hover:bg-black/[0.04]'
-            }`}
-            id="nav-btn-portfolio"
-            aria-current={activeView === 'portfolio' ? 'page' : undefined}
-          >
-            <User size={13} className="shrink-0" />
-            <span>Portfolio</span>
-          </button>
+        {(['portfolio', 'apps', 'blog', 'contact'] as const).map((view) => {
+          const isActive = activeView === view;
+          const label = view === 'portfolio' ? 'Portfolio' : view === 'apps' ? 'Apps' : view === 'blog' ? 'Blog' : 'Contact';
+          const Icon = view === 'portfolio' ? User : view === 'apps' ? Smartphone : view === 'blog' ? Newspaper : MessageSquare;
           
-          <button
-            onClick={() => handleNav('apps')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-pointer font-medium ${
-              activeView === 'apps'
-                ? 'bg-ink text-paper shadow-xs font-semibold'
-                : 'text-ink-soft hover:text-ink hover:bg-black/[0.04]'
-            }`}
-            id="nav-btn-apps"
-            aria-current={activeView === 'apps' ? 'page' : undefined}
-          >
-            <Smartphone size={13} className="shrink-0" />
-            <span>Apps</span>
-          </button>
-
-          <button
-            onClick={() => handleNav('blog')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-pointer font-medium ${
-              activeView === 'blog'
-                ? 'bg-ink text-paper shadow-xs font-semibold'
-                : 'text-ink-soft hover:text-ink hover:bg-black/[0.04]'
-            }`}
-            id="nav-btn-blog"
-            aria-current={activeView === 'blog' ? 'page' : undefined}
-          >
-            <Newspaper size={13} className="shrink-0" />
-            <span>Blog</span>
-          </button>
-
-          <button
-            onClick={() => handleNav('contact')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-pointer font-medium ${
-              activeView === 'contact'
-                ? 'bg-ink text-paper shadow-xs font-semibold'
-                : 'text-ink-soft hover:text-ink hover:bg-black/[0.04]'
-            }`}
-            id="nav-btn-contact"
-            aria-current={activeView === 'contact' ? 'page' : undefined}
-          >
-            <MessageSquare size={13} className="shrink-0" />
-            <span>Contact</span>
-          </button>
-        </div>
+          return (
+            <motion.button
+              key={view}
+              onClick={() => handleNav(view)}
+              whileTap={{ scale: 0.92 }}
+              className={`relative ${
+                isMinimized ? 'px-3 py-2.5' : 'px-4 sm:px-5 pt-2.5 pb-3.5'
+              } text-xs font-mono rounded-full transition-all duration-300 ease-out flex items-center gap-2 cursor-pointer z-10 select-none ${
+                isActive ? 'text-ink font-bold' : 'text-ink-soft hover:text-ink'
+              }`}
+              id={`dock-tab-${view}`}
+              title={label}
+              aria-label={`Navigate to ${label}`}
+            >
+              <div className="relative flex items-center justify-center">
+                <Icon size={14} className={isActive ? 'text-ink' : 'text-ink-soft'} />
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-dot"
+                    className="absolute top-[18px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-ink animate-pulse"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </div>
+              <span className={`transition-all duration-300 ease-out overflow-hidden flex items-center ${
+                isMinimized 
+                  ? 'max-w-0 opacity-0' 
+                  : isActive 
+                    ? 'max-w-[100px] opacity-100' 
+                    : 'max-w-0 opacity-0 sm:max-w-[100px] sm:opacity-100'
+              }`}>
+                {label}
+              </span>
+            </motion.button>
+          );
+        })}
       </nav>
 
     </div>

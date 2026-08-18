@@ -140,7 +140,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "mcppro",
-    name: "MCPPro Intelligence System",
+    name: "MCPPro",
     meta: "AI agent orchestrator · RAG",
     desc: "A production-grade AI agent and Document RAG orchestration platform featuring a decoupled orchestrator and custom Model Context Protocol (MCP) server integration.",
     stack: ["Next.js", "FastAPI", "MCP", "Qdrant", "Supabase", "BGE-M3", "TypeScript", "Python"],
@@ -180,12 +180,13 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "latex-editor",
-    name: "Latex Android Editor",
+    name: "Latex Editor",
     meta: "mobile tools · Kotlin",
     desc: "A high-performance LaTeX editor and local compiler for Android powered by a native port of the Tectonic typesetting engine.",
     stack: ["Kotlin", "Jetpack Compose", "Tectonic Engine", "JNI", "Android Studio"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/latex-editor-android",
     demoUrl: "#",
+    appDeepLink: "/app/latex",
     logs: [
       { type: "VERIFIED", text: "100% offline compilation and PDF generation utilizing a native port of the Tectonic engine via JNI" },
       { type: "VERIFIED", text: "Smooth syntax-highlighting engine and custom console compile logger built with Jetpack Compose" }

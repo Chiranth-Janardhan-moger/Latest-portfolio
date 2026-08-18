@@ -644,22 +644,24 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                         <Github size={14} />
                       </a>
                     )}
-                    {proj.id === 'vaultx' && (
+                    {(proj.id === 'vaultx' || proj.id === 'latex-editor' || Boolean(proj.appDeepLink)) && (
                       <button
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
+                          const targetAppId = proj.id === 'latex-editor' ? 'latex' : 'vaultx';
+                          const targetPath = proj.appDeepLink || `/app/${targetAppId}`;
                           if (onNavigateToApps) {
-                            onNavigateToApps('vaultx');
+                            onNavigateToApps(targetAppId);
                           } else {
-                            window.history.pushState({}, '', '/app/vaultx');
+                            window.history.pushState({}, '', targetPath);
                             window.dispatchEvent(new PopStateEvent('popstate'));
                           }
                         }}
                         className="w-8 h-8 rounded-full border border-line/80 bg-white flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink shadow-2xs active:scale-95 transition-all duration-200 ease-out btn-sweep cursor-pointer"
-                        title="Download VaultX APK"
-                        id="project-download-vaultx"
-                        aria-label="Download VaultX APK"
+                        title={proj.id === 'latex-editor' ? "Download LaTeX Editor APK" : "Download VaultX APK"}
+                        id={`project-download-${proj.id}`}
+                        aria-label={proj.id === 'latex-editor' ? "Download LaTeX Editor APK" : "Download VaultX APK"}
                       >
                         <Download size={14} />
                       </button>

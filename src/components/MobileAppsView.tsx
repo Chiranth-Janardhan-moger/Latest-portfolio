@@ -26,19 +26,29 @@ interface MobileAppsViewProps {
 }
 
 export default function MobileAppsView({ initialAppId, onSelectApp }: MobileAppsViewProps = {}) {
+  const normalizeAppId = (id?: string | null) => {
+    if (!id) return null;
+    const lower = id.toLowerCase();
+    if (lower === 'latex' || lower === 'latex-editor') return 'latex-editor';
+    if (lower === 'vaultx') return 'vaultx';
+    if (lower === 'connectme') return 'connectme';
+    return lower;
+  };
+
   const [selectedAppId, setSelectedAppId] = useState<string | null>(() => {
-    if (initialAppId) return initialAppId;
+    if (initialAppId) return normalizeAppId(initialAppId);
     const path = window.location.pathname.toLowerCase();
     if (path === '/app/vaultx' || path === '/apps/vaultx') return 'vaultx';
     if (path === '/app/connectme' || path === '/apps/connectme') return 'connectme';
-    if (path.startsWith('/app/')) return path.split('/app/')[1] || null;
-    if (path.startsWith('/apps/')) return path.split('/apps/')[1] || null;
+    if (path === '/app/latex' || path === '/apps/latex' || path === '/app/latex-editor' || path === '/apps/latex-editor') return 'latex-editor';
+    if (path.startsWith('/app/')) return normalizeAppId(path.split('/app/')[1]) || null;
+    if (path.startsWith('/apps/')) return normalizeAppId(path.split('/apps/')[1]) || null;
     return null;
   });
 
   useEffect(() => {
     if (initialAppId !== undefined) {
-      setSelectedAppId(initialAppId);
+      setSelectedAppId(normalizeAppId(initialAppId));
     }
   }, [initialAppId]);
 

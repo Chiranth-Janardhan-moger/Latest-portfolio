@@ -25,7 +25,7 @@ export default function HoneypotView({ invalidPath, onNavigate }: HoneypotViewPr
 
   return (
     <div className="py-8 sm:py-12 animate-fade-in max-w-xl mx-auto space-y-8" id="honeypot-container">
-      <div className="aquamorphic-card rounded-3xl border border-line/80 bg-white/85 backdrop-blur-2xl p-7 sm:p-10 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.12)] flex flex-col items-center text-center relative overflow-hidden">
+      <div className="rounded-3xl border border-black/[0.08] bg-white p-7 sm:p-10 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.08)] flex flex-col items-center text-center relative overflow-hidden">
         
         {/* macOS Traffic Lights Header */}
         <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-100/90 border border-neutral-200/80 shadow-2xs mb-6">
@@ -76,23 +76,23 @@ export default function HoneypotView({ invalidPath, onNavigate }: HoneypotViewPr
           </div>
         </div>
 
-        {/* Action Button Cluster */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
+        {/* Action Button Cluster in Single Row */}
+        <div className="flex flex-row items-center gap-2.5 sm:gap-3 w-full">
           <a
             href="https://cftweb-security.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 bg-ink text-paper rounded-full py-2.5 px-5 text-xs font-semibold hover:bg-neutral-800 active:scale-95 shadow-[0_2px_10px_rgba(0,0,0,0.14)] transition-all duration-200 cursor-pointer btn-sweep"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 bg-ink text-paper rounded-full py-2.5 px-3 sm:px-5 text-[11px] sm:text-xs font-semibold hover:bg-neutral-800 active:scale-95 shadow-[0_2px_10px_rgba(0,0,0,0.14)] transition-all duration-200 cursor-pointer btn-sweep whitespace-nowrap"
           >
             <span>Want to play CTF? Launch Challenge</span>
-            <ArrowUpRight size={14} />
+            <ArrowUpRight size={13} />
           </a>
           <button
             type="button"
             onClick={() => onNavigate('portfolio')}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white border border-line/80 text-ink rounded-full py-2.5 px-5 text-xs font-semibold hover:bg-neutral-50 active:scale-95 shadow-2xs transition-all duration-200 cursor-pointer"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 bg-white border border-line/80 text-ink rounded-full py-2.5 px-3 sm:px-5 text-[11px] sm:text-xs font-semibold hover:bg-neutral-50 active:scale-95 shadow-2xs transition-all duration-200 cursor-pointer whitespace-nowrap"
           >
-            <Home size={14} />
+            <Home size={13} />
             <span>Return to Portfolio</span>
           </button>
         </div>

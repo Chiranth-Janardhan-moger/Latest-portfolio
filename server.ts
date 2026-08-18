@@ -120,8 +120,7 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
     }
 
     body {
-      background-color: #F7F6F2;
-      background-image: radial-gradient(circle at 50% 0%, rgba(245, 230, 202, 0.4) 0%, transparent 60%);
+      background-color: #FFFFFF;
       color: var(--color-ink);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
       padding: 2.5rem 1rem;
@@ -134,9 +133,7 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
     .apple-card {
       max-width: 560px;
       width: 100%;
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(28px) saturate(180%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      background: #FFFFFF;
       border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 28px;
       box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.02);
@@ -280,28 +277,62 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
       background: #10B981;
     }
 
+    @keyframes sweep {
+      0% { left: -150%; }
+      50% { left: 150%; }
+      100% { left: 150%; }
+    }
+
+    .btn-sweep {
+      position: relative !important;
+      overflow: hidden !important;
+    }
+
+    .btn-sweep::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.6),
+        transparent
+      );
+      transform: skewX(-20deg);
+      pointer-events: none;
+    }
+
+    .btn-sweep:hover::after {
+      animation: sweep 1.2s infinite ease-in-out;
+    }
+
     .btn-cluster {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: center;
       gap: 10px;
     }
 
     .apple-pill-btn {
+      flex: 1;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
-      padding: 0.75rem 1.5rem;
+      padding: 0.75rem 1rem;
       background-color: var(--color-ink);
       color: var(--color-paper);
       border: 1px solid var(--color-ink);
       border-radius: 9999px;
       text-decoration: none;
-      font-size: 0.84rem;
+      font-size: 0.8rem;
       font-weight: 600;
       letter-spacing: -0.01em;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
     }
 
     .apple-pill-btn:hover {
@@ -316,11 +347,11 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
     }
 
     .apple-secondary-btn {
+      flex: 1;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
-      padding: 0.7rem 1.5rem;
+      padding: 0.75rem 1rem;
       background: rgba(255, 255, 255, 0.9);
       color: var(--color-ink);
       border: 1px solid rgba(0, 0, 0, 0.1);
@@ -329,6 +360,7 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
       font-size: 0.8rem;
       font-weight: 600;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
     }
 
     .apple-secondary-btn:hover {
@@ -385,11 +417,11 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
       </div>
       
       <div class="btn-cluster">
-        <a href="https://cftweb-security.vercel.app/" class="apple-pill-btn" target="_blank" rel="noopener noreferrer">
+        <a href="https://cftweb-security.vercel.app/" class="apple-pill-btn btn-sweep" target="_blank" rel="noopener noreferrer">
           Want to play CTF? Launch Challenge ↗
         </a>
         <a href="/" class="apple-secondary-btn">
-          Return to Portfolio Root
+          Return to Portfolio
         </a>
       </div>
     </div>

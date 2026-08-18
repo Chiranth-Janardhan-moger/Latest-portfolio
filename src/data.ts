@@ -73,7 +73,7 @@ export const EXPERIENCES: Experience[] = [
   {
     id: "president-epoch",
     role: "President",
-    company: "Epoch Society",
+    company: "Epoch Society BMSIT&M",
     dates: "2025 – 2026",
     desc: "Leading technical operations, organizing bootcamps and hackathons for 500+ student developers. Bridging industry engineers and students to collaborate on production-ready systems.",
     url: "https://bmsit.ac.in/pdfs/students-club-29.pdf",
@@ -82,14 +82,14 @@ export const EXPERIENCES: Experience[] = [
   {
     id: "vp-coding",
     role: "Vice President",
-    company: "Coding Club BMSIT",
+    company: "Coding Club BMSIT&M",
     dates: "Apr 2025 – Nov 2025",
     desc: "Spearheaded student-led developer mentorship initiatives, mentored juniors in data structures & algorithms, and managed event coordination. Developed key leadership and management skills while scaling the peer developer community."
   },
   {
     id: "vice-head-events-coding",
     role: "Vice Head of Events",
-    company: "Coding Club BMSIT",
+    company: "Coding Club BMSIT&M",
     dates: "Sep 2024 – Apr 2025",
     desc: "Coordinated and executed multiple coding events, tech speaker sessions, and department-wide challenges. Enhanced self-confidence and communication skills through active community outreach and peer collaboration."
   }

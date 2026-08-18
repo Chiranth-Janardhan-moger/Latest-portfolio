@@ -76,24 +76,26 @@ export default function HoneypotView({ invalidPath, onNavigate }: HoneypotViewPr
           </div>
         </div>
 
-        {/* Action Button Cluster in Single Row */}
-        <div className="flex flex-row items-center gap-2.5 sm:gap-3 w-full">
+        {/* Action Button Cluster with 65% / 35% width proportion */}
+        <div className="flex flex-row items-center gap-2 sm:gap-3 w-full">
           <a
             href="https://cftweb-security.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-1.5 bg-ink text-paper rounded-full py-2.5 px-3 sm:px-5 text-[11px] sm:text-xs font-semibold hover:bg-neutral-800 active:scale-95 shadow-[0_2px_10px_rgba(0,0,0,0.14)] transition-all duration-200 cursor-pointer btn-sweep whitespace-nowrap"
+            className="w-[64%] sm:w-[65%] shrink-0 inline-flex items-center justify-center gap-1.5 bg-ink text-paper rounded-full py-2.5 px-3 sm:px-4 text-[11px] sm:text-xs font-semibold hover:bg-neutral-800 active:scale-95 shadow-[0_2px_10px_rgba(0,0,0,0.14)] transition-all duration-200 cursor-pointer btn-sweep whitespace-nowrap group"
           >
             <span>Want to play CTF? Launch Challenge</span>
-            <ArrowUpRight size={13} />
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+              <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </a>
           <button
             type="button"
             onClick={() => onNavigate('portfolio')}
-            className="flex-1 inline-flex items-center justify-center gap-1.5 bg-white border border-line/80 text-ink rounded-full py-2.5 px-3 sm:px-5 text-[11px] sm:text-xs font-semibold hover:bg-neutral-50 active:scale-95 shadow-2xs transition-all duration-200 cursor-pointer whitespace-nowrap"
+            className="w-[36%] sm:w-[35%] shrink-0 inline-flex items-center justify-center gap-1.5 bg-white border border-line/80 text-ink rounded-full py-2.5 px-2 sm:px-3 text-[11px] sm:text-xs font-semibold hover:bg-neutral-50 active:scale-95 shadow-2xs transition-all duration-200 cursor-pointer whitespace-nowrap truncate"
           >
-            <Home size={13} />
-            <span>Return to Portfolio</span>
+            <Home size={13} className="shrink-0" />
+            <span className="truncate">Return to Portfolio</span>
           </button>
         </div>
 

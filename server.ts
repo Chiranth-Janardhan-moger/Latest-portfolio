@@ -317,7 +317,8 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
     }
 
     .apple-pill-btn {
-      flex: 1;
+      flex: 0.65;
+      width: 65%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -347,11 +348,12 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
     }
 
     .apple-secondary-btn {
-      flex: 1;
+      flex: 0.35;
+      width: 35%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.75rem 1rem;
+      padding: 0.75rem 0.75rem;
       background: rgba(255, 255, 255, 0.9);
       color: var(--color-ink);
       border: 1px solid rgba(0, 0, 0, 0.1);
@@ -361,6 +363,8 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
       font-weight: 600;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .apple-secondary-btn:hover {
@@ -418,7 +422,10 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
       
       <div class="btn-cluster">
         <a href="https://cftweb-security.vercel.app/" class="apple-pill-btn btn-sweep" target="_blank" rel="noopener noreferrer">
-          Want to play CTF? Launch Challenge ↗
+          <span>Want to play CTF? Launch Challenge</span>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 6px; flex-shrink: 0;">
+            <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </a>
         <a href="/" class="apple-secondary-btn">
           Return to Portfolio

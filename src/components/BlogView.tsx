@@ -126,7 +126,7 @@ export default function BlogView({ initialBlogSlug, onSelectBlog }: BlogViewProp
               >
                 <div id={`blog-card-top-${post.id}`}>
                   <div className="flex justify-between items-center mb-4" id={`blog-card-meta-${post.id}`}>
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-ink bg-neutral-100 border border-neutral-200/80 px-3 py-1 rounded-full shadow-2xs font-semibold" id={`blog-card-cat-${post.id}`}>
+                    <span className="font-mono text-[9.5px] uppercase tracking-wider text-ink bg-black/[0.03] border border-black/[0.06] px-2 py-0.5 rounded-full font-medium inline-flex items-center" id={`blog-card-cat-${post.id}`}>
                       {post.category}
                     </span>
                     <div className="flex items-center gap-2 text-ink-soft font-mono text-[11px]">
@@ -186,7 +186,7 @@ export default function BlogView({ initialBlogSlug, onSelectBlog }: BlogViewProp
           {/* Article Head */}
           <div className="border-b border-line/80 pb-8" id="article-header">
             <div className="flex items-center gap-3 text-xs text-ink-soft font-mono mb-4 flex-wrap" id="article-head-meta">
-              <span className="bg-neutral-100 border border-neutral-200/80 px-3 py-1 text-ink rounded-full font-semibold shadow-2xs" id="article-cat">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-ink bg-black/[0.03] border border-black/[0.06] px-2.5 py-0.5 rounded-full font-medium inline-flex items-center" id="article-cat">
                 {selectedPost.category}
               </span>
               <span className="flex items-center gap-1.5" id="article-date">

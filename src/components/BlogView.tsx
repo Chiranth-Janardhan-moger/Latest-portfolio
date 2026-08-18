@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, Calendar, Tag, ArrowUpRight, Clock, BookOpen } from 'lucide-react';
+import { ChevronLeft, Calendar, Tag, ArrowUpRight, BookOpen } from 'lucide-react';
 import { INITIAL_BLOGS } from '../data';
 import { BlogPost } from '../types';
 import Markdown from 'react-markdown';
@@ -129,16 +129,9 @@ export default function BlogView({ initialBlogSlug, onSelectBlog }: BlogViewProp
                     <span className="font-mono text-[9.5px] uppercase tracking-wider text-ink bg-black/[0.03] border border-black/[0.06] px-2 py-0.5 rounded-full font-medium inline-flex items-center" id={`blog-card-cat-${post.id}`}>
                       {post.category}
                     </span>
-                    <div className="flex items-center gap-2 text-ink-soft font-mono text-[11px]">
-                      {post.readingTime && (
-                        <span className="hidden sm:inline-flex items-center gap-1">
-                          <Clock size={11} /> {post.readingTime}
-                        </span>
-                      )}
-                      <span id={`blog-card-date-${post.id}`}>
-                        {post.publishedAt}
-                      </span>
-                    </div>
+                    <span className="text-ink-soft font-mono text-[11px]" id={`blog-card-date-${post.id}`}>
+                      {post.publishedAt}
+                    </span>
                   </div>
                   <h2 className="text-xl font-bold text-ink tracking-tight leading-snug mb-2.5 group-hover:text-ink-soft transition-colors" id={`blog-card-title-${post.id}`}>
                     {post.title}
@@ -192,11 +185,6 @@ export default function BlogView({ initialBlogSlug, onSelectBlog }: BlogViewProp
               <span className="flex items-center gap-1.5" id="article-date">
                 <Calendar size={13} /> {selectedPost.publishedAt}
               </span>
-              {selectedPost.readingTime && (
-                <span className="flex items-center gap-1.5">
-                  <Clock size={13} /> {selectedPost.readingTime}
-                </span>
-              )}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-ink leading-tight mb-4" id="article-title">
               {selectedPost.title}

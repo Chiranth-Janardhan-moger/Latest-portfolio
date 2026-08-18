@@ -13,7 +13,7 @@ import { triggerFluidCloud } from './utils/fluidCloud';
 type ViewMode = 'portfolio' | 'apps' | 'blog' | 'contact' | 'not-found';
 
 // Path parsing helper
-function parsePathToView(pathname: string, hash: string): { view: ViewMode; appId?: string | null; invalidPath?: string } {
+function parsePathToView(pathname: string, hash: string): { view: ViewMode; appId?: string | null; blogSlug?: string | null; invalidPath?: string } {
   // Check hash fallback first in case user arrived with a legacy #link
   const cleanHash = hash.replace('#', '').toLowerCase();
   if (cleanHash === 'portfolio') return { view: 'portfolio' };
@@ -34,8 +34,13 @@ function parsePathToView(pathname: string, hash: string): { view: ViewMode; appI
     const appId = segments[segments.length - 1] || null;
     return { view: 'apps', appId };
   }
-  if (cleanPath === '/blog' || cleanPath.startsWith('/blog/')) {
-    return { view: 'blog' };
+  if (cleanPath === '/blog') {
+    return { view: 'blog', blogSlug: null };
+  }
+  if (cleanPath.startsWith('/blog/')) {
+    const segments = cleanPath.split('/');
+    const blogSlug = segments[segments.length - 1] || null;
+    return { view: 'blog', blogSlug };
   }
   if (cleanPath === '/contact') {
     return { view: 'contact' };
@@ -56,6 +61,10 @@ export default function App() {
     return parsePathToView(window.location.pathname, window.location.hash).appId || null;
   });
 
+  const [activeBlogSlug, setActiveBlogSlug] = useState<string | null>(() => {
+    return parsePathToView(window.location.pathname, window.location.hash).blogSlug || null;
+  });
+
   const [invalidPath, setInvalidPath] = useState<string>(() => {
     return parsePathToView(window.location.pathname, window.location.hash).invalidPath || '';
   });
@@ -66,9 +75,10 @@ export default function App() {
 
   // Clean legacy hashes and normalize URL to clean paths on initial mount
   useEffect(() => {
-    const { view, appId, invalidPath: badPath } = parsePathToView(window.location.pathname, window.location.hash);
+    const { view, appId, blogSlug, invalidPath: badPath } = parsePathToView(window.location.pathname, window.location.hash);
     setActiveView(view);
     setActiveAppId(appId || null);
+    setActiveBlogSlug(blogSlug || null);
     if (badPath) {
       setInvalidPath(badPath);
     } else {
@@ -78,7 +88,7 @@ export default function App() {
     // Normalize URL path in browser address bar without hashes
     let targetPath = '/';
     if (view === 'apps') targetPath = appId ? `/app/${appId}` : '/apps';
-    else if (view === 'blog') targetPath = '/blog';
+    else if (view === 'blog') targetPath = blogSlug ? `/blog/${blogSlug}` : '/blog';
     else if (view === 'contact') targetPath = '/contact';
     else if (view === 'portfolio') targetPath = '/';
 
@@ -90,9 +100,10 @@ export default function App() {
   // Handle browser Back/Forward navigation
   useEffect(() => {
     const handlePopState = () => {
-      const { view, appId, invalidPath: badPath } = parsePathToView(window.location.pathname, window.location.hash);
+      const { view, appId, blogSlug, invalidPath: badPath } = parsePathToView(window.location.pathname, window.location.hash);
       setActiveView(view);
       setActiveAppId(appId || null);
+      setActiveBlogSlug(blogSlug || null);
       if (badPath) {
         setInvalidPath(badPath);
       } else {
@@ -138,10 +149,27 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Network offline/online listeners
+  // Monitor network connection for offline reliability
   useEffect(() => {
-    const handleOnline = () => setIsOffline(false);
-    const handleOffline = () => setIsOffline(true);
+    const handleOnline = () => {
+      setIsOffline(false);
+      triggerFluidCloud({
+        title: "Connection Restored",
+        subtitle: "Online and ready",
+        icon: "check",
+        type: "success"
+      });
+    };
+
+    const handleOffline = () => {
+      setIsOffline(true);
+      triggerFluidCloud({
+        title: "Connection Lost",
+        subtitle: "Running offline via Service Worker",
+        icon: "alert",
+        type: "warning"
+      });
+    };
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
@@ -193,20 +221,21 @@ export default function App() {
   }, []);
 
   // Clean path-based navigation handler
-  const handleNav = (view: ViewMode, appId?: string | null) => {
+  const handleNav = (view: ViewMode, appId?: string | null, blogSlug?: string | null) => {
     setActiveView(view);
     setActiveAppId(appId || null);
+    setActiveBlogSlug(blogSlug || null);
     setInvalidPath('');
 
     // OxygenOS / OriginOS Fluid Cloud dynamic morphing status
     if (view === 'portfolio') triggerFluidCloud({ title: "Portfolio", subtitle: "Systems, Compilers & Security", icon: "user", type: "info" });
     else if (view === 'apps') triggerFluidCloud({ title: appId ? `App · ${appId.toUpperCase()}` : "Mobile Engineering", subtitle: "Offline Engines & Android Architecture", icon: "smartphone", type: "info" });
-    else if (view === 'blog') triggerFluidCloud({ title: "Research & Writing", subtitle: "Deep Dives & Technical Papers", icon: "newspaper", type: "info" });
+    else if (view === 'blog') triggerFluidCloud({ title: blogSlug ? `Research · ${blogSlug.toUpperCase()}` : "Research & Writing", subtitle: "Deep Dives & Technical Papers", icon: "newspaper", type: "info" });
     else if (view === 'contact') triggerFluidCloud({ title: "Direct Contact Gateway", subtitle: "chiranthmoger7@gmail.com", icon: "contact", type: "info" });
 
     let targetPath = '/';
     if (view === 'apps') targetPath = appId ? `/app/${appId}` : '/apps';
-    else if (view === 'blog') targetPath = '/blog';
+    else if (view === 'blog') targetPath = blogSlug ? `/blog/${blogSlug}` : '/blog';
     else if (view === 'contact') targetPath = '/contact';
     else if (view === 'portfolio') targetPath = '/';
     else if (view === 'not-found') targetPath = '/404';
@@ -255,7 +284,14 @@ export default function App() {
               />
             )}
             {activeView === 'blog' && (
-              <BlogView />
+              <BlogView 
+                initialBlogSlug={activeBlogSlug}
+                onSelectBlog={(slug) => {
+                  setActiveBlogSlug(slug);
+                  const targetPath = slug ? `/blog/${slug}` : '/blog';
+                  window.history.pushState({}, '', targetPath);
+                }}
+              />
             )}
             {activeView === 'contact' && (
               <ContactView />
@@ -279,65 +315,72 @@ export default function App() {
 
       </div>
 
-      {/* Apple-Style Dynamic Glass Dock */}
+      {/* Floating Apple-Style Bottom Glass Dock */}
       <nav 
-        className={`fixed bottom-6 left-1/2 bg-[#F6F5F2]/80 backdrop-blur-2xl backdrop-saturate-180 border border-black/[0.08] rounded-full p-1.5 z-40 flex items-center gap-1 transition-all duration-300 ease-out select-none ${
-          isMinimized ? 'scale-95 px-2' : ''
+        className={`fixed bottom-6 inset-x-0 mx-auto w-fit z-50 transition-all duration-300 ${
+          isMinimized ? 'translate-y-16 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
         }`}
-        style={{ 
-          boxShadow: '0 20px 40px -12px rgba(0, 0, 0, 0.12), 0 8px 16px -4px rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.95), inset 0 -1px 1px rgba(0, 0, 0, 0.03)',
-          transform: isMinimized ? 'translateX(-50%) translateY(20px)' : 'translateX(-50%) translateY(0px)',
-          opacity: isMinimized ? 0.6 : 1
-        }}
-        id="sticky-bottom-dock"
+        id="bottom-dock-nav"
+        role="navigation"
+        aria-label="Main Navigation"
       >
-        {(['portfolio', 'apps', 'blog', 'contact'] as const).map((view) => {
-          const isActive = activeView === view;
-          const label = view === 'portfolio' ? 'Portfolio' : view === 'apps' ? 'Apps' : view === 'blog' ? 'Blog' : 'Contact';
-          const Icon = view === 'portfolio' ? User : view === 'apps' ? Smartphone : view === 'blog' ? Newspaper : MessageSquare;
+        <div className="flex items-center gap-1 sm:gap-1.5 px-3 py-2 rounded-full border border-black/[0.08] bg-white/80 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] text-xs font-mono select-none" id="dock-capsule">
+          <button
+            onClick={() => handleNav('portfolio')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-pointer font-medium ${
+              activeView === 'portfolio'
+                ? 'bg-ink text-paper shadow-xs font-semibold'
+                : 'text-ink-soft hover:text-ink hover:bg-black/[0.04]'
+            }`}
+            id="nav-btn-portfolio"
+            aria-current={activeView === 'portfolio' ? 'page' : undefined}
+          >
+            <User size={13} className="shrink-0" />
+            <span>Portfolio</span>
+          </button>
           
-          return (
-            <motion.button
-              key={view}
-              onClick={() => handleNav(view)}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.94 }}
-              className={`relative px-3.5 sm:px-4 py-2 text-xs rounded-full transition-colors duration-200 flex items-center gap-2 cursor-pointer select-none font-sans font-medium ${
-                isActive ? 'text-ink font-semibold' : 'text-ink-soft hover:text-ink'
-              }`}
-              id={`dock-tab-${view}`}
-              title={label}
-              aria-label={`Navigate to ${label}`}
-            >
-              {/* Apple Sliding Glass Capsule Indicator */}
-              {isActive && (
-                <motion.div
-                  layoutId="apple-active-pill"
-                  className="absolute inset-0 bg-white rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,1)] border border-black/[0.04]"
-                  transition={{ type: 'spring', stiffness: 440, damping: 32, mass: 0.7 }}
-                />
-              )}
+          <button
+            onClick={() => handleNav('apps')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-pointer font-medium ${
+              activeView === 'apps'
+                ? 'bg-ink text-paper shadow-xs font-semibold'
+                : 'text-ink-soft hover:text-ink hover:bg-black/[0.04]'
+            }`}
+            id="nav-btn-apps"
+            aria-current={activeView === 'apps' ? 'page' : undefined}
+          >
+            <Smartphone size={13} className="shrink-0" />
+            <span>Apps</span>
+          </button>
 
-              {/* Icon & Label */}
-              <div className="relative z-10 flex items-center gap-1.5 sm:gap-2">
-                <Icon 
-                  size={15} 
-                  strokeWidth={isActive ? 2.2 : 1.8} 
-                  className={`transition-colors duration-200 ${isActive ? 'text-ink' : 'text-ink-soft'}`} 
-                />
-                <span className={`text-[12px] sm:text-[13px] tracking-tight transition-all duration-300 ease-out overflow-hidden flex items-center ${
-                  isMinimized 
-                    ? 'max-w-0 opacity-0' 
-                    : isActive 
-                      ? 'max-w-[100px] opacity-100' 
-                      : 'max-w-0 opacity-0 sm:max-w-[100px] sm:opacity-100'
-                }`}>
-                  {label}
-                </span>
-              </div>
-            </motion.button>
-          );
-        })}
+          <button
+            onClick={() => handleNav('blog')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-pointer font-medium ${
+              activeView === 'blog'
+                ? 'bg-ink text-paper shadow-xs font-semibold'
+                : 'text-ink-soft hover:text-ink hover:bg-black/[0.04]'
+            }`}
+            id="nav-btn-blog"
+            aria-current={activeView === 'blog' ? 'page' : undefined}
+          >
+            <Newspaper size={13} className="shrink-0" />
+            <span>Writing</span>
+          </button>
+
+          <button
+            onClick={() => handleNav('contact')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-pointer font-medium ${
+              activeView === 'contact'
+                ? 'bg-ink text-paper shadow-xs font-semibold'
+                : 'text-ink-soft hover:text-ink hover:bg-black/[0.04]'
+            }`}
+            id="nav-btn-contact"
+            aria-current={activeView === 'contact' ? 'page' : undefined}
+          >
+            <MessageSquare size={13} className="shrink-0" />
+            <span>Contact</span>
+          </button>
+        </div>
       </nav>
 
     </div>

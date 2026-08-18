@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, Calendar, Tag, ArrowUpRight } from 'lucide-react';
+import { ChevronLeft, Calendar, Tag, ArrowUpRight, Clock, BookOpen } from 'lucide-react';
 import { INITIAL_BLOGS } from '../data';
 import { BlogPost } from '../types';
 import Markdown from 'react-markdown';
@@ -7,21 +7,100 @@ import remarkGfm from 'remark-gfm';
 import TiltCard from './TiltCard';
 import LazyImage from './LazyImage';
 
-export default function BlogView() {
-  const [blogs, setBlogs] = useState<BlogPost[]>(INITIAL_BLOGS);
-  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+interface BlogViewProps {
+  initialBlogSlug?: string | null;
+  onSelectBlog?: (slug: string | null) => void;
+}
 
-  // Fetch dynamic custom posts on mount (if any exist on the server)
+// Helper to resolve blog post by direct slug, ID, or semantic alias
+export function findPostBySlugOrAlias(posts: BlogPost[], query?: string | null): BlogPost | null {
+  if (!query) return null;
+  const q = query.toLowerCase().trim().replace(/^\/blog\//, '').replace(/\/$/, '');
+  if (!q) return null;
+
+  // 1. Direct slug or id exact match
+  const direct = posts.find(p => p.slug.toLowerCase() === q || p.id.toLowerCase() === q);
+  if (direct) return direct;
+
+  // 2. Semantic short aliases
+  if (['rust', 'latex', 'tectonic', 'android-rust', 'jni'].includes(q)) {
+    return posts.find(p => p.id === 'blog-2' || p.slug.includes('tectonic')) || null;
+  }
+  if (['mcp', 'mcppro', 'ai', 'agents', 'rag'].includes(q)) {
+    return posts.find(p => p.id === 'blog-1' || p.slug.includes('model-context-protocol')) || null;
+  }
+  if (['sqlguard', 'sqlguardjs', 'waf', 'cybersecurity', 'security', 'firewall'].includes(q)) {
+    return posts.find(p => p.id === 'blog-3' || p.slug.includes('sqlguardjs')) || null;
+  }
+
+  // 3. Substring match
+  return posts.find(p => p.slug.toLowerCase().includes(q) || p.title.toLowerCase().includes(q)) || null;
+}
+
+export default function BlogView({ initialBlogSlug, onSelectBlog }: BlogViewProps = {}) {
+  const [blogs, setBlogs] = useState<BlogPost[]>(INITIAL_BLOGS);
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(() => {
+    const path = window.location.pathname.toLowerCase();
+    const pathSlug = path.startsWith('/blog/') ? path.split('/blog/')[1] : null;
+    const targetSlug = initialBlogSlug || pathSlug;
+    return findPostBySlugOrAlias(INITIAL_BLOGS, targetSlug);
+  });
+
+  // Fetch dynamic custom posts on mount
   useEffect(() => {
     fetch('/api/blogs/custom')
       .then(res => res.json())
       .then(data => {
-        if (data && Array.isArray(data.posts)) {
-          setBlogs([...data.posts, ...INITIAL_BLOGS]);
+        if (data && Array.isArray(data.posts) && data.posts.length > 0) {
+          const combined = [...data.posts, ...INITIAL_BLOGS];
+          setBlogs(combined);
+          const path = window.location.pathname.toLowerCase();
+          const pathSlug = path.startsWith('/blog/') ? path.split('/blog/')[1] : null;
+          const targetSlug = initialBlogSlug || pathSlug;
+          if (targetSlug && !selectedPost) {
+            const match = findPostBySlugOrAlias(combined, targetSlug);
+            if (match) setSelectedPost(match);
+          }
         }
       })
       .catch(err => console.error("Error loading custom posts:", err));
-  }, []);
+  }, [initialBlogSlug, selectedPost]);
+
+  // Synchronize when initialBlogSlug prop changes
+  useEffect(() => {
+    if (initialBlogSlug !== undefined) {
+      const match = findPostBySlugOrAlias(blogs, initialBlogSlug);
+      setSelectedPost(match);
+    }
+  }, [initialBlogSlug, blogs]);
+
+  // Listen to popstate for browser back / forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname.toLowerCase();
+      if (path === '/blog' || path === '/blog/') {
+        setSelectedPost(null);
+      } else if (path.startsWith('/blog/')) {
+        const slug = path.split('/blog/')[1];
+        const match = findPostBySlugOrAlias(blogs, slug);
+        setSelectedPost(match);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [blogs]);
+
+  const handleSelectPost = (post: BlogPost | null) => {
+    setSelectedPost(post);
+    if (onSelectBlog) {
+      onSelectBlog(post ? post.slug : null);
+    } else {
+      const targetPath = post ? `/blog/${post.slug}` : '/blog';
+      window.history.pushState({}, '', targetPath);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="py-8 space-y-12 animate-fade-in" id="blog-container">
@@ -41,10 +120,7 @@ export default function BlogView() {
             {blogs.map((post) => (
               <TiltCard
                 key={post.id}
-                onClick={() => {
-                  setSelectedPost(post);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={() => handleSelectPost(post)}
                 className="aquamorphic-card group border border-line/80 bg-white/80 backdrop-blur-md rounded-3xl p-6 sm:p-7 hover:border-ink hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.12)] cursor-pointer flex flex-col justify-between h-full"
                 id={`blog-card-${post.id}`}
               >
@@ -53,9 +129,16 @@ export default function BlogView() {
                     <span className="font-mono text-[10px] uppercase tracking-wider text-ink bg-neutral-100 border border-neutral-200/80 px-3 py-1 rounded-full shadow-2xs font-semibold" id={`blog-card-cat-${post.id}`}>
                       {post.category}
                     </span>
-                    <span className="font-mono text-[11px] text-ink-soft" id={`blog-card-date-${post.id}`}>
-                      {post.publishedAt}
-                    </span>
+                    <div className="flex items-center gap-2 text-ink-soft font-mono text-[11px]">
+                      {post.readingTime && (
+                        <span className="hidden sm:inline-flex items-center gap-1">
+                          <Clock size={11} /> {post.readingTime}
+                        </span>
+                      )}
+                      <span id={`blog-card-date-${post.id}`}>
+                        {post.publishedAt}
+                      </span>
+                    </div>
                   </div>
                   <h2 className="text-xl font-bold text-ink tracking-tight leading-snug mb-2.5 group-hover:text-ink-soft transition-colors" id={`blog-card-title-${post.id}`}>
                     {post.title}
@@ -86,28 +169,34 @@ export default function BlogView() {
           {/* Apple Back Button */}
           <div className="flex items-center justify-between border-b border-line/80 pb-4" id="article-nav-top">
             <button
-              onClick={() => setSelectedPost(null)}
+              onClick={() => handleSelectPost(null)}
               className="w-9 h-9 rounded-full border border-line/80 bg-white/80 backdrop-blur-md hover:bg-ink hover:text-paper flex items-center justify-center text-ink shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer group"
               id="btn-back-to-blogs"
-              title="Back"
+              title="Back to Writing"
               aria-label="Back to blogs"
             >
               <ChevronLeft size={18} className="text-current transition-transform duration-200 group-hover:-translate-x-0.5" />
             </button>
-            <span className="font-mono text-xs text-ink-soft">
-              Blog / <span className="text-ink font-semibold">{selectedPost.category}</span>
-            </span>
+            <div className="flex items-center gap-2 font-mono text-xs text-ink-soft">
+              <BookOpen size={13} className="text-ink-soft" />
+              <span>Blog / <span className="text-ink font-semibold">{selectedPost.category}</span></span>
+            </div>
           </div>
 
           {/* Article Head */}
           <div className="border-b border-line/80 pb-8" id="article-header">
-            <div className="flex items-center gap-3 text-xs text-ink-soft font-mono mb-4" id="article-head-meta">
+            <div className="flex items-center gap-3 text-xs text-ink-soft font-mono mb-4 flex-wrap" id="article-head-meta">
               <span className="bg-neutral-100 border border-neutral-200/80 px-3 py-1 text-ink rounded-full font-semibold shadow-2xs" id="article-cat">
                 {selectedPost.category}
               </span>
               <span className="flex items-center gap-1.5" id="article-date">
                 <Calendar size={13} /> {selectedPost.publishedAt}
               </span>
+              {selectedPost.readingTime && (
+                <span className="flex items-center gap-1.5">
+                  <Clock size={13} /> {selectedPost.readingTime}
+                </span>
+              )}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-ink leading-tight mb-4" id="article-title">
               {selectedPost.title}
@@ -202,4 +291,3 @@ export default function BlogView() {
     </div>
   );
 }
-

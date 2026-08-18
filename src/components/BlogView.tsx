@@ -165,7 +165,7 @@ export default function BlogView({ initialBlogSlug, onSelectBlog }: BlogViewProp
               onClick={() => handleSelectPost(null)}
               className="w-9 h-9 rounded-full border border-line/80 bg-white/80 backdrop-blur-md hover:bg-ink hover:text-paper flex items-center justify-center text-ink shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer group"
               id="btn-back-to-blogs"
-              title="Back to Writing"
+              title="Back to Blog"
               aria-label="Back to blogs"
             >
               <ChevronLeft size={18} className="text-current transition-transform duration-200 group-hover:-translate-x-0.5" />

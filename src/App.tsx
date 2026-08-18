@@ -230,7 +230,7 @@ export default function App() {
     // OxygenOS / OriginOS Fluid Cloud dynamic morphing status
     if (view === 'portfolio') triggerFluidCloud({ title: "Portfolio", subtitle: "Systems, Compilers & Security", icon: "user", type: "info" });
     else if (view === 'apps') triggerFluidCloud({ title: appId ? `App · ${appId.toUpperCase()}` : "Mobile Engineering", subtitle: "Offline Engines & Android Architecture", icon: "smartphone", type: "info" });
-    else if (view === 'blog') triggerFluidCloud({ title: blogSlug ? `Research · ${blogSlug.toUpperCase()}` : "Research & Writing", subtitle: "Deep Dives & Technical Papers", icon: "newspaper", type: "info" });
+    else if (view === 'blog') triggerFluidCloud({ title: blogSlug ? `Blog · ${blogSlug.toUpperCase()}` : "Blog", subtitle: "Deep Dives & Technical Papers", icon: "newspaper", type: "info" });
     else if (view === 'contact') triggerFluidCloud({ title: "Direct Contact Gateway", subtitle: "chiranthmoger7@gmail.com", icon: "contact", type: "info" });
 
     let targetPath = '/';
@@ -364,7 +364,7 @@ export default function App() {
             aria-current={activeView === 'blog' ? 'page' : undefined}
           >
             <Newspaper size={13} className="shrink-0" />
-            <span>Writing</span>
+            <span>Blog</span>
           </button>
 
           <button

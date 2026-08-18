@@ -348,7 +348,14 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                     </div>
                   </div>
                   <p className="font-mono text-xs text-ink-soft mt-1" id={`edu-meta-${idx}`}>
-                    {edu.degree}
+                    {edu.degree.includes("Bachelor of Engineering") ? (
+                      <>
+                        <span className="sm:hidden">{edu.degree.replace("Bachelor of Engineering", "B.E.")}</span>
+                        <span className="hidden sm:inline">{edu.degree}</span>
+                      </>
+                    ) : (
+                      edu.degree
+                    )}
                   </p>
                   
                   {/* Expandable Details containing CGPA */}

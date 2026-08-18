@@ -43,7 +43,6 @@ export const EXPERIENCES: Experience[] = [
   {
     id: "freelance-optify",
     role: "Optify",
-    company: "freelance",
     dates: "2025 – 2026",
     desc: "Full-Stack Development & Real-World Problem Solving",
     logo: "/optify.png"
@@ -67,7 +66,6 @@ export const EXPERIENCES: Experience[] = [
   {
     id: "freelance-aigle-air",
     role: "Aigle Air",
-    company: "startup",
     dates: "2024 – 2025",
     desc: "Web Development + Sensor Architecture",
     logo: "/aigle-logo.png"

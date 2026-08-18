@@ -325,7 +325,14 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps }:
                       id={`edu-btn-${idx}`}
                     >
                       <h3 className="font-bold text-base text-ink flex items-center gap-1.5 flex-wrap" id={`edu-inst-${idx}`}>
-                        <span>{edu.institution}</span>
+                        {edu.institution.includes("BMS") ? (
+                          <>
+                            <span className="sm:hidden">BMSIT&M</span>
+                            <span className="hidden sm:inline">{edu.institution}</span>
+                          </>
+                        ) : (
+                          <span>{edu.institution}</span>
+                        )}
                       </h3>
                       <ChevronDown 
                         size={15} 

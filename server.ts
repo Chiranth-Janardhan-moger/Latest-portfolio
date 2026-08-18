@@ -311,14 +311,14 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
 
     .btn-cluster {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
       gap: 10px;
+      width: 100%;
     }
 
     .apple-pill-btn {
-      flex: 0.65;
-      width: 65%;
+      width: 100%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -348,8 +348,7 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
     }
 
     .apple-secondary-btn {
-      flex: 0.35;
-      width: 35%;
+      width: 100%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -363,8 +362,6 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
       font-weight: 600;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .apple-secondary-btn:hover {
@@ -375,6 +372,20 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
 
     .apple-secondary-btn:active {
       transform: scale(0.98);
+    }
+
+    @media (min-width: 640px) {
+      .btn-cluster {
+        flex-direction: row;
+      }
+      .apple-pill-btn {
+        flex: 0.65;
+        width: 65%;
+      }
+      .apple-secondary-btn {
+        flex: 0.35;
+        width: 35%;
+      }
     }
   </style>
 </head>

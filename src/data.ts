@@ -72,8 +72,8 @@ export const EXPERIENCES: Experience[] = [
   },
   {
     id: "president-epoch",
-    role: "President, Epoch Society",
-    company: "BMSIT Technical Society",
+    role: "President",
+    company: "Epoch Society",
     dates: "2025 – 2026",
     desc: "Leading technical operations, organizing bootcamps and hackathons for 500+ student developers. Bridging industry engineers and students to collaborate on production-ready systems.",
     url: "https://bmsit.ac.in/pdfs/students-club-29.pdf",

@@ -228,6 +228,27 @@ export default function App() {
       .catch((err) => console.error('Failed to fetch visit count:', err));
   }, []);
 
+  // Portfolio Telemetry & Visitor Radar Trigger
+  useEffect(() => {
+    try {
+      const currentPath = window.location.pathname || '/';
+      const isHoneypot = activeView === 'honeypot';
+      const sessionKey = `telemetry_logged_${currentPath}_${isHoneypot ? 'trap' : 'view'}`;
+      
+      if (!sessionStorage.getItem(sessionKey)) {
+        sessionStorage.setItem(sessionKey, 'true');
+        const targetName = isHoneypot
+          ? `🚨 Honeypot Security Trap (${invalidPath || currentPath})`
+          : `Portfolio Website (${currentPath === '/' ? 'Home View' : currentPath})`;
+
+        const img = new Image();
+        img.src = `/api/telemetry/pixel.svg?target=${encodeURIComponent(targetName)}&t=${Date.now()}`;
+      }
+    } catch (e) {
+      // Graceful fallback
+    }
+  }, [activeView, invalidPath]);
+
   // Clean path-based navigation handler
   const handleNav = (view: ViewMode, appId?: string | null, blogSlug?: string | null) => {
     setActiveView(view);

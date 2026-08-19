@@ -650,7 +650,14 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                   <div>
                     <div className="flex items-center gap-2 flex-wrap" id={`project-title-wrapper-${proj.id}`}>
                       <h3 className="text-xl font-bold text-ink flex items-center gap-2" id={`project-name-${proj.id}`}>
-                        <span>{proj.name}</span>
+                        {proj.id === 'vaultx' ? (
+                          <>
+                            <span className="hidden sm:inline">{proj.name}</span>
+                            <span className="inline sm:hidden">VaultX</span>
+                          </>
+                        ) : (
+                          <span>{proj.name}</span>
+                        )}
                         <ChevronDown 
                           size={16} 
                           className={`text-ink-soft transition-transform duration-300 opacity-60 group-hover:opacity-100 ${

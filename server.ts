@@ -482,6 +482,141 @@ app.post("/api/security/test", (req, res) => {
   });
 });
 
+// Telemetry and Discord Webhook Notification System
+interface TelemetryData {
+  target: string;
+  ip: string;
+  userAgent: string;
+  referer: string;
+  path: string;
+}
+
+async function sendDiscordNotification(data: TelemetryData) {
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  if (!webhookUrl || !webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
+    console.log(`[Telemetry Access]: Target="${data.target}" IP="${data.ip}" Time="${new Date().toISOString()}"`);
+    return;
+  }
+
+  try {
+    let geo = {
+      city: "Unknown",
+      regionName: "Unknown",
+      country: "Unknown",
+      countryCode: "",
+      isp: "Unknown",
+      org: "Unknown",
+      status: "fail"
+    };
+
+    const isLocal = !data.ip || data.ip === "127.0.0.1" || data.ip === "::1" || data.ip.startsWith("192.168.") || data.ip.startsWith("10.");
+    if (!isLocal) {
+      const geoRes = await fetch(`http://ip-api.com/json/${encodeURIComponent(data.ip)}?fields=status,country,countryCode,regionName,city,isp,org,query`, {
+        signal: AbortSignal.timeout(3500)
+      });
+      if (geoRes.ok) {
+        geo = await geoRes.json();
+      }
+    } else {
+      geo = {
+        city: "Localhost",
+        regionName: "Development",
+        country: "Local System",
+        countryCode: "DEV",
+        isp: "Local Loopback",
+        org: "Localhost",
+        status: "success"
+      };
+    }
+
+    const timestamp = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+    const locationString = geo.status === "success" 
+      ? `${geo.city}, ${geo.regionName}, ${geo.country}`
+      : "Location Lookup Unavailable";
+
+    const embedPayload = {
+      username: "GitHub Radar Telemetry",
+      avatar_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+      embeds: [
+        {
+          title: `🎯 ${data.target} Accessed`,
+          color: 0x5865F2,
+          fields: [
+            {
+              name: "🌐 IP Address",
+              value: `\`${data.ip}\``,
+              inline: true
+            },
+            {
+              name: "📍 Location",
+              value: locationString,
+              inline: true
+            },
+            {
+              name: "🏢 Network / ISP",
+              value: geo.isp || geo.org || "Unknown ISP",
+              inline: false
+            },
+            {
+              name: "🔗 Referrer",
+              value: data.referer && data.referer !== "Direct" ? `\`${data.referer}\`` : "Direct / GitHub Camo",
+              inline: true
+            },
+            {
+              name: "⏰ Time (IST)",
+              value: `\`${timestamp}\``,
+              inline: true
+            },
+            {
+              name: "📱 User Agent",
+              value: `\`${data.userAgent.substring(0, 180)}\``,
+              inline: false
+            }
+          ],
+          footer: {
+            text: "Portfolio & GitHub Telemetry Engine"
+          },
+          timestamp: new Date().toISOString()
+        }
+      ]
+    };
+
+    await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(embedPayload),
+      signal: AbortSignal.timeout(4000)
+    });
+  } catch (err) {
+    console.error("[Telemetry]: Error dispatching Discord alert:", err);
+  }
+}
+
+// GitHub Tracking Pixel & Live Telemetry Endpoint
+app.get(["/api/telemetry/pixel.svg", "/api/telemetry/pixel.png", "/api/track/github.svg"], (req, res) => {
+  const ip = (req.headers["x-forwarded-for"] as string)?.split(",")[0].trim() || req.socket.remoteAddress || "unknown";
+  const userAgent = req.headers["user-agent"] || "unknown";
+  const referer = req.headers["referer"] || "Direct";
+  const target = (req.query.target as string) || (req.query.repo as string) || "GitHub Profile / README";
+
+  sendDiscordNotification({
+    target,
+    ip,
+    userAgent,
+    referer,
+    path: req.originalUrl
+  });
+
+  // Return zero-cache transparent 1x1 SVG image
+  res.setHeader("Content-Type", "image/svg+xml");
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.setHeader("Surrogate-Control", "no-store");
+  
+  res.send(`<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1" viewBox="0 0 1 1"><rect width="1" height="1" fill="none"/></svg>`);
+});
+
 // Logs endpoint for SQLGuardJS
 app.get("/api/security/logs", guard.logsHandler());
 

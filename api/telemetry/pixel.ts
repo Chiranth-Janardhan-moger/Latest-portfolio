@@ -5,7 +5,12 @@ export default async function handler(req: any, res: any) {
   const referer = req.headers["referer"] || req.headers["referrer"] || "Direct";
   const target = req.query?.target || req.query?.repo || "GitHub Profile / README";
 
-  const webhookUrl = process.env.DISCORD_WEBHOOK_URL || "https://discord.com/api/webhooks/1539636032243236894/mLzOmsz0OWDdevIrj-3Tyj5JU39E2aNWjroTXeYUB1CieTkTkDTN3cNbzD8Vr1UA-21b";
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  if (!webhookUrl || !webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
+    res.setHeader("Content-Type", "image/svg+xml");
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0");
+    return res.status(200).send(`<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1" viewBox="0 0 1 1"><rect width="1" height="1" fill="none"/></svg>`);
+  }
 
   try {
     let geo = {

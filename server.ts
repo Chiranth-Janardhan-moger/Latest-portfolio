@@ -498,7 +498,7 @@ interface TelemetryData {
 }
 
 async function sendDiscordNotification(data: TelemetryData) {
-  const webhookUrl = process.env.DISCORD_WEBHOOK_URL || "https://discord.com/api/webhooks/1539636032243236894/mLzOmsz0OWDdevIrj-3Tyj5JU39E2aNWjroTXeYUB1CieTkTkDTN3cNbzD8Vr1UA-21b";
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
   if (!webhookUrl || !webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
     console.log(`[Telemetry Access]: Target="${data.target}" IP="${data.ip}" Time="${new Date().toISOString()}"`);
     return;

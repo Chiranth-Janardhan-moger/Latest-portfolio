@@ -2,6 +2,14 @@
   "version": 2,
   "routes": [
     {
+      "src": "/api/telemetry/(.*)",
+      "dest": "/api/telemetry/pixel.ts"
+    },
+    {
+      "src": "/api/track/(.*)",
+      "dest": "/api/telemetry/pixel.ts"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "/api/index.ts"
     },

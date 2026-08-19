@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   Mail, 
   Github, 
@@ -48,6 +49,20 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
   const [expandedEduIndices, setExpandedEduIndices] = useState<number[]>([]);
   const [expandedExpIds, setExpandedExpIds] = useState<string[]>([]);
   const [expandedProjIds, setExpandedProjIds] = useState<string[]>([]);
+  const [activeCert, setActiveCert] = useState<{ title: string; issuer?: string; url: string } | null>(null);
+
+  // Handle ESC key to close certificate modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveCert(null);
+      }
+    };
+    if (activeCert) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [activeCert]);
 
   const toggleEduExpand = (idx: number) => {
     setExpandedEduIndices(prev => 
@@ -416,7 +431,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                 id={`exp-item-${exp.id}`}
               >
                 {exp.logo && (
-                  <div className="w-12 h-12 rounded-2xl border border-line/80 bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-2xs p-1.5 transition-transform duration-300 group-hover:scale-105">
+                  <div className={`w-12 h-12 rounded-2xl border ${exp.logoBg === 'black' ? 'bg-[#0B0F17] border-neutral-800/80 shadow-md' : 'bg-white border-line/80 shadow-2xs'} flex items-center justify-center shrink-0 overflow-hidden p-1.5 transition-transform duration-300 group-hover:scale-105`}>
                     <LazyImage 
                       src={exp.logo} 
                       alt={`${exp.role} logo`} 
@@ -465,17 +480,22 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                         {exp.certificate && (
                           <div className="pt-2.5 flex items-center gap-2">
                             {exp.certificateUrl ? (
-                              <a 
-                                href={exp.certificateUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                              <button 
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveCert({
+                                    title: `${exp.role} · ${exp.desc}`,
+                                    issuer: exp.certificate || "Certificate",
+                                    url: exp.certificateUrl!
+                                  });
+                                }}
                                 className="group/cert font-mono text-[10px] text-ink-soft border border-line/80 rounded-full px-3 py-1 bg-white hover:border-ink hover:text-ink hover:shadow-xs transition-all duration-200 cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs"
                                 id={`exp-cert-${exp.id}`}
                               >
                                 <FileText size={11} className="shrink-0 text-ink-soft group-hover/cert:text-ink transition-colors" />
                                 <span>{exp.certificate}</span>
-                                <ExternalLink size={9} className="opacity-60 group-hover/cert:opacity-100 transition-opacity" />
-                              </a>
+                              </button>
                             ) : (
                               <span 
                                 className="group/cert font-mono text-[10px] text-ink-soft border border-line/80 rounded-full px-3 py-1 bg-white hover:border-ink hover:text-ink hover:shadow-xs transition-all duration-200 cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs"
@@ -552,7 +572,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
               id={`exp-item-${exp.id}`}
             >
               {exp.logo && (
-                <div className="w-12 h-12 rounded-2xl border border-line/80 bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-2xs p-1.5 transition-transform duration-300 group-hover:scale-105">
+                <div className={`w-12 h-12 rounded-2xl border ${exp.logoBg === 'black' ? 'bg-[#0B0F17] border-neutral-800/80 shadow-md' : 'bg-white border-line/80 shadow-2xs'} flex items-center justify-center shrink-0 overflow-hidden p-1.5 transition-transform duration-300 group-hover:scale-105`}>
                   <LazyImage
                     src={exp.logo}
                     alt={`${exp.role} logo`}
@@ -1017,6 +1037,66 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
           </div>
         </div>
       </section>
+      {/* Apple-Style Native In-Website Certificate Modal (Portaled to document.body) */}
+      {activeCert && typeof document !== 'undefined' && createPortal(
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-2xl animate-fade-in"
+          onClick={() => setActiveCert(null)}
+          role="dialog"
+          aria-modal="true"
+          id="cert-modal-backdrop"
+        >
+          <div 
+            className="relative max-w-4xl w-full max-h-[92vh] bg-white rounded-3xl border border-line shadow-[0_25px_70px_-15px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+            id="cert-modal-container"
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-line/80 bg-white/95 backdrop-blur-md shrink-0">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-8 h-8 rounded-full bg-black/[0.04] border border-black/[0.08] flex items-center justify-center shrink-0">
+                  <FileText size={15} className="text-ink" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-sm sm:text-base font-bold text-ink truncate" id="cert-modal-title">
+                    {activeCert.title}
+                  </h3>
+                  {activeCert.issuer && (
+                    <p className="text-[11px] font-mono text-ink-soft truncate" id="cert-modal-issuer">
+                      {activeCert.issuer}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setActiveCert(null)}
+                  className="w-8 h-8 rounded-full border border-line/80 bg-white hover:bg-ink hover:text-paper text-ink flex items-center justify-center transition-colors cursor-pointer shadow-2xs"
+                  aria-label="Close certificate modal"
+                  id="close-cert-modal"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Image Display with LazyImage */}
+            <div className="flex-1 overflow-auto p-3 sm:p-6 bg-[#F7F6F2]/80 flex items-center justify-center min-h-[300px]">
+              <div className="rounded-2xl border border-line/80 bg-white shadow-md overflow-hidden max-h-[76vh] w-full flex items-center justify-center p-1.5">
+                <LazyImage 
+                  src={activeCert.url} 
+                  alt={activeCert.title}
+                  className="w-full h-auto max-h-[74vh] object-contain rounded-xl select-none"
+                  wrapperClassName="w-full h-full flex items-center justify-center min-h-[280px]"
+                />
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }

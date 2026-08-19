@@ -4,7 +4,7 @@ export const EDUCATION: Education[] = [
   {
     institution: "BMS Institute of Technology and Management",
     degree: "Bachelor of Engineering in Information Science and Engineering",
-    gpa: "CGPA: 9.5",
+    gpa: "CGPA: 9.45",
     period: "2023 – 2027",
     logo: "/bmsit-logo.svg"
   },
@@ -61,7 +61,8 @@ export const EXPERIENCES: Experience[] = [
     dates: "Mar 2025 – Jun 2025",
     desc: "Web Development",
     logo: "/gaotek-logo.png",
-    certificate: "Certificate"
+    certificate: "Certificate",
+    certificateUrl: "/web-development-certificate.jpg"
   },
   {
     id: "freelance-aigle-air",
@@ -84,14 +85,18 @@ export const EXPERIENCES: Experience[] = [
     role: "Vice President",
     company: "Coding Club BMSIT&M",
     dates: "Apr 2025 – Nov 2025",
-    desc: "Spearheaded student-led developer mentorship initiatives, mentored juniors in data structures & algorithms, and managed event coordination. Developed key leadership and management skills while scaling the peer developer community."
+    desc: "Spearheaded student-led developer mentorship initiatives, mentored juniors in data structures & algorithms, and managed event coordination. Developed key leadership and management skills while scaling the peer developer community.",
+    logo: "/cc-logo.jpg",
+    logoBg: "black"
   },
   {
     id: "vice-head-events-coding",
     role: "Vice Head of Events",
     company: "Coding Club BMSIT&M",
     dates: "Sep 2024 – Apr 2025",
-    desc: "Coordinated and executed multiple coding events, tech speaker sessions, and department-wide challenges. Enhanced self-confidence and communication skills through active community outreach and peer collaboration."
+    desc: "Coordinated and executed multiple coding events, tech speaker sessions, and department-wide challenges. Enhanced self-confidence and communication skills through active community outreach and peer collaboration.",
+    logo: "/cc-logo.jpg",
+    logoBg: "black"
   }
 ];
 

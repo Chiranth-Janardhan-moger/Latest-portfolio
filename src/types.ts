@@ -30,6 +30,7 @@ export interface Experience {
   desc: string;
   url?: string;
   logo?: string;
+  logoBg?: string;
   certificate?: string;
   certificateUrl?: string;
   links?: { label: string; url: string }[];

@@ -6,6 +6,12 @@ import { sqlguardjs } from "sqlguardjs";
 import rateLimit from "express-rate-limit";
 
 dotenv.config();
+if (!process.env.DISCORD_WEBHOOK_URL && fs.existsSync("D:/.env")) {
+  dotenv.config({ path: "D:/.env" });
+}
+if (!process.env.DISCORD_WEBHOOK_URL && fs.existsSync("C:/Users/Chiranth/.env")) {
+  dotenv.config({ path: "C:/Users/Chiranth/.env" });
+}
 
 const app = express();
 const PORT = 3000;

@@ -498,7 +498,7 @@ interface TelemetryData {
 }
 
 async function sendDiscordNotification(data: TelemetryData) {
-  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL || "https://discord.com/api/webhooks/1539636032243236894/mLzOmsz0OWDdevIrj-3Tyj5JU39E2aNWjroTXeYUB1CieTkTkDTN3cNbzD8Vr1UA-21b";
   if (!webhookUrl || !webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
     console.log(`[Telemetry Access]: Target="${data.target}" IP="${data.ip}" Time="${new Date().toISOString()}"`);
     return;
@@ -517,11 +517,15 @@ async function sendDiscordNotification(data: TelemetryData) {
 
     const isLocal = !data.ip || data.ip === "127.0.0.1" || data.ip === "::1" || data.ip.startsWith("192.168.") || data.ip.startsWith("10.");
     if (!isLocal) {
-      const geoRes = await fetch(`http://ip-api.com/json/${encodeURIComponent(data.ip)}?fields=status,country,countryCode,regionName,city,isp,org,query`, {
-        signal: AbortSignal.timeout(3500)
-      });
-      if (geoRes.ok) {
-        geo = await geoRes.json();
+      try {
+        const geoRes = await fetch(`http://ip-api.com/json/${encodeURIComponent(data.ip)}?fields=status,country,countryCode,regionName,city,isp,org,query`, {
+          signal: AbortSignal.timeout(3000)
+        });
+        if (geoRes.ok) {
+          geo = await geoRes.json();
+        }
+      } catch (e) {
+        console.warn("[Telemetry Geo Warning]:", e);
       }
     } else {
       geo = {
@@ -599,19 +603,24 @@ async function sendDiscordNotification(data: TelemetryData) {
 }
 
 // GitHub Tracking Pixel & Live Telemetry Endpoint
-app.get(["/api/telemetry/pixel.svg", "/api/telemetry/pixel.png", "/api/track/github.svg"], (req, res) => {
-  const ip = (req.headers["x-forwarded-for"] as string)?.split(",")[0].trim() || req.socket.remoteAddress || "unknown";
+app.get(["/api/telemetry/pixel.svg", "/api/telemetry/pixel.png", "/api/track/github.svg"], async (req, res) => {
+  const forwarded = req.headers["x-forwarded-for"];
+  const ip = (typeof forwarded === "string" ? forwarded.split(",")[0].trim() : Array.isArray(forwarded) ? forwarded[0] : null) || req.headers["x-real-ip"] || req.socket.remoteAddress || "unknown";
   const userAgent = req.headers["user-agent"] || "unknown";
-  const referer = req.headers["referer"] || "Direct";
+  const referer = req.headers["referer"] || req.headers["referrer"] || "Direct";
   const target = (req.query.target as string) || (req.query.repo as string) || "GitHub Profile / README";
 
-  sendDiscordNotification({
-    target,
-    ip,
-    userAgent,
-    referer,
-    path: req.originalUrl
-  });
+  try {
+    await sendDiscordNotification({
+      target,
+      ip: String(ip),
+      userAgent: String(userAgent),
+      referer: String(referer),
+      path: req.originalUrl
+    });
+  } catch (e) {
+    console.error("[Telemetry Error]:", e);
+  }
 
   // Return zero-cache transparent 1x1 SVG image
   res.setHeader("Content-Type", "image/svg+xml");

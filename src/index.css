@@ -335,3 +335,68 @@ hr, .border-line, [class*="border-line"] {
   transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Infinite Snake-Flow Animation for Hero Loop */
+@keyframes snake-infinity-flow {
+  0% {
+    background-position: -200% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.snake-loop-text {
+  background: linear-gradient(
+    90deg,
+    rgba(17, 17, 17, 0.25) 0%,
+    rgba(17, 17, 17, 0.25) 30%,
+    rgba(17, 17, 17, 0.95) 50%,
+    rgba(17, 17, 17, 0.25) 70%,
+    rgba(17, 17, 17, 0.25) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: snake-infinity-flow 2.8s linear infinite;
+  display: inline-block;
+  will-change: background-position;
+}
+
+/* Perfectly Looped Figure-8 Light Beam Animation */
+@keyframes figure8-light-beam {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -210;
+  }
+}
+
+@keyframes figure8-light-particle {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+.figure8-light-beam {
+  stroke-dasharray: 48 162;
+  animation: figure8-light-beam 3s linear infinite;
+  will-change: stroke-dashoffset;
+}
+
+.figure8-light-glow {
+  stroke-dasharray: 30 180;
+  animation: figure8-light-beam 3s linear infinite;
+  will-change: stroke-dashoffset;
+}
+
+.figure8-light-head {
+  offset-path: path("M 60,27 C 40,8 15,8 15,27 C 15,46 40,46 60,27 C 80,8 105,8 105,27 C 105,46 80,46 60,27 Z");
+  animation: figure8-light-particle 3s linear infinite;
+  will-change: transform, offset-distance;
+}
+
+

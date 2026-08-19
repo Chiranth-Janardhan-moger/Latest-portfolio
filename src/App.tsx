@@ -270,7 +270,7 @@ export default function App() {
         </div>
       )}
 
-      <div className="max-w-3xl mx-auto px-6 sm:px-8 pt-12 sm:pt-16" id="content-wrapper">
+      <div className="max-w-3xl mx-auto px-5 sm:px-8 pt-6 sm:pt-14" id="content-wrapper">
         
         {/* View Router with native CSS-driven fade-in animations */}
         <main id="app-main-content">

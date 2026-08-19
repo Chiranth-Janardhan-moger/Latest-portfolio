@@ -194,9 +194,27 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
   };
 
   return (
-    <div className="space-y-16 py-8 animate-fade-in" id="portfolio-container">
+    <div className="space-y-12 sm:space-y-16 pt-0 pb-8 sm:py-8 animate-fade-in" id="portfolio-container">
       {/* Hero Section */}
-      <section className="pt-6 pb-4" id="hero">
+      <section className="pt-0 pb-4" id="hero">
+        {/* Mobile-Only Braille Graphic - Centered */}
+        <div className="flex sm:hidden justify-center w-full mb-2 select-none" id="mobile-braille-container">
+          <pre 
+            className="font-mono text-[10px] text-ink select-none whitespace-pre leading-[1.08] tracking-[0.14em] text-center inline-block" 
+            aria-hidden="true"
+          >
+{`⠀⠀⠀⠀⣀⣤⣴⣶⣶⣦⣄⡀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣶⣶⣦⣤⡀⠀⠀⠀⠀
+⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠀⠀
+⠀⠀⣾⣿⠟⠋⠉⠀⠀⠉⠙⠻⣿⣷⡀⣰⣿⣿⣿⠟⠉⠀⠀⠀⠈⠙⣿⣷⠀⠀
+⠀⢸⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠸⣿⡇⠀
+⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀
+⠀⢸⣿⡆⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⡇⠀
+⠀⠀⢿⣿⣄⡀⠀⠀⠀⢀⣴⣿⣿⣿⠟⠘⢿⣿⣦⣀⡀⠀⠀⢀⣀⣴⣿⡿⠀⠀
+⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀⠀⠙⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀
+⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠛⠁⠀⠀⠀⠀⠀⠀⠈⠙⠻⠿⠿⠿⠛⠉⠀⠀⠀⠀`}
+          </pre>
+        </div>
+
         <div className="font-mono text-xs text-ink-soft mb-4 flex items-center gap-2" id="prompt-line">
           <span>&gt; whoami</span>
           <span className="w-2 h-3.5 bg-ink inline-block terminal-cursor" id="cursor-blink"></span>

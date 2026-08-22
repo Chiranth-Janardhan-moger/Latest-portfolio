@@ -32,6 +32,7 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
     if (lower === 'latex' || lower === 'latex-editor') return 'latex-editor';
     if (lower === 'vaultx') return 'vaultx';
     if (lower === 'connectme') return 'connectme';
+    if (lower === 'webstack') return 'webstack';
     return lower;
   };
 
@@ -41,6 +42,7 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
     if (path === '/app/vaultx' || path === '/apps/vaultx') return 'vaultx';
     if (path === '/app/connectme' || path === '/apps/connectme') return 'connectme';
     if (path === '/app/latex' || path === '/apps/latex' || path === '/app/latex-editor' || path === '/apps/latex-editor') return 'latex-editor';
+    if (path === '/app/webstack' || path === '/apps/webstack') return 'webstack';
     if (path.startsWith('/app/')) return normalizeAppId(path.split('/app/')[1]) || null;
     if (path.startsWith('/apps/')) return normalizeAppId(path.split('/apps/')[1]) || null;
     return null;
@@ -372,6 +374,83 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
           <div className="flex justify-between items-center text-[10px] text-gray-400 font-mono">
             <span>0 Network Requests</span>
             <span className="text-indigo-400 font-semibold">PDF Export Ready</span>
+          </div>
+        </div>
+      );
+    }
+
+    if (type === 'stack') {
+      return (
+        <div className="bg-[#0f141c] text-white p-4 rounded-2xl border border-line/60 h-80 flex flex-col justify-between select-none shadow-inner font-sans">
+          {/* Header */}
+          <div className="flex justify-between items-center text-[11px] font-mono border-b border-gray-800 pb-2">
+            <span className="font-bold text-white tracking-tight">WebStack</span>
+            <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 text-[10px]">12 Stacks</span>
+          </div>
+
+          {/* Cards List */}
+          <div className="space-y-2.5 my-auto">
+            <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center font-bold text-xs text-blue-400">
+                  G
+                </div>
+                <div>
+                  <span className="text-xs font-semibold block text-gray-200">GitHub · Build Software</span>
+                  <span className="text-[10px] text-gray-400 font-mono">github.com</span>
+                </div>
+              </div>
+              <span className="text-[9px] bg-blue-500/10 text-blue-300 px-1.5 py-0.5 rounded border border-blue-500/20">DEV</span>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center font-bold text-xs text-purple-400">
+                  L
+                </div>
+                <div>
+                  <span className="text-xs font-semibold block text-gray-200">Linear · Issue Tracking</span>
+                  <span className="text-[10px] text-gray-400 font-mono">linear.app</span>
+                </div>
+              </div>
+              <span className="text-[9px] bg-purple-500/10 text-purple-300 px-1.5 py-0.5 rounded border border-purple-500/20">TOOLS</span>
+            </div>
+          </div>
+
+          <div className="text-[10px] text-center text-gray-400 font-mono">
+            Local SQLite Caching · 100% Offline
+          </div>
+        </div>
+      );
+    }
+
+    if (type === 'search') {
+      return (
+        <div className="bg-[#0f141c] text-white p-4 rounded-2xl border border-line/60 h-80 flex flex-col justify-between select-none shadow-inner font-sans">
+          {/* Active Search Input */}
+          <div className="bg-white/10 border border-white/20 rounded-xl px-3 py-2 flex items-center justify-between text-xs">
+            <span className="text-white font-medium">linear</span>
+            <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[9px] text-gray-300 font-bold">✕</span>
+          </div>
+
+          {/* Tags */}
+          <div className="flex items-center gap-1.5 overflow-x-auto py-1 text-[10px] font-mono">
+            <span className="px-2 py-0.5 rounded-full bg-blue-500 text-white font-bold">ALL (12)</span>
+            <span className="px-2 py-0.5 rounded-full bg-white/10 text-gray-300 border border-white/10">TOOLS</span>
+            <span className="px-2 py-0.5 rounded-full bg-white/10 text-gray-300 border border-white/10">DESIGN</span>
+          </div>
+
+          {/* Matched Result */}
+          <div className="bg-white/5 border border-blue-500/40 rounded-xl p-3 my-auto">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-bold text-white">Linear — Issue Tracking</span>
+              <span className="text-[9px] bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded font-mono">MATCH</span>
+            </div>
+            <p className="text-[10px] text-gray-400 font-mono">linear.app · Fast, keyboard-first issue tracker</p>
+          </div>
+
+          <div className="text-[10px] text-center text-blue-400 font-mono">
+            Hardware-Accelerated 120 FPS Filtering
           </div>
         </div>
       );

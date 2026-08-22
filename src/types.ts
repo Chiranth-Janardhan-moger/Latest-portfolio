@@ -81,6 +81,6 @@ export interface MobileApp {
     id: string;
     title: string;
     description: string;
-    type: 'pin' | 'vault' | 'totp' | 'map' | 'schedule' | 'editor' | 'compiler';
+    type: 'pin' | 'vault' | 'totp' | 'map' | 'schedule' | 'editor' | 'compiler' | 'stack' | 'search';
   }[];
 }

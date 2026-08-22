@@ -567,6 +567,11 @@ export const MOBILE_APPS: MobileApp[] = [
       "Smooth hardware-accelerated transitions utilizing native RenderThread",
       "Dual ABI-split packaging delivering optimized APK binary sizes"
     ],
+    screenshots: [
+      "/assets/webstack/webstack-home.png",
+      "/assets/webstack/webstack-save-link.png",
+      "/assets/webstack/webstack-settings.png"
+    ],
     screenMockups: [
       {
         id: "ws-screen-1",

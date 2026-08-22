@@ -588,16 +588,16 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+              <div className={`grid grid-cols-1 sm:grid-cols-2 ${selectedApp.screenshots.length === 3 ? 'md:grid-cols-3' : ''} gap-5 pt-1`}>
                 {selectedApp.screenshots.map((src, idx) => (
                   <div 
                     key={idx} 
-                    className="rounded-2xl border border-line/80 bg-[#0B0F17] overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-1.5"
+                    className="rounded-2xl border border-line/80 bg-white overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-2"
                   >
                     <LazyImage
                       src={src}
                       alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
-                      className="w-full h-auto max-h-[480px] object-contain rounded-xl transition-transform duration-300 group-hover/img:scale-[1.01]"
+                      className="w-full h-auto max-h-[560px] object-contain rounded-xl transition-transform duration-300 group-hover/img:scale-[1.01]"
                       wrapperClassName="w-full flex justify-center items-center rounded-xl min-h-[260px]"
                     />
                   </div>

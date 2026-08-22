@@ -694,7 +694,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                         href={proj.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-8 h-8 rounded-full border border-line/80 bg-white flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink shadow-2xs active:scale-95 transition-all duration-200 ease-out btn-sweep"
+                        className="w-8 h-8 rounded-full border border-line/80 bg-white flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink shadow-2xs active:scale-95 transition-all duration-200 ease-out"
                         title="GitHub Repository"
                         id={`project-gh-${proj.id}`}
                       >
@@ -706,7 +706,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          const targetAppId = proj.id === 'latex-editor' ? 'latex' : 'vaultx';
+                          const targetAppId = proj.id === 'latex-editor' ? 'latex' : (proj.id === 'webstack' ? 'webstack' : 'vaultx');
                           const targetPath = proj.appDeepLink || `/app/${targetAppId}`;
                           if (onNavigateToApps) {
                             onNavigateToApps(targetAppId);
@@ -715,21 +715,21 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                             window.dispatchEvent(new PopStateEvent('popstate'));
                           }
                         }}
-                        className="w-8 h-8 rounded-full border border-line/80 bg-white flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink shadow-2xs active:scale-95 transition-all duration-200 ease-out btn-sweep cursor-pointer"
-                        title={proj.id === 'latex-editor' ? "Download LaTeX Editor APK" : "Download VaultX APK"}
+                        className="w-8 h-8 rounded-full border border-line/80 bg-white flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink shadow-2xs active:scale-95 transition-all duration-200 ease-out cursor-pointer"
+                        title={proj.id === 'latex-editor' ? "Download LaTeX Editor APK" : (proj.id === 'webstack' ? "Download WebStack APK" : "Download VaultX APK")}
                         id={`project-download-${proj.id}`}
-                        aria-label={proj.id === 'latex-editor' ? "Download LaTeX Editor APK" : "Download VaultX APK"}
+                        aria-label={proj.id === 'latex-editor' ? "Download LaTeX Editor APK" : (proj.id === 'webstack' ? "Download WebStack APK" : "Download VaultX APK")}
                       >
                         <Download size={14} />
                       </button>
                     )}
-                    {proj.demoUrl && proj.demoUrl !== "#" && (
+                    {proj.demoUrl && proj.demoUrl !== "#" && proj.id !== 'webstack' && (
                       <a
                         href={proj.demoUrl}
                         target="_blank"
                         onClick={(e) => handleDemoClick(e, proj)}
                         rel="noopener noreferrer"
-                        className="w-8 h-8 rounded-full border border-line/80 bg-white flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink shadow-2xs active:scale-95 transition-all duration-200 ease-out btn-sweep"
+                        className="w-8 h-8 rounded-full border border-line/80 bg-white flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink shadow-2xs active:scale-95 transition-all duration-200 ease-out"
                         title={proj.id === 'sqlguardjs' ? "npm Registry Package" : (proj.id === 'cloudpulse' ? "Docker Container Metrics" : "Live Project")}
                         id={`project-demo-${proj.id}`}
                       >

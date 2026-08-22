@@ -227,15 +227,14 @@ export const PROJECTS: Project[] = [
   {
     id: "webstack",
     name: "WebStack",
-    meta: "visual bookmark stack · Jetpack Compose",
+    meta: "visual bookmark stack · Android",
     desc: "A modern visual bookmark stack and website manager for Android. Rather than struggling to remember and manage dozens of website URLs, WebStack empowers Android users to visually save, organize, search, and revisit their favorite sites with automated snapshot rendering and offline caching.",
-    stack: ["Kotlin", "Jetpack Compose", "Material 3", "Room Database", "Coil", "Coroutines & Flow"],
+    stack: ["Kotlin", "Room Database", "Coil", "Material 3", "Coroutines & Flow"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/webstack",
-    demoUrl: "https://github.com/Chiranth-Janardhan-moger/webstack/releases/tag/v1.0.0",
     appDeepLink: "/app/webstack",
     logs: [
       { type: "VERIFIED", text: "Automated snapshot generation and local disk caching for instant offline bookmark loading" },
-      { type: "VERIFIED", text: "Hardware-accelerated expanding search bar and dynamic tag management built with Jetpack Compose" },
+      { type: "VERIFIED", text: "Hardware-accelerated expanding search bar and dynamic tag management" },
       { type: "VERIFIED", text: "Native Android Share Sheet integration to capture and save links from any browser in 1 tap" }
     ]
   }
@@ -538,7 +537,7 @@ export const MOBILE_APPS: MobileApp[] = [
     desc: "A sleek visual bookmark stack and link management application for Android. Eliminates the friction of remembering or losing web URLs by enabling users to visually organize, tag, and instantly revisit their essential web apps and websites.",
     detailedAbout: "Rather than forcing users to remember, bookmark-clutter, or constantly re-search for web tools and sites, WebStack provides Android users with a centralized, beautiful visual workspace. With automated page snapshot generation, offline caching, and instant search, saving and revisiting websites becomes fast, organized, and reliable.",
     problemStatement: "Remembering and juggling multiple web apps and URLs is frustrating, and standard mobile browser bookmark menus are buried deep in text-only lists that lack visual context, fast tagging, and offline snapshot previews.",
-    solutionStatement: "Engineered a dedicated Android visual bookmark stack using Jetpack Compose and Room DB that automatically fetches website snapshots and favicons, caches them locally for offline access, and provides instant categorized filtering.",
+    solutionStatement: "Engineered a dedicated Android visual bookmark stack using Room DB and local storage that automatically fetches website snapshots and favicons, caches them locally for offline access, and provides instant categorized filtering.",
     solutionPoints: [
       "Automated Snapshot Generation: Captures responsive website preview cards and favicons for effortless visual scanning.",
       "Zero-Lag Filter & Search: Hardware-accelerated search across titles, URLs, and custom tags with smooth 60/120 FPS transitions.",
@@ -546,7 +545,7 @@ export const MOBILE_APPS: MobileApp[] = [
       "Interactive Tag Management: Create, edit, and filter custom tags with long-press context sheets and haptic feedback.",
       "1-Tap System Share: Directly capture links from Chrome, Safari, or social feeds using native Android Intent filters."
     ],
-    stack: ["Kotlin", "Android SDK", "Jetpack Compose", "Room Database", "Coil", "Material 3", "Kotlin Coroutines & Flow"],
+    stack: ["Kotlin", "Android SDK", "Room Database", "Coil", "Material 3", "Kotlin Coroutines & Flow"],
     iconUrl: "/webstack-icon.svg",
     features: [
       "Visual Website Cards with high-resolution snapshot rendering",
@@ -565,7 +564,7 @@ export const MOBILE_APPS: MobileApp[] = [
     architectureHighlights: [
       "MVVM architecture backed by Room SQLite database and Kotlin StateFlow",
       "Coil image pipeline with customized memory and disk cache policies",
-      "Smooth hardware-accelerated transitions utilizing Jetpack Compose RenderThread",
+      "Smooth hardware-accelerated transitions utilizing native RenderThread",
       "Dual ABI-split packaging delivering optimized APK binary sizes"
     ],
     screenMockups: [

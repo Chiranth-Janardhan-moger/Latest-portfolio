@@ -96,9 +96,11 @@ html {
   );
   transform: skewX(-20deg);
   pointer-events: none;
+  opacity: 0;
 }
 
 .btn-sweep:hover::after {
+  opacity: 1;
   animation: sweep 1.2s infinite ease-in-out;
 }
 
@@ -303,9 +305,8 @@ html {
   );
   background-size: 300% 300%;
   filter: blur(8px);
-  opacity: 0.5;
+  opacity: 0;
   z-index: 0;
-  animation: rgb-chroma-shift 4.5s ease infinite;
   transition: opacity 0.3s ease, filter 0.3s ease;
   pointer-events: none;
 }
@@ -313,7 +314,7 @@ html {
 .rgb-glow-wrapper:hover::before {
   opacity: 0.8;
   filter: blur(12px);
-  animation-duration: 2.5s;
+  animation: rgb-chroma-shift 2.5s ease infinite;
 }
 
 /* Universal Image Smoothing & Hardware Acceleration */

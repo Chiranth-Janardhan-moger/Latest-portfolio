@@ -28,6 +28,11 @@ const contactLimiter = rateLimit({
   max: 3, // Limit each IP to 3 requests per 15 minutes
   standardHeaders: true, // Return rate limit info in standard headers
   legacyHeaders: false, // Disable legacy X-RateLimit-* headers
+  validate: {
+    trustProxy: false,
+    xForwardedForHeader: false,
+    default: false
+  },
   message: {
     error: "Rate limit exceeded. Maximum 3 contact submissions allowed every 15 minutes to prevent spam.",
   }
@@ -662,29 +667,60 @@ app.get("/api/blogs/custom", (req, res) => {
 
 // Explicit search indexing assets for SEO crawlers
 app.get("/robots.txt", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "public", "robots.txt"));
+  const filePath = path.join(process.cwd(), "public", "robots.txt");
+  if (fs.existsSync(filePath)) {
+    return res.sendFile(filePath);
+  }
+  res.type("text/plain").send("User-agent: *\nAllow: /\n");
 });
 
 app.get("/sitemap.xml", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "public", "sitemap.xml"));
+  const filePath = path.join(process.cwd(), "public", "sitemap.xml");
+  if (fs.existsSync(filePath)) {
+    return res.sendFile(filePath);
+  }
+  res.status(404).end();
 });
 
-// Setup Vite Dev server middleware in development
+// Global Express error handler to prevent unhandled exception crashes in Serverless Functions
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error("[Server Error]:", err);
+  if (!res.headersSent) {
+    res.status(500).json({ error: "Internal Server Error", message: err?.message || "An unexpected error occurred." });
+  }
+});
+
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NOW_REGION);
+
+// Setup Vite Dev server middleware in development (only when running locally)
 async function startServer() {
+  if (isServerless) return;
+
   if (process.env.NODE_ENV !== "production") {
-    const { createServer: createViteServer } = await import("vite");
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
+    try {
+      const { createServer: createViteServer } = await import("vite");
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      });
+      app.use(vite.middlewares);
+    } catch (err) {
+      console.warn("[Vite Server Error]:", err);
+    }
   } else {
     // Serve static files in production
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
+    if (fs.existsSync(distPath)) {
+      app.use(express.static(distPath));
+      app.get("*", (req, res) => {
+        const indexPath = path.join(distPath, "index.html");
+        if (fs.existsSync(indexPath)) {
+          res.sendFile(indexPath);
+        } else {
+          res.status(404).send("Page not found");
+        }
+      });
+    }
   }
 
   app.listen(PORT, "0.0.0.0", () => {
@@ -692,7 +728,7 @@ async function startServer() {
   });
 }
 
-if (!process.env.VERCEL) {
+if (!isServerless) {
   startServer();
 }
 

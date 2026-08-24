@@ -14,50 +14,6 @@
       "destination": "/api"
     },
     {
-      "source": "/admin",
-      "destination": "/api"
-    },
-    {
-      "source": "/.env",
-      "destination": "/api"
-    },
-    {
-      "source": "/wp-admin",
-      "destination": "/api"
-    },
-    {
-      "source": "/wp-login.php",
-      "destination": "/api"
-    },
-    {
-      "source": "/.git",
-      "destination": "/api"
-    },
-    {
-      "source": "/config",
-      "destination": "/api"
-    },
-    {
-      "source": "/config.json",
-      "destination": "/api"
-    },
-    {
-      "source": "/administrator",
-      "destination": "/api"
-    },
-    {
-      "source": "/.env.local",
-      "destination": "/api"
-    },
-    {
-      "source": "/.env.production",
-      "destination": "/api"
-    },
-    {
-      "source": "/etc/passwd",
-      "destination": "/api"
-    },
-    {
       "source": "/((?!api/|assets/|.*\\..*).*)",
       "destination": "/index.html"
     }

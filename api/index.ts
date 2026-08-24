@@ -152,15 +152,40 @@ export default async function handler(req: any, res: any) {
       font-size: 0.8rem;
       margin-bottom: 1.5rem;
     }
-    a {
-      display: inline-block;
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    @media (min-width: 640px) {
+      .btn-group {
+        flex-direction: row;
+      }
+    }
+    a.btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       background: #111111;
       color: #FFFFFF;
       text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 12px;
+      padding: 10px 18px;
+      border-radius: 9999px;
       font-weight: 600;
-      font-size: 0.875rem;
+      font-size: 0.825rem;
+    }
+    a.btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #FFFFFF;
+      color: #111111;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.825rem;
     }
   </style>
 </head>
@@ -174,7 +199,10 @@ export default async function handler(req: any, res: any) {
       <div><strong>Target:</strong> ${url}</div>
       <div><strong>Timestamp:</strong> ${timestamp}</div>
     </div>
-    <a href="/">← Return to Safe Ground</a>
+    <div class="btn-group">
+      <a href="https://cftweb-security.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-primary">Want to play CTF? Launch Challenge ↗</a>
+      <a href="/" class="btn-secondary">Return to Portfolio</a>
+    </div>
   </div>
 </body>
 </html>`);

@@ -114,9 +114,14 @@ export default function LazyImage({
           alt={alt}
           loading="lazy"
           decoding="async"
+          draggable={false}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            props.onContextMenu?.(e);
+          }}
           onLoad={() => setIsLoaded(true)}
           onError={() => setHasError(true)}
-          className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`select-none pointer-events-auto transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isLoaded
               ? 'opacity-100 scale-100 filter-none'
               : 'opacity-0 scale-[1.02] blur-xs'

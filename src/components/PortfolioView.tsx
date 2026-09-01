@@ -253,8 +253,11 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
             <img
               src="/assets/home-mobileview/peekaboo-doodle.png"
               alt="peekaboo"
-              className="w-full max-w-[320px] h-auto object-contain mix-blend-multiply"
+              loading="lazy"
+              decoding="async"
               draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
+              className="w-full max-w-[320px] h-auto object-contain mix-blend-multiply select-none"
             />
           </div>
         </div>

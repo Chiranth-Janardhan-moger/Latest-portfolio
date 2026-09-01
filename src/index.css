@@ -251,12 +251,22 @@ html {
   animation: rgb-chroma-shift 2s ease infinite;
 }
 
-/* Universal Image Smoothing & Hardware Acceleration */
+/* Universal Image Smoothing, Drag Prevention & Mobile Long-Press Callout Protection */
 img {
   image-rendering: auto;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: transform, opacity;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 /* Smooth Icon Micro-Interactions */

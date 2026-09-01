@@ -1,4 +1,4 @@
-import { Project, Experience, BlogPost, Education, MobileApp } from './types';
+import { Project, Experience, BlogPost, Education, MobileApp, Certificate } from './types';
 
 export const EDUCATION: Education[] = [
   {
@@ -237,8 +237,93 @@ export const PROJECTS: Project[] = [
       { type: "VERIFIED", text: "Hardware-accelerated expanding search bar and dynamic tag management" },
       { type: "VERIFIED", text: "Native Android Share Sheet integration to capture and save links from any browser in 1 tap" }
     ]
+  },
+  {
+    id: "gearvault",
+    name: "GearVault",
+    meta: "equipment custody · WebRTC · QR",
+    desc: "A full-stack AV equipment booking and QR custody tracking platform with an interval-overlap availability engine, WebRTC live camera scanner, and return intake inspection workflow.",
+    stack: ["Next.js", "TypeScript", "WebRTC", "PostgreSQL", "Prisma", "Tailwind CSS"],
+    githubUrl: "https://github.com/Chiranth-Janardhan-moger/gearvault",
+    demoUrl: "#",
+    logs: [
+      { type: "VERIFIED", text: "Interval-overlap conflict prevention algorithm guaranteeing zero double-booking for high-value media assets" },
+      { type: "VERIFIED", text: "Native browser WebRTC QR camera barcode scanner for rapid custody check-in and checkout validation" },
+      { type: "VERIFIED", text: "Multi-point return condition inspection logging with damaged asset triage tracking" }
+    ]
+  },
+  {
+    id: "telecom-churn",
+    name: "Telecom Churn Prediction",
+    meta: "applied ML · predictive analytics",
+    desc: "A scalable machine learning predictive pipeline analyzing customer retention dynamics and churn risk drivers across 243,000+ Indian telecom subscriber records.",
+    stack: ["Python", "Scikit-Learn", "XGBoost", "LightGBM", "Pandas", "NumPy"],
+    githubUrl: "https://github.com/Chiranth-Janardhan-moger/telecom-churn-analysis",
+    demoUrl: "#",
+    logs: [
+      { type: "VERIFIED", text: "Engineered feature extraction and class imbalance mitigation across 243,000+ subscriber records" },
+      { type: "VERIFIED", text: "Benchmarked tree-based ensemble models (XGBoost, Random Forest) achieving high ROC-AUC retention scoring" },
+      { type: "VERIFIED", text: "SHAP interpretability analysis isolating primary churn triggers in recharge patterns and network tenure" }
+    ]
+  },
+  {
+    id: "agentathon",
+    name: "Agentathon",
+    meta: "high-concurrency · hackathons",
+    desc: "A real-time AI Agent Hackathon registration and team management platform built with congestion control, queue throttling, and race condition prevention.",
+    stack: ["React", "TypeScript", "Supabase", "Node.js", "Tailwind CSS"],
+    githubUrl: "https://github.com/Chiranth-Janardhan-moger/Agentathon",
+    demoUrl: "https://agentathonweb.vercel.app/",
+    logs: [
+      { type: "VERIFIED", text: "Atomic lock mechanism and congestion control handling high-traffic simultaneous problem statement selection" },
+      { type: "VERIFIED", text: "Real-time team verification and submission tracking synchronized through Supabase live channels" },
+      { type: "VERIFIED", text: "Responsive administrator analytics dashboard monitoring participant throughput in real time" }
+    ]
+  },
+  {
+    id: "preppy-atelier",
+    name: "Preppy Atelier",
+    meta: "luxury e-commerce · React 19",
+    desc: "A high-performance Haute Couture luxury e-commerce web platform featuring curated collections, interactive quick-views, wishlist sync, and multi-currency pricing.",
+    stack: ["React 19", "TypeScript", "Tailwind CSS", "Framer Motion", "Vite"],
+    githubUrl: "https://github.com/Chiranth-Janardhan-moger/preppy",
+    demoUrl: "https://preppy-sage.vercel.app/",
+    logs: [
+      { type: "VERIFIED", text: "Dynamic multi-currency exchange layer with instant client-side localization and currency formatting" },
+      { type: "VERIFIED", text: "Hardware-accelerated micro-interactions with synchronized cart drawer and wishlist state" },
+      { type: "VERIFIED", text: "Optimized lazy asset loading pipeline ensuring sub-second initial paint times" }
+    ]
   }
 ];
+
+export const CERTIFICATIONS: Certificate[] = [
+  {
+    id: "amazon-ml-summer-school",
+    name: "Amazon ML Summer School",
+    issuer: "Amazon",
+    period: "2026",
+    logo: "/amazon-logo.png",
+    certificateUrl: "/amazon-ml-summer-school-certificate.webp",
+    desc: "Selected for the competitive Amazon ML Summer School program, exploring fundamental to state-of-the-art ML algorithms, deep neural architectures, dimensional reduction, and generative AI under Amazon scientists."
+  },
+  {
+    id: "oracle-oci-ai-foundations",
+    name: "Oracle Cloud Infrastructure AI Foundations",
+    issuer: "Oracle",
+    period: "2025",
+    logo: "/oracle-logo.png",
+    desc: "Validated core proficiency in Artificial Intelligence, Machine Learning workloads, Generative AI models, and prompt engineering deployed on Oracle Cloud Infrastructure."
+  },
+  {
+    id: "checkpoint-secureacademy",
+    name: "CheckPoint SecureAcademy Cybersecurity Training",
+    issuer: "Check Point Software Technologies",
+    period: "2026",
+    logo: "/checkpoint-logo.png",
+    desc: "Comprehensive enterprise cybersecurity training covering multi-vector threat prevention, firewall architecture, Zero-Trust network segmentation, and proactive security management."
+  }
+];
+
 
 export const INITIAL_BLOGS: BlogPost[] = [
   {

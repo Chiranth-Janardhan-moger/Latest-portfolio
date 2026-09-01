@@ -363,6 +363,7 @@ hr, .border-line, [class*="border-line"] {
   will-change: background-position;
 }
 
+
 /* Perfectly Looped Figure-8 Light Beam Animation */
 @keyframes figure8-light-beam {
   0% {
@@ -400,4 +401,60 @@ hr, .border-line, [class*="border-line"] {
   will-change: transform, offset-distance;
 }
 
+/* Sleek Skeleton Shimmer Animation for Lazy Images */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.8s infinite;
+}
+
+/* Modal Scale-In Animation matching Certificate Modal */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Premium Diagonal Light Sweep Beam */
+@keyframes light-sweep {
+  0% {
+    transform: translateX(-160%) skewX(-20deg);
+  }
+  40%, 100% {
+    transform: translateX(280%) skewX(-20deg);
+  }
+}
+
+.light-sweep-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 100%
+  );
+  transform: translateX(-160%) skewX(-20deg);
+  animation: light-sweep 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
 

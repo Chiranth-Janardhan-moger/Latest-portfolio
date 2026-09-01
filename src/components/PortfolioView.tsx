@@ -20,9 +20,10 @@ import {
   ArrowRight,
   ArrowUpRight,
   X,
-  Activity
+  Activity,
+  Award
 } from 'lucide-react';
-import { EDUCATION, EXPERIENCES, PROJECTS } from '../data';
+import { EDUCATION, EXPERIENCES, PROJECTS, CERTIFICATIONS } from '../data';
 import { Project } from '../types';
 import { triggerFluidCloud } from '../utils/fluidCloud';
 import TiltCard from './TiltCard';
@@ -49,6 +50,8 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
   const [expandedEduIndices, setExpandedEduIndices] = useState<number[]>([]);
   const [expandedExpIds, setExpandedExpIds] = useState<string[]>([]);
   const [expandedProjIds, setExpandedProjIds] = useState<string[]>([]);
+  const [expandedCertIds, setExpandedCertIds] = useState<string[]>([]);
+  const [isProjectsExpanded, setIsProjectsExpanded] = useState<boolean>(false);
   const [activeCert, setActiveCert] = useState<{ title: string; issuer?: string; url: string } | null>(null);
 
   // Handle ESC key to close certificate modal
@@ -78,6 +81,12 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
 
   const toggleProjExpand = (id: string) => {
     setExpandedProjIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
+  const toggleCertExpand = (id: string) => {
+    setExpandedCertIds(prev => 
       prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
   };
@@ -452,7 +461,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                       >
                         <h3 className="font-bold text-base text-ink flex items-center gap-1.5 flex-wrap" id={`exp-role-${exp.id}`}>
                           <span>{exp.role}</span>
-                          {exp.company && <span className="font-normal text-xs text-ink-soft ml-1">({exp.company})</span>}
+                          {exp.company && <span className="font-normal text-xs text-ink-soft ml-1">· {exp.company}</span>}
                         </h3>
                         <ChevronDown 
                           size={14} 
@@ -464,7 +473,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                     ) : (
                       <h3 className="font-bold text-base text-ink" id={`exp-role-${exp.id}`}>
                         <span>{exp.role}</span>
-                        {exp.company && <span className="font-normal text-xs text-ink-soft ml-1">({exp.company})</span>}
+                        {exp.company && <span className="font-normal text-xs text-ink-soft ml-1">· {exp.company}</span>}
                       </h3>
                     )}
                     {exp.dates && (
@@ -635,7 +644,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
           <span>Projects</span>
         </div>
         <div className="space-y-6" id="projects-list">
-          {PROJECTS.map((proj) => {
+          {(isProjectsExpanded ? PROJECTS : PROJECTS.slice(0, 5)).map((proj) => {
             const isExpanded = expandedProjIds.includes(proj.id);
             return (
               <TiltCard
@@ -685,6 +694,26 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                           }`} 
                         />
                       </h3>
+                      {proj.demoUrl && proj.demoUrl.startsWith('http') && proj.id !== 'sqlguardjs' && proj.id !== 'cloudpulse' && (
+                        <a
+                          href={proj.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDemoClick(e, proj);
+                          }}
+                          className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors shadow-2xs select-none"
+                          title="Open Live Deployment"
+                          id={`project-live-badge-${proj.id}`}
+                        >
+                          <span className="relative flex h-1.5 w-1.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                          </span>
+                          <span>Live</span>
+                        </a>
+                      )}
                     </div>
                     <span className="font-mono text-xs text-ink-soft" id={`project-meta-${proj.id}`}>{proj.meta}</span>
                   </div>
@@ -730,10 +759,16 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                         onClick={(e) => handleDemoClick(e, proj)}
                         rel="noopener noreferrer"
                         className="w-8 h-8 rounded-full border border-line/80 bg-white flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink shadow-2xs active:scale-95 transition-all duration-200 ease-out"
-                        title={proj.id === 'sqlguardjs' ? "npm Registry Package" : (proj.id === 'cloudpulse' ? "Docker Container Metrics" : "Live Project")}
+                        title={proj.id === 'sqlguardjs' ? "npm Registry Package" : (proj.id === 'cloudpulse' ? "Docker Container Metrics" : "Live Project Deployment")}
                         id={`project-demo-${proj.id}`}
                       >
-                        {proj.id === 'sqlguardjs' ? <Package size={14} /> : (proj.id === 'cloudpulse' ? <Container size={14} /> : <ExternalLink size={14} />)}
+                        {proj.id === 'sqlguardjs' ? (
+                          <Package size={14} />
+                        ) : proj.id === 'cloudpulse' ? (
+                          <Container size={14} />
+                        ) : (
+                          <ExternalLink size={14} />
+                        )}
                       </a>
                     )}
                     {proj.id === 'sqlguardjs' && (
@@ -1011,7 +1046,163 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
           );
         })}
         </div>
+
+        {/* Apple-Style Show More / Show Less Projects Button */}
+        {PROJECTS.length > 5 && (
+          <div className="pt-8 flex justify-center" id="projects-show-more-wrapper">
+            <button
+              type="button"
+              onClick={() => setIsProjectsExpanded(!isProjectsExpanded)}
+              className="group relative inline-flex items-center gap-3 px-6 py-3 rounded-full font-mono text-xs font-semibold text-ink bg-white/90 border border-line/90 shadow-2xs hover:border-ink hover:shadow-md hover:bg-white active:scale-95 transition-all duration-300 cursor-pointer select-none"
+              aria-expanded={isProjectsExpanded}
+              id="btn-toggle-projects-expand"
+            >
+              <div className="w-5 h-5 rounded-full bg-black/[0.04] border border-black/[0.08] flex items-center justify-center text-ink transition-transform duration-300 group-hover:scale-110">
+                <ChevronDown 
+                  size={13} 
+                  className={`transition-transform duration-300 ${isProjectsExpanded ? 'rotate-180 text-ink' : 'text-ink-soft'}`} 
+                />
+              </div>
+              <span>
+                {isProjectsExpanded 
+                  ? "Show Less" 
+                  : "Show More"}
+              </span>
+            </button>
+          </div>
+        )}
       </section>
+
+      {/* Certifications */}
+      <section className="border-t border-line/80 pt-12" id="certifications">
+        <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="certifications-label">
+          <span>Certifications</span>
+        </div>
+        <div className="space-y-4" id="certifications-list">
+          {CERTIFICATIONS.map((cert) => {
+            const hasExpandable = Boolean(cert.certificateUrl || cert.credentialUrl);
+            const isExpanded = hasExpandable && expandedCertIds.includes(cert.id);
+            return (
+              <div
+                key={cert.id}
+                className="aquamorphic-card border border-line/80 rounded-2xl p-5 sm:p-6 bg-white/80 backdrop-blur-md hover:-translate-y-1 hover:border-ink hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] shadow-[0_2px_12px_-3px_rgba(0,0,0,0.03)] flex items-start gap-4 group transition-all duration-300 ease-out"
+                id={`cert-item-${cert.id}`}
+              >
+                <div className="w-12 h-12 rounded-2xl border bg-white border-line/80 shadow-2xs flex items-center justify-center shrink-0 overflow-hidden p-2 transition-transform duration-300 group-hover:scale-105">
+                  {cert.logo ? (
+                    <LazyImage 
+                      src={cert.logo} 
+                      alt={`${cert.name} logo`} 
+                      className="w-full h-full object-contain"
+                      wrapperClassName="w-full h-full flex items-center justify-center"
+                    />
+                  ) : (
+                    <div className="w-full h-full rounded-xl bg-ink/[0.03] flex items-center justify-center text-ink">
+                      <Award size={20} className="text-ink" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-baseline gap-2 flex-wrap" id={`cert-header-${cert.id}`}>
+                    {hasExpandable ? (
+                      <button
+                        type="button"
+                        onClick={() => toggleCertExpand(cert.id)}
+                        className="inline-flex items-center gap-1.5 text-left group/btn cursor-pointer py-0.5 focus-visible:outline-2 focus-visible:outline-ink focus-visible:outline-offset-2 rounded"
+                        aria-expanded={isExpanded}
+                        id={`cert-btn-toggle-${cert.id}`}
+                      >
+                        <h3 className="font-bold text-base text-ink flex items-center gap-1.5 flex-wrap" id={`cert-name-${cert.id}`}>
+                          <span>{cert.name}</span>
+                        </h3>
+                        <ChevronDown 
+                          size={14} 
+                          className={`text-ink-soft transition-all duration-300 opacity-60 group-hover:opacity-100 group-hover/btn:opacity-100 focus-visible:opacity-100 ${
+                            isExpanded ? 'rotate-180 opacity-100 text-ink' : ''
+                          }`} 
+                        />
+                      </button>
+                    ) : (
+                      <h3 className="font-bold text-base text-ink" id={`cert-name-${cert.id}`}>
+                        <span>{cert.name}</span>
+                      </h3>
+                    )}
+                    {cert.period && (
+                      <span className="font-mono text-xs text-ink-soft bg-black/[0.02] border border-black/[0.04] px-2.5 py-0.5 rounded-full shrink-0" id={`cert-dates-${cert.id}`}>{cert.period}</span>
+                    )}
+                  </div>
+                  {cert.desc && (
+                    <p className="font-mono text-xs text-ink-soft mt-1 leading-relaxed" id={`cert-desc-${cert.id}`}>
+                      {cert.desc}
+                    </p>
+                  )}
+                  
+                  {/* Smooth Animated Certificate Pill on Expand */}
+                  {hasExpandable && (
+                    <div 
+                      className={`grid transition-all duration-300 ease-in-out ${
+                        isExpanded ? 'grid-rows-[1fr] opacity-100 mt-2.5' : 'grid-rows-[0fr] opacity-0 mt-0'
+                      }`}
+                      id={`cert-expand-${cert.id}`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="pt-1.5 pb-0.5 flex items-center gap-2">
+                          {cert.certificateUrl ? (
+                            <button 
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveCert({
+                                  title: `${cert.name} · ${cert.issuer}`,
+                                  issuer: cert.issuer,
+                                  url: cert.certificateUrl!
+                                });
+                              }}
+                              className="group/cert font-mono text-[10px] text-ink-soft border border-line/80 rounded-full px-3 py-1 bg-white hover:border-ink hover:text-ink hover:shadow-xs transition-all duration-200 cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs"
+                              id={`cert-btn-${cert.id}`}
+                            >
+                              <FileText size={11} className="shrink-0 text-ink-soft group-hover/cert:text-ink transition-colors" />
+                              <span>View Certificate</span>
+                            </button>
+                          ) : cert.credentialUrl ? (
+                            <a 
+                              href={cert.credentialUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="group/cert font-mono text-[10px] text-ink-soft border border-line/80 rounded-full px-3 py-1 bg-white hover:border-ink hover:text-ink hover:shadow-xs transition-all duration-200 cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs"
+                              id={`cert-link-${cert.id}`}
+                            >
+                              <ExternalLink size={11} className="shrink-0 text-ink-soft group-hover/cert:text-ink transition-colors" />
+                              <span>Verify Credential</span>
+                            </a>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+
+                  {cert.skills && (
+                    <div className="flex flex-wrap gap-1.5 mt-3 pt-2.5 border-t border-line/40" id={`cert-skills-${cert.id}`}>
+                      {cert.skills.map((skill, idx) => (
+                        <span
+                          key={idx}
+                          className="font-mono text-[10px] bg-black/[0.02] text-ink-soft border border-black/[0.04] rounded-md px-2 py-0.5"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+      </section>
+
 
       {/* Apple-Style High-Impact Call to Action */}
       <section className="border-t border-line/80 pt-16 pb-12 text-center" id="cta-connect">
@@ -1026,12 +1217,15 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
             <div className="rgb-glow-wrapper group">
               <button
                 onClick={onNavigateToContact}
-                className="relative z-10 inline-flex items-center gap-2.5 bg-[#0D0F14] text-paper rounded-full px-7 py-3 font-mono text-xs font-semibold hover:bg-neutral-900 shadow-[0_4px_16px_rgba(0,0,0,0.25)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+                className="relative z-10 inline-flex items-center gap-2.5 bg-[#0D0F14] text-paper rounded-full px-7 py-3 font-mono text-xs font-semibold hover:bg-neutral-900 shadow-[0_4px_16px_rgba(0,0,0,0.25)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group/cta"
                 id="cta-main-trigger"
               >
-                <Mail size={14} className="shrink-0" />
-                <span>Get in Touch</span>
-                <ArrowRight size={14} className="shrink-0 transition-transform duration-200 group-hover:translate-x-1" />
+                {/* Diagonal Light Sweep Beam */}
+                <span className="light-sweep-beam" />
+                <span className="absolute inset-0 -translate-x-full group-hover/cta:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+                <Mail size={14} className="shrink-0 relative z-10" />
+                <span className="relative z-10">Get in Touch</span>
+                <ArrowRight size={14} className="shrink-0 transition-transform duration-200 group-hover/cta:translate-x-1 relative z-10" />
               </button>
             </div>
           </div>

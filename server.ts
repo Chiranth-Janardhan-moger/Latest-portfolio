@@ -14,7 +14,7 @@ if (!process.env.DISCORD_WEBHOOK_URL && fs.existsSync("C:/Users/Chiranth/.env"))
 }
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
 
 // Enable native trust proxy for accurate behind-reverse-proxy IP resolution
 app.set("trust proxy", true);

@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   Smartphone, 
   Github, 
   Download, 
   CheckCircle2, 
   ChevronLeft,
+  ChevronRight,
+  X,
+  ZoomIn,
   Lock,
   AlertTriangle,
   Eye,
@@ -69,9 +73,35 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
     if (selectedAppId) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    setActiveScreenshotIndex(null);
   }, [selectedAppId]);
 
   const selectedApp = MOBILE_APPS.find(app => app.id === selectedAppId);
+
+  // Full-screen screenshot preview modal state
+  const [activeScreenshotIndex, setActiveScreenshotIndex] = useState<number | null>(null);
+
+  // Keyboard navigation for screenshot modal (Esc to close, Left/Right arrows to cycle)
+  useEffect(() => {
+    if (activeScreenshotIndex === null || !selectedApp?.screenshots) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveScreenshotIndex(null);
+      } else if (e.key === 'ArrowLeft') {
+        setActiveScreenshotIndex((prev) => 
+          prev !== null && prev > 0 ? prev - 1 : (selectedApp.screenshots ? selectedApp.screenshots.length - 1 : 0)
+        );
+      } else if (e.key === 'ArrowRight') {
+        setActiveScreenshotIndex((prev) => 
+          prev !== null && selectedApp.screenshots && prev < selectedApp.screenshots.length - 1 ? prev + 1 : 0
+        );
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeScreenshotIndex, selectedApp]);
 
   // Custom Android Icon SVG Component
   const AndroidIcon = ({ size = 14, className = "" }: { size?: number; className?: string }) => (
@@ -574,32 +604,62 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
             selectedApp.id === 'vaultx' ? (
               <div className="flex flex-col gap-8 pt-2">
                 {selectedApp.screenshots.map((src, idx) => (
-                  <div 
-                    key={idx} 
-                    className="w-full flex justify-center items-center"
+                  <div
+                    key={idx}
+                    onClick={() => setActiveScreenshotIndex(idx)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setActiveScreenshotIndex(idx);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    title="Click to view screenshot clearly in full size"
+                    aria-label={`View ${selectedApp.name} screenshot ${idx + 1} in full resolution`}
+                    className="w-full flex justify-center items-center cursor-pointer group/shot relative rounded-2xl border border-line/80 bg-white p-3 shadow-sm hover:border-ink hover:shadow-md transition-all duration-300 overflow-hidden"
                   >
                     <LazyImage
                       src={src}
                       alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
-                      className="w-full h-auto max-h-[680px] object-contain rounded-2xl transition-transform duration-300 hover:scale-[1.005]"
-                      wrapperClassName="w-full flex justify-center items-center rounded-2xl min-h-[300px]"
+                      className="w-full h-auto max-h-[680px] object-contain rounded-xl transition-transform duration-300 group-hover/shot:scale-[1.01]"
+                      wrapperClassName="w-full flex justify-center items-center rounded-xl min-h-[300px]"
                     />
+                    <div className="absolute bottom-4 right-4 z-10 opacity-0 group-hover/shot:opacity-100 transition-opacity duration-200 bg-ink/85 text-paper backdrop-blur-md px-3 py-1.5 rounded-full text-[11px] font-mono flex items-center gap-1.5 shadow-md pointer-events-none">
+                      <ZoomIn size={13} />
+                      <span>View Full Screen</span>
+                    </div>
                   </div>
                 ))}
               </div>
             ) : (
               <div className={`grid grid-cols-1 sm:grid-cols-2 ${selectedApp.screenshots.length === 3 ? 'md:grid-cols-3' : ''} gap-5 pt-1`}>
                 {selectedApp.screenshots.map((src, idx) => (
-                  <div 
-                    key={idx} 
-                    className="rounded-2xl border border-line/80 bg-white overflow-hidden shadow-sm hover:border-ink transition-all duration-300 group/img flex flex-col justify-center items-center p-2"
+                  <div
+                    key={idx}
+                    onClick={() => setActiveScreenshotIndex(idx)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setActiveScreenshotIndex(idx);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    title="Click to view screenshot clearly in full size"
+                    aria-label={`View ${selectedApp.name} screenshot ${idx + 1} in full resolution`}
+                    className="w-full rounded-2xl border border-line/80 bg-white overflow-hidden shadow-sm hover:border-ink hover:shadow-md transition-all duration-300 group/shot flex flex-col justify-center items-center p-2 cursor-pointer relative"
                   >
                     <LazyImage
                       src={src}
                       alt={`${selectedApp.name} Interface Screenshot ${idx + 1}`}
-                      className="w-full h-auto max-h-[560px] object-contain rounded-xl transition-transform duration-300 group-hover/img:scale-[1.01]"
+                      className="w-full h-auto max-h-[560px] object-contain rounded-xl transition-transform duration-300 group-hover/shot:scale-[1.015]"
                       wrapperClassName="w-full flex justify-center items-center rounded-xl min-h-[260px]"
                     />
+                    <div className="absolute bottom-4 right-4 z-10 opacity-0 group-hover/shot:opacity-100 transition-opacity duration-200 bg-ink/85 text-paper backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-mono flex items-center gap-1.5 shadow-md pointer-events-none">
+                      <ZoomIn size={12} />
+                      <span>Expand</span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -628,6 +688,103 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
             </div>
           )}
         </section>
+
+        {/* Apple-Style Native In-Website Screenshot Modal (Matching Certificate Modal) */}
+        {activeScreenshotIndex !== null && selectedApp?.screenshots && typeof document !== 'undefined' && createPortal(
+          <div 
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-2xl animate-fade-in"
+            onClick={() => setActiveScreenshotIndex(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${selectedApp.name} screenshot preview`}
+            id="screenshot-modal-backdrop"
+          >
+            <div 
+              className="relative max-w-4xl w-full max-h-[92vh] bg-white rounded-3xl border border-line shadow-[0_25px_70px_-15px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col animate-scale-in"
+              onClick={(e) => e.stopPropagation()}
+              id="screenshot-modal-container"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-line/80 bg-white/95 backdrop-blur-md shrink-0">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-8 h-8 rounded-full bg-black/[0.04] border border-black/[0.08] flex items-center justify-center shrink-0">
+                    {selectedApp.iconUrl ? (
+                      <LazyImage 
+                        src={selectedApp.iconUrl} 
+                        alt={selectedApp.name} 
+                        className="w-full h-full object-contain rounded-full" 
+                        wrapperClassName="w-5 h-5 flex items-center justify-center" 
+                      />
+                    ) : (
+                      <Smartphone size={15} className="text-ink" />
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm sm:text-base font-bold text-ink truncate" id="screenshot-modal-title">
+                      {selectedApp.name}
+                    </h3>
+                    <p className="text-[11px] font-mono text-ink-soft truncate" id="screenshot-modal-counter">
+                      Screenshot {activeScreenshotIndex + 1} of {selectedApp.screenshots.length} · {selectedApp.category}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  {/* Previous / Next buttons if multiple screenshots */}
+                  {selectedApp.screenshots.length > 1 && (
+                    <div className="flex items-center gap-1 bg-white border border-line/80 rounded-full p-0.5 shadow-2xs">
+                      <button
+                        type="button"
+                        onClick={() => setActiveScreenshotIndex(prev => prev !== null && prev > 0 ? prev - 1 : selectedApp.screenshots!.length - 1)}
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-ink hover:bg-ink hover:text-paper transition-colors cursor-pointer"
+                        title="Previous screenshot (Left arrow)"
+                        aria-label="Previous screenshot"
+                      >
+                        <ChevronLeft size={14} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setActiveScreenshotIndex(prev => prev !== null && prev < selectedApp.screenshots!.length - 1 ? prev + 1 : 0)}
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-ink hover:bg-ink hover:text-paper transition-colors cursor-pointer"
+                        title="Next screenshot (Right arrow)"
+                        aria-label="Next screenshot"
+                      >
+                        <ChevronRight size={14} />
+                      </button>
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => setActiveScreenshotIndex(null)}
+                    className="w-8 h-8 rounded-full border border-line/80 bg-white hover:bg-ink hover:text-paper text-ink flex items-center justify-center transition-colors cursor-pointer shadow-2xs"
+                    aria-label="Close screenshot modal"
+                    id="close-screenshot-modal"
+                    title="Close (Esc)"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Modal Image Display with LazyImage */}
+              <div className="flex-1 overflow-auto p-3 sm:p-6 bg-[#F7F6F2]/80 flex items-center justify-center min-h-[300px]">
+                <div className="rounded-2xl border border-line/80 bg-white shadow-md overflow-hidden max-h-[76vh] w-full flex items-center justify-center p-1.5">
+                  <LazyImage 
+                    src={selectedApp.screenshots[activeScreenshotIndex]} 
+                    alt={`${selectedApp.name} screenshot ${activeScreenshotIndex + 1}`}
+                    className="w-full h-auto max-h-[74vh] object-contain rounded-xl select-none"
+                    wrapperClassName="w-full h-full flex items-center justify-center min-h-[280px]"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+
+
+
 
         {/* Comprehensive Capabilities Checklist */}
         <section className="space-y-4" id="app-features-section">
@@ -696,10 +853,15 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
               <div className="absolute inset-0 bg-[radial-gradient(#111_1px,transparent_1px)] [background-size:16px_16px] opacity-10 pointer-events-none" />
 
               {/* Category in Corner */}
-              <div className="absolute top-3.5 left-3.5 z-10">
+              <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-1.5 flex-wrap">
                 <span className="font-mono text-[10px] text-ink-soft bg-white/90 border border-line/80 px-2.5 py-1 rounded-full shadow-2xs">
                   {app.category}
                 </span>
+                {app.screenshots && app.screenshots.length > 0 && (
+                  <span className="font-mono text-[10px] text-ink bg-white/90 border border-line/80 px-2 py-1 rounded-full shadow-2xs">
+                    {app.screenshots.length} Screenshots
+                  </span>
+                )}
               </div>
 
               {/* Big App Logo */}
@@ -747,3 +909,4 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
     </div>
   );
 }
+

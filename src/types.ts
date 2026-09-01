@@ -36,6 +36,19 @@ export interface Experience {
   links?: { label: string; url: string }[];
 }
 
+export interface Certificate {
+  id: string;
+  name: string;
+  issuer: string;
+  period?: string;
+  desc?: string;
+  logo?: string;
+  logoBg?: string;
+  skills?: string[];
+  certificateUrl?: string;
+  credentialUrl?: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;

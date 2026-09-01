@@ -60,6 +60,8 @@ function parsePathToView(pathname: string, hash: string): { view: ViewMode; appI
   return { view: 'not-found', invalidPath: pathname };
 }
 
+let hasLoggedConsoleBadge = false;
+
 export default function App() {
   const [activeView, setActiveView] = useState<ViewMode>(() => {
     return parsePathToView(window.location.pathname, window.location.hash).view;
@@ -213,10 +215,13 @@ export default function App() {
 
   // Visit counter & console badge
   useEffect(() => {
-    console.log(
-      "%c🕵️‍♂️ Ah, a fellow engineer. Looking for vulnerabilities or just checking my React structure? Either way, you can find the raw source code here: github.com/Chiranth-Janardhan-moger",
-      "color: #10b981; font-size: 14px; font-weight: bold; font-family: monospace;"
-    );
+    if (!hasLoggedConsoleBadge) {
+      hasLoggedConsoleBadge = true;
+      console.log(
+        "%c🕵️‍♂️ Ah, a fellow engineer. Looking for vulnerabilities or just checking my React structure? Either way, you can find the raw source code here: github.com/Chiranth-Janardhan-moger",
+        "color: #10b981; font-size: 14px; font-weight: bold; font-family: monospace;"
+      );
+    }
 
     fetch('/api/visits')
       .then((res) => res.json())
@@ -336,14 +341,8 @@ export default function App() {
         </main>
 
         {/* Footer */}
-        <footer className="mt-12 pt-8 border-t border-line/60 flex flex-row justify-between items-center gap-3 font-mono text-[10px] text-ink-soft" id="app-footer">
+        <footer className="mt-12 pt-8 border-t border-line/60 flex justify-center items-center font-mono text-[10px] text-ink-soft" id="app-footer">
           <span>© 2026 Chiranth Moger</span>
-          {visitCount !== null && (
-            <div className="flex items-center gap-1.5" id="visit-counter" title="Total visits counter">
-              <span className={`inline-block w-1.5 h-1.5 rounded-full ${isOffline ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500 animate-pulse'}`} />
-              <span>visits: {visitCount} {isOffline && '(cached offline)'}</span>
-            </div>
-          )}
         </footer>
 
       </div>

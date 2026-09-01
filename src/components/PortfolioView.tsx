@@ -53,6 +53,8 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
   const [expandedCertIds, setExpandedCertIds] = useState<string[]>([]);
   const [isProjectsExpanded, setIsProjectsExpanded] = useState<boolean>(false);
   const [activeCert, setActiveCert] = useState<{ title: string; issuer?: string; url: string } | null>(null);
+  // Randomly show either the braille infinity symbol or the peekaboo doodle on each visit
+  const [showPeekaboo] = useState<boolean>(() => Math.random() < 0.5);
 
   // Handle ESC key to close certificate modal
   useEffect(() => {
@@ -218,13 +220,16 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
   };
 
   return (
-    <div className="space-y-12 sm:space-y-16 pt-0 pb-8 sm:py-8 animate-fade-in" id="portfolio-container">
+    <div className="space-y-12 sm:space-y-16 pt-[28px] sm:pt-0 pb-8 sm:py-8 animate-fade-in" id="portfolio-container">
       {/* Hero Section */}
       <section className="pt-0 pb-4" id="hero">
-        {/* Mobile-Only Braille Graphic - Centered */}
-        <div className="flex sm:hidden justify-center w-full mb-2 select-none" id="mobile-braille-container">
-          <pre 
-            className="font-mono text-[10px] text-ink select-none whitespace-pre leading-[1.08] tracking-[0.14em] text-center inline-block" 
+        {/* Mobile-Only Hero Graphic — randomly shows braille ∞ or peekaboo doodle */}
+        <div className="flex sm:hidden justify-center w-full mb-2 select-none relative" id="mobile-braille-container">
+          {/* Braille Infinity */}
+          <pre
+            className={`font-mono text-[10px] text-ink select-none whitespace-pre leading-[1.08] tracking-[0.14em] text-center inline-block transition-all duration-700 ease-in-out ${
+              showPeekaboo ? 'opacity-0 scale-95 pointer-events-none absolute' : 'opacity-100 scale-100'
+            }`}
             aria-hidden="true"
           >
 {`⠀⠀⠀⠀⣀⣤⣴⣶⣶⣦⣄⡀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣶⣶⣦⣤⡀⠀⠀⠀⠀
@@ -237,6 +242,21 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
 ⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀⠀⠙⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀
 ⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠛⠁⠀⠀⠀⠀⠀⠀⠈⠙⠻⠿⠿⠿⠛⠉⠀⠀⠀⠀`}
           </pre>
+
+          {/* Peekaboo Doodle */}
+          <div
+            className={`transition-all duration-700 ease-in-out ${
+              showPeekaboo ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none absolute'
+            }`}
+            aria-hidden="true"
+          >
+            <img
+              src="/assets/home-mobileview/peekaboo-doodle.png"
+              alt="peekaboo"
+              className="w-full max-w-[320px] h-auto object-contain mix-blend-multiply"
+              draggable={false}
+            />
+          </div>
         </div>
 
         <div className="font-mono text-xs text-ink-soft mb-4 flex items-center gap-2" id="prompt-line">
@@ -1231,6 +1251,8 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
           </div>
         </div>
       </section>
+
+
       {/* Apple-Style Native In-Website Certificate Modal (Portaled to document.body) */}
       {activeCert && typeof document !== 'undefined' && createPortal(
         <div 

@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
-    <link rel="apple-touch-icon" href="/assets/logo.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/meta/pwa-icon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/assets/meta/pwa-icon-512.png" />
     
     <!-- Primary SEO Metadata -->
     <title>Chiranth Moger | Agentic AI, Systems Security & Applied ML Engineer</title>
@@ -23,14 +23,14 @@
     <meta property="og:url" id="meta-og-url" content="https://ais-pre-qb7lzzukpyvjnbcb6auwvd-584965286817.asia-east1.run.app/" />
     <meta property="og:title" content="Chiranth Moger | Agentic AI, Systems Security & Applied ML Engineer" />
     <meta property="og:description" content="Final-year B.E. Information Science & Engineering student at BMSIT, Bengaluru, exploring the intersection of Agentic AI, applied machine learning, Android systems, and application security." />
-    <meta property="og:image" id="meta-og-image" content="https://ais-pre-qb7lzzukpyvjnbcb6auwvd-584965286817.asia-east1.run.app/assets/og-image.png" />
+    <meta property="og:image" id="meta-og-image" content="https://ais-pre-qb7lzzukpyvjnbcb6auwvd-584965286817.asia-east1.run.app/assets/meta/og-image.png" />
 
     <!-- Twitter Card -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" id="meta-twitter-url" content="https://ais-pre-qb7lzzukpyvjnbcb6auwvd-584965286817.asia-east1.run.app/" />
     <meta property="twitter:title" content="Chiranth Moger | Agentic AI, Systems Security & Applied ML Engineer" />
     <meta property="twitter:description" content="Final-year B.E. Information Science & Engineering student at BMSIT, Bengaluru, exploring the intersection of Agentic AI, applied machine learning, Android systems, and application security." />
-    <meta property="twitter:image" id="meta-twitter-image" content="https://ais-pre-qb7lzzukpyvjnbcb6auwvd-584965286817.asia-east1.run.app/assets/og-image.png" />
+    <meta property="twitter:image" id="meta-twitter-image" content="https://ais-pre-qb7lzzukpyvjnbcb6auwvd-584965286817.asia-east1.run.app/assets/meta/og-image.png" />
 
     <!-- Domain Alignment Script for Vercel Deployments -->
     <script>
@@ -50,7 +50,7 @@
             }
             var ogImageEl = document.getElementById('meta-og-image');
             if (ogImageEl) {
-              ogImageEl.setAttribute('content', currentOrigin + '/assets/og-image.png');
+              ogImageEl.setAttribute('content', currentOrigin + '/assets/meta/og-image.png');
             }
             // Update Twitter
             var twUrlEl = document.getElementById('meta-twitter-url');
@@ -59,7 +59,7 @@
             }
             var twImageEl = document.getElementById('meta-twitter-image');
             if (twImageEl) {
-              twImageEl.setAttribute('content', currentOrigin + '/assets/og-image.png');
+              twImageEl.setAttribute('content', currentOrigin + '/assets/meta/og-image.png');
             }
             // Update JSON-LD Structured Data
             var jsonLdEl = document.querySelector('script[type="application/ld+json"]');
@@ -67,7 +67,7 @@
               try {
                 var jsonLd = JSON.parse(jsonLdEl.innerHTML);
                 jsonLd.url = currentOrigin + '/';
-                jsonLd.image = currentOrigin + '/assets/og-image.png';
+                jsonLd.image = currentOrigin + '/assets/meta/og-image.png';
                 jsonLdEl.innerHTML = JSON.stringify(jsonLd, null, 2);
               } catch(e) {}
             }
@@ -85,7 +85,7 @@
         "@type": "Person",
         "name": "Chiranth Moger",
         "url": "https://ais-pre-qb7lzzukpyvjnbcb6auwvd-584965286817.asia-east1.run.app/",
-        "image": "https://ais-pre-qb7lzzukpyvjnbcb6auwvd-584965286817.asia-east1.run.app/assets/og-image.png",
+        "image": "https://ais-pre-qb7lzzukpyvjnbcb6auwvd-584965286817.asia-east1.run.app/assets/meta/og-image.png",
         "alumniOf": {
           "@type": "EducationalOrganization",
           "name": "BMS Institute of Technology and Management"

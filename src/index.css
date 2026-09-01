@@ -48,32 +48,16 @@ html {
 }
 
 /* Minimalist Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #d1d5db; /* Light gray */
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af; /* Darker gray on hover */
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
 
 /* Light Sweep Animation */
 @keyframes sweep {
-  0% {
-    left: -150%;
-  }
-  50% {
-    left: 150%;
-  }
-  100% {
-    left: 150%;
-  }
+  0%   { left: -150%; }
+  50%  { left: 150%;  }
+  100% { left: 150%;  }
 }
 
 .btn-sweep {
@@ -88,12 +72,7 @@ html {
   left: -150%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.6),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
   transform: skewX(-20deg);
   pointer-events: none;
   opacity: 0;
@@ -109,7 +88,9 @@ html {
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              margin-top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   margin-top: 0;
 }
 
@@ -125,17 +106,9 @@ html {
 
 /* OxygenOS Aquamorphic Liquid Light Specular Wave */
 @keyframes aquamorphicWave {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(35deg);
-    opacity: 0;
-  }
-  30% {
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateX(200%) translateY(200%) rotate(35deg);
-    opacity: 0;
-  }
+  0%   { transform: translateX(-100%) translateY(-100%) rotate(35deg); opacity: 0; }
+  30%  { opacity: 0.6; }
+  100% { transform: translateX(200%) translateY(200%) rotate(35deg); opacity: 0; }
 }
 
 .aquamorphic-card {
@@ -147,16 +120,9 @@ html {
 .aquamorphic-card::before {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(255, 255, 255, 0.45) 0%,
-    rgba(255, 255, 255, 0.15) 30%,
-    transparent 65%
-  );
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 30%, transparent 65%);
   transform: translateX(-100%) translateY(-100%) rotate(35deg);
   pointer-events: none;
   z-index: 1;
@@ -171,64 +137,27 @@ html {
 .fluid-tap {
   transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
-
 .fluid-tap:active {
   transform: scale(0.96) !important;
 }
 
 /* Authentic Chromatic Glitch Keyframes for 404 */
 @keyframes glitch-anim-1 {
-  0% {
-    clip-path: inset(40% 0 61% 0);
-    transform: skew(0.3deg) translate(-2px, -1px);
-  }
-  20% {
-    clip-path: inset(92% 0 1% 0);
-    transform: skew(0.8deg) translate(3px, 1px);
-  }
-  40% {
-    clip-path: inset(10% 0 85% 0);
-    transform: skew(-0.5deg) translate(-3px, 0);
-  }
-  60% {
-    clip-path: inset(54% 0 21% 0);
-    transform: skew(0.2deg) translate(2px, -2px);
-  }
-  80% {
-    clip-path: inset(28% 0 58% 0);
-    transform: skew(-0.8deg) translate(-2px, 2px);
-  }
-  100% {
-    clip-path: inset(72% 0 14% 0);
-    transform: skew(0.4deg) translate(1px, -1px);
-  }
+  0%   { clip-path: inset(40% 0 61% 0); transform: skew(0.3deg)  translate(-2px,-1px); }
+  20%  { clip-path: inset(92% 0 1%  0); transform: skew(0.8deg)  translate(3px, 1px);  }
+  40%  { clip-path: inset(10% 0 85% 0); transform: skew(-0.5deg) translate(-3px,0);    }
+  60%  { clip-path: inset(54% 0 21% 0); transform: skew(0.2deg)  translate(2px,-2px);  }
+  80%  { clip-path: inset(28% 0 58% 0); transform: skew(-0.8deg) translate(-2px,2px);  }
+  100% { clip-path: inset(72% 0 14% 0); transform: skew(0.4deg)  translate(1px,-1px);  }
 }
 
 @keyframes glitch-anim-2 {
-  0% {
-    clip-path: inset(25% 0 58% 0);
-    transform: skew(-0.5deg) translate(3px, 1px);
-  }
-  20% {
-    clip-path: inset(78% 0 12% 0);
-    transform: skew(0.4deg) translate(-2px, -2px);
-  }
-  40% {
-    clip-path: inset(15% 0 74% 0);
-    transform: skew(-0.6deg) translate(2px, 2px);
-  }
-  60% {
-    clip-path: inset(82% 0 5% 0);
-    transform: skew(0.7deg) translate(-3px, 0);
-  }
-  80% {
-    clip-path: inset(38% 0 45% 0);
-    transform: skew(-0.3deg) translate(2px, -1px);
-  }
-  100% {
-    clip-path: inset(5% 0 90% 0);
-    transform: skew(0.5deg) translate(-1px, 2px);
-  }
+  0%   { clip-path: inset(25% 0 58% 0); transform: skew(-0.5deg) translate(3px, 1px);  }
+  20%  { clip-path: inset(78% 0 12% 0); transform: skew(0.4deg)  translate(-2px,-2px); }
+  40%  { clip-path: inset(15% 0 74% 0); transform: skew(-0.6deg) translate(2px, 2px);  }
+  60%  { clip-path: inset(82% 0 5%  0); transform: skew(0.7deg)  translate(-3px,0);    }
+  80%  { clip-path: inset(38% 0 45% 0); transform: skew(-0.3deg) translate(2px,-1px);  }
+  100% { clip-path: inset(5%  0 90% 0); transform: skew(0.5deg)  translate(-1px,2px);  }
 }
 
 .glitch-text {
@@ -241,10 +170,8 @@ html {
 .glitch-text::after {
   content: attr(data-text);
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   pointer-events: none;
 }
 
@@ -272,15 +199,9 @@ html {
 
 /* Animated RGB Chroma Ambient Shadow */
 @keyframes rgb-chroma-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
 }
 
 .rgb-glow-wrapper {
@@ -289,32 +210,45 @@ html {
   border-radius: 9999px;
 }
 
+/* Ambient glow underneath */
 .rgb-glow-wrapper::before {
   content: '';
   position: absolute;
-  inset: -1px;
+  inset: -1.5px;
   border-radius: 9999px;
-  background: linear-gradient(
-    90deg,
-    #FF0055,
-    #9333EA,
-    #06B6D4,
-    #10B981,
-    #F59E0B,
-    #FF0055
-  );
+  background: linear-gradient(90deg, #FF0055, #9333EA, #06B6D4, #10B981, #F59E0B, #FF0055);
   background-size: 300% 300%;
-  filter: blur(8px);
-  opacity: 0;
+  filter: blur(6px);
+  opacity: 0.45;
   z-index: 0;
+  animation: rgb-chroma-shift 3.5s ease infinite;
   transition: opacity 0.3s ease, filter 0.3s ease;
+  pointer-events: none;
+}
+
+/* Sharp RGB border ring */
+.rgb-glow-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #FF0055, #9333EA, #06B6D4, #10B981, #F59E0B, #FF0055);
+  background-size: 300% 300%;
+  opacity: 0.95;
+  z-index: 0;
+  animation: rgb-chroma-shift 3.5s ease infinite;
   pointer-events: none;
 }
 
 .rgb-glow-wrapper:hover::before {
   opacity: 0.8;
-  filter: blur(12px);
-  animation: rgb-chroma-shift 2.5s ease infinite;
+  filter: blur(10px);
+  animation: rgb-chroma-shift 2s ease infinite;
+}
+
+.rgb-glow-wrapper:hover::after {
+  opacity: 1;
+  animation: rgb-chroma-shift 2s ease infinite;
 }
 
 /* Universal Image Smoothing & Hardware Acceleration */
@@ -338,22 +272,18 @@ hr, .border-line, [class*="border-line"] {
 
 /* Infinite Snake-Flow Animation for Hero Loop */
 @keyframes snake-infinity-flow {
-  0% {
-    background-position: -200% 0%;
-  }
-  100% {
-    background-position: 200% 0%;
-  }
+  0%   { background-position: -200% 0%; }
+  100% { background-position:  200% 0%; }
 }
 
 .snake-loop-text {
   background: linear-gradient(
     90deg,
-    rgba(17, 17, 17, 0.25) 0%,
-    rgba(17, 17, 17, 0.25) 30%,
-    rgba(17, 17, 17, 0.95) 50%,
-    rgba(17, 17, 17, 0.25) 70%,
-    rgba(17, 17, 17, 0.25) 100%
+    rgba(17,17,17,0.25) 0%,
+    rgba(17,17,17,0.25) 30%,
+    rgba(17,17,17,0.95) 50%,
+    rgba(17,17,17,0.25) 70%,
+    rgba(17,17,17,0.25) 100%
   );
   background-size: 200% 100%;
   -webkit-background-clip: text;
@@ -363,24 +293,15 @@ hr, .border-line, [class*="border-line"] {
   will-change: background-position;
 }
 
-
 /* Perfectly Looped Figure-8 Light Beam Animation */
 @keyframes figure8-light-beam {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -210;
-  }
+  0%   { stroke-dashoffset: 0;    }
+  100% { stroke-dashoffset: -210; }
 }
 
 @keyframes figure8-light-particle {
-  0% {
-    offset-distance: 0%;
-  }
-  100% {
-    offset-distance: 100%;
-  }
+  0%   { offset-distance: 0%;   }
+  100% { offset-distance: 100%; }
 }
 
 .figure8-light-beam {
@@ -403,12 +324,8 @@ hr, .border-line, [class*="border-line"] {
 
 /* Sleek Skeleton Shimmer Animation for Lazy Images */
 @keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%);  }
 }
 
 .animate-shimmer {
@@ -417,14 +334,8 @@ hr, .border-line, [class*="border-line"] {
 
 /* Modal Scale-In Animation matching Certificate Modal */
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1);    }
 }
 
 .animate-scale-in {
@@ -433,28 +344,16 @@ hr, .border-line, [class*="border-line"] {
 
 /* Premium Diagonal Light Sweep Beam */
 @keyframes light-sweep {
-  0% {
-    transform: translateX(-160%) skewX(-20deg);
-  }
-  40%, 100% {
-    transform: translateX(280%) skewX(-20deg);
-  }
+  0%        { transform: translateX(-160%) skewX(-20deg); }
+  40%, 100% { transform: translateX(280%)  skewX(-20deg); }
 }
 
 .light-sweep-beam {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.28) 50%,
-    transparent 100%
-  );
+  top: 0; left: 0;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.28) 50%, transparent 100%);
   transform: translateX(-160%) skewX(-20deg);
   animation: light-sweep 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   pointer-events: none;
 }
-

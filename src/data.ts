@@ -6,14 +6,14 @@ export const EDUCATION: Education[] = [
     degree: "Bachelor of Engineering in Information Science and Engineering",
     gpa: "CGPA: 9.45",
     period: "2023 – 2027",
-    logo: "/bmsit-logo.svg"
+    logo: "/assets/education/bmsit-logo.svg"
   },
   {
     institution: "Siddhartha College",
     degree: "Pre-University Course (PUC)",
     gpa: "Percentage: 94.33%",
     period: "2021 – 2023",
-    logo: "/siddhartha-logo.svg"
+    logo: "/assets/education/siddhartha-logo.svg"
   }
 ];
 
@@ -45,14 +45,14 @@ export const EXPERIENCES: Experience[] = [
     role: "Optify",
     dates: "2025 – 2026",
     desc: "Full-Stack Development & Real-World Problem Solving",
-    logo: "/optify.png"
+    logo: "/assets/experience/optify.png"
   },
   {
     id: "freelance-sarvagya-nirakar",
     role: "Sarvagya Nirakar",
     dates: "Jul 2025 – Oct 2025",
     desc: "AI Engineer",
-    logo: "/sarvagya-nirakar.png",
+    logo: "/assets/experience/sarvagya-nirakar.png",
     certificate: "Certificate"
   },
   {
@@ -60,16 +60,16 @@ export const EXPERIENCES: Experience[] = [
     role: "GAO Tek Inc.",
     dates: "Mar 2025 – Jun 2025",
     desc: "Web Development",
-    logo: "/gaotek-logo.png",
+    logo: "/assets/experience/gaotek-logo.png",
     certificate: "Certificate",
-    certificateUrl: "/web-development-certificate.jpg"
+    certificateUrl: "/assets/certifications/web-development-certificate.jpg"
   },
   {
     id: "freelance-aigle-air",
     role: "Aigle Air",
     dates: "2024 – 2025",
     desc: "Web Development + Sensor Architecture",
-    logo: "/aigle-logo.png"
+    logo: "/assets/experience/aigle-logo.png"
   },
   {
     id: "president-epoch",
@@ -78,7 +78,7 @@ export const EXPERIENCES: Experience[] = [
     dates: "2025 – 2026",
     desc: "Leading technical operations, organizing bootcamps and hackathons for 500+ student developers. Bridging industry engineers and students to collaborate on production-ready systems.",
     url: "https://bmsit.ac.in/pdfs/students-club-29.pdf",
-    logo: "/epoch-society.png"
+    logo: "/assets/experience/epoch-society.png"
   },
   {
     id: "vp-coding",
@@ -86,7 +86,7 @@ export const EXPERIENCES: Experience[] = [
     company: "Coding Club BMSIT&M",
     dates: "Apr 2025 – Nov 2025",
     desc: "Spearheaded student-led developer mentorship initiatives, mentored juniors in data structures & algorithms, and managed event coordination. Developed key leadership and management skills while scaling the peer developer community.",
-    logo: "/cc-logo.jpg",
+    logo: "/assets/experience/cc-logo.jpg",
     logoBg: "black"
   },
   {
@@ -95,7 +95,7 @@ export const EXPERIENCES: Experience[] = [
     company: "Coding Club BMSIT&M",
     dates: "Sep 2024 – Apr 2025",
     desc: "Coordinated and executed multiple coding events, tech speaker sessions, and department-wide challenges. Enhanced self-confidence and communication skills through active community outreach and peer collaboration.",
-    logo: "/cc-logo.jpg",
+    logo: "/assets/experience/cc-logo.jpg",
     logoBg: "black"
   }
 ];
@@ -302,8 +302,8 @@ export const CERTIFICATIONS: Certificate[] = [
     name: "Amazon ML Summer School",
     issuer: "Amazon",
     period: "2026",
-    logo: "/amazon-logo.png",
-    certificateUrl: "/amazon-ml-summer-school-certificate.webp",
+    logo: "/assets/certifications/amazon-logo.png",
+    certificateUrl: "/assets/certifications/amazon-ml-summer-school-certificate.webp",
     desc: "Selected for the competitive Amazon ML Summer School program, exploring fundamental to state-of-the-art ML algorithms, deep neural architectures, dimensional reduction, and generative AI under Amazon scientists."
   },
   {
@@ -311,7 +311,7 @@ export const CERTIFICATIONS: Certificate[] = [
     name: "Oracle Cloud Infrastructure AI Foundations",
     issuer: "Oracle",
     period: "2025",
-    logo: "/oracle-logo.png",
+    logo: "/assets/certifications/oracle-logo.png",
     desc: "Validated core proficiency in Artificial Intelligence, Machine Learning workloads, Generative AI models, and prompt engineering deployed on Oracle Cloud Infrastructure."
   },
   {
@@ -319,7 +319,7 @@ export const CERTIFICATIONS: Certificate[] = [
     name: "CheckPoint SecureAcademy Cybersecurity Training",
     issuer: "Check Point Software Technologies",
     period: "2026",
-    logo: "/checkpoint-logo.png",
+    logo: "/assets/certifications/checkpoint-logo.png",
     desc: "Comprehensive enterprise cybersecurity training covering multi-vector threat prevention, firewall architecture, Zero-Trust network segmentation, and proactive security management."
   }
 ];
@@ -488,7 +488,7 @@ export const MOBILE_APPS: MobileApp[] = [
       "Built-in 2FA/TOTP Engine: Offline local HMAC-SHA1 generation with active clipboard auto-wipe watchers after 30 seconds."
     ],
     stack: ["React Native 0.74", "Expo 52", "TypeScript", "AES-256-GCM", "PBKDF2", "Biometrics", "SecureStore", "Reanimated 4"],
-    iconUrl: "/vaultx-icon.png",
+    iconUrl: "/assets/apps/vaultx/vaultx-icon.png",
     screenshots: [
       "https://github.com/user-attachments/assets/edabb54a-0e75-4449-ad95-3d84bbca057f",
       "https://github.com/user-attachments/assets/a8ab23da-3adf-43d3-9fbc-1d8101ab833a"
@@ -552,7 +552,7 @@ export const MOBILE_APPS: MobileApp[] = [
       "Resilient Offline Mode: Local SQLite timetable caching enabling full route navigation during cellular drops."
     ],
     stack: ["React Native", "Expo", "Socket.IO", "Redis Geo", "Leaflet / Mapbox", "Node.js", "Express", "TypeScript"],
-    iconUrl: "/bus-icon.webp",
+    iconUrl: "/assets/apps/bustrack/bus-icon.webp",
     features: [
       "Live GPS telemetry with on-device Kalman filter motion smoothing",
       "Sub-second bus avatar sync via Socket.io bidirectional channels",
@@ -588,10 +588,10 @@ export const MOBILE_APPS: MobileApp[] = [
       "Distraction-Free Touch UI: Formula snippet shortcuts, auto-closing math delimiters, and clean dark/light themes."
     ],
     stack: ["Kotlin", "Android SDK", "Jetpack Compose", "Tectonic Engine (Rust)", "Android NDK / JNI", "TeX / PDF Rendering"],
-    iconUrl: "/latex-icon.svg",
+    iconUrl: "/assets/apps/latex/latex-icon.svg",
     screenshots: [
-      "/latex-editor-screenshot.png",
-      "/latex-console-screenshot.png"
+      "/assets/apps/latex/latex-editor-screenshot.png",
+      "/assets/apps/latex/latex-console-screenshot.png"
     ],
     features: [
       "100% Offline TeX Compilation (No internet connection or cloud server required)",
@@ -631,7 +631,7 @@ export const MOBILE_APPS: MobileApp[] = [
       "1-Tap System Share: Directly capture links from Chrome, Safari, or social feeds using native Android Intent filters."
     ],
     stack: ["Kotlin", "Android SDK", "Room Database", "Coil", "Material 3", "Kotlin Coroutines & Flow"],
-    iconUrl: "/webstack-icon.svg",
+    iconUrl: "/assets/apps/webstack/webstack-icon.svg",
     features: [
       "Visual Website Cards with high-resolution snapshot rendering",
       "Dual Layout Modes: Switch between rich screenshot cards and compact rows",
@@ -653,9 +653,9 @@ export const MOBILE_APPS: MobileApp[] = [
       "Dual ABI-split packaging delivering optimized APK binary sizes"
     ],
     screenshots: [
-      "/assets/webstack/webstack-home.png",
-      "/assets/webstack/webstack-save-link.png",
-      "/assets/webstack/webstack-settings.png"
+      "/assets/apps/webstack/webstack-home.png",
+      "/assets/apps/webstack/webstack-save-link.png",
+      "/assets/apps/webstack/webstack-settings.png"
     ],
     screenMockups: [
       {

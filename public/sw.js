@@ -2,8 +2,8 @@ const CACHE_NAME = 'moger-systems-pwa-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
-  '/assets/og-image.png',
-  '/assets/logo.svg',
+  '/assets/meta/og-image.png',
+  '/assets/meta/logo.svg',
   '/manifest.json',
   '/robots.txt',
   '/sitemap.xml'

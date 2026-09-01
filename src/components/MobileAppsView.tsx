@@ -279,7 +279,7 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
           {/* Bus Avatar Marker on Map */}
           <div className="relative z-10 my-auto flex flex-col items-center justify-center">
             <div className="w-12 h-12 rounded-2xl bg-white border border-line/80 shadow-lg flex items-center justify-center p-1.5 animate-bounce overflow-hidden">
-              <LazyImage src="/bus-icon.webp" alt="ConnectMe Bus Icon" className="w-full h-full object-contain" wrapperClassName="w-full h-full flex items-center justify-center" />
+              <LazyImage src="/assets/apps/bustrack/bus-icon.webp" alt="ConnectMe Bus Icon" className="w-full h-full object-contain" wrapperClassName="w-full h-full flex items-center justify-center" />
             </div>
             <span className="bg-black/70 px-2 py-0.5 rounded text-[10px] font-mono mt-1.5 border border-white/20">
               Shuttle #02 · Kalman Smoothed

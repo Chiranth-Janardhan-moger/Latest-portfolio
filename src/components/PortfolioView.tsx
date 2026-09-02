@@ -276,7 +276,7 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
         
         {/* Apple-style Role Badges */}
         <div className="flex flex-wrap gap-2 mb-6" id="title-roles">
-          {['Agentic AI', 'Applied ML', 'Android Systems', 'Application Security'].map((role) => (
+          {['Software Development', 'Agentic AI', 'Applied ML', 'Android Systems', 'Application Security'].map((role) => (
             <span 
               key={role} 
               className="font-mono text-xs text-ink-soft bg-black/[0.03] border border-black/[0.08] px-3 py-1 rounded-full shadow-2xs select-none"
@@ -288,24 +288,12 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
 
         <div className="text-[15px] sm:text-[16px] text-ink-soft/90 w-full leading-relaxed mb-8 max-w-[65ch]" id="intro-text">
           <p>
-            Final-year B.E. Information Science & Engineering student at BMSIT, Bengaluru, exploring the intersection of Agentic AI, applied machine learning, Android systems, and application security. Interested in building practical, intelligent systems and understanding how emerging technologies can solve real-world problems.
+            Final-year B.E. Information Science & Engineering student at BMSIT, Bengaluru, exploring the intersection of Software Development, Agentic AI, applied machine learning, Android systems, and application security. Interested in building practical, intelligent systems and understanding how emerging technologies can solve real-world problems.
           </p>
         </div>
 
         {/* Apple-style Action Buttons with RGB Chroma Ambient Shadow */}
         <div className="flex flex-wrap items-center gap-3.5 font-mono text-xs" id="hero-actions">
-          {/* Connect */}
-          <div className="rgb-glow-wrapper">
-            <button
-              onClick={onNavigateToContact}
-              className="relative z-10 flex items-center gap-2 bg-[#0D0F14] text-paper rounded-full px-5 py-2.5 hover:bg-neutral-900 shadow-[0_2px_8px_rgba(0,0,0,0.2)] active:scale-95 hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer btn-sweep font-semibold"
-              id="btn-contact-me"
-            >
-              <Mail size={14} className="shrink-0" />
-              <span>Connect</span>
-            </button>
-          </div>
-
           {/* GitHub */}
           <div className="rgb-glow-wrapper">
             <a

@@ -553,10 +553,10 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
         </div>
       </section>
 
-      {/* Hackathons & Achievements */}
+      {/* Hackathons */}
       <section className="border-t border-line/80 pt-12" id="hackathons">
         <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="hackathons-label">
-          <span>Hackathons & Achievements</span>
+          <span>Hackathons</span>
         </div>
         <div className="space-y-4" id="hackathons-list">
           {EXPERIENCES.filter(exp => exp.id.startsWith("hackathon-")).map((exp) => (
@@ -595,10 +595,10 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
         </div>
       </section>
 
-      {/* Leadership & Activities */}
+      {/* Leadership */}
       <section className="border-t border-line/80 pt-12" id="leadership">
         <div className="text-[20px] font-bold text-ink tracking-tight mb-6" id="leadership-label">
-          <span>Leadership & Activities</span>
+          <span>Leadership</span>
         </div>
         <div className="space-y-4" id="leadership-list">
           {EXPERIENCES.filter(exp => !exp.id.startsWith("freelance-") && !exp.id.startsWith("hackathon-")).map((exp) => (

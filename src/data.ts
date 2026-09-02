@@ -23,14 +23,14 @@ export const EXPERIENCES: Experience[] = [
     role: "1st Place Winner",
     company: "Hack Sphere 2024",
     dates: "2024",
-    desc: "Secured 1st place in Hack Sphere 2024. Designed, engineered, and successfully pitched a functional full-stack solution under strict hackathon time constraints."
+    desc: "1st place winner. Engineered and pitched a full-stack solution under hackathon time constraints."
   },
   {
     id: "hackathon-hackday-pondy",
     role: "3rd Place (National)",
     company: "HACK $DAY Pondy (Edition 1 SMVEC)",
     dates: "2024",
-    desc: "Placed 3rd out of 626+ teams nationally. Recognized for designing and presenting an innovative system solution in a high-intensity hackathon setting.",
+    desc: "Placed 3rd out of 626+ national teams. Built and presented an innovative system solution.",
     url: "https://smvec.ac.in/event/hack-day-pondy-edition-1-smvec/"
   },
   {
@@ -38,7 +38,7 @@ export const EXPERIENCES: Experience[] = [
     role: "Top 8 Finalist (National)",
     company: "Anveshana 2025",
     dates: "2025",
-    desc: "Ranked in the Top 8 out of 900+ competing teams nationally, showcasing advanced engineering concepts and working hardware/software prototypes to research and industry panels."
+    desc: "Top 8 finalist out of 900+ national teams, presenting working prototypes to industry panels."
   },
   {
     id: "freelance-optify",
@@ -76,7 +76,7 @@ export const EXPERIENCES: Experience[] = [
     role: "President",
     company: "Epoch Society BMSIT&M",
     dates: "2025 – 2026",
-    desc: "Leading technical operations, organizing bootcamps and hackathons for 500+ student developers. Bridging industry engineers and students to collaborate on production-ready systems.",
+    desc: "Led technical operations, hackathons, and bootcamps for 500+ student developers.",
     url: "https://bmsit.ac.in/pdfs/students-club-29.pdf",
     logo: "/assets/experience/epoch-society.png"
   },
@@ -85,7 +85,7 @@ export const EXPERIENCES: Experience[] = [
     role: "Vice President",
     company: "Coding Club BMSIT&M",
     dates: "Apr 2025 – Nov 2025",
-    desc: "Spearheaded student-led developer mentorship initiatives, mentored juniors in data structures & algorithms, and managed event coordination. Developed key leadership and management skills while scaling the peer developer community.",
+    desc: "Spearheaded student DSA mentorship, organized competitive coding events, and expanded the developer community.",
     logo: "/assets/experience/cc-logo.jpg",
     logoBg: "black"
   },
@@ -94,7 +94,7 @@ export const EXPERIENCES: Experience[] = [
     role: "Vice Head of Events",
     company: "Coding Club BMSIT&M",
     dates: "Sep 2024 – Apr 2025",
-    desc: "Coordinated and executed multiple coding events, tech speaker sessions, and department-wide challenges. Enhanced self-confidence and communication skills through active community outreach and peer collaboration.",
+    desc: "Coordinated tech speaker sessions, coding challenges, and department-wide hackathons.",
     logo: "/assets/experience/cc-logo.jpg",
     logoBg: "black"
   }
@@ -105,7 +105,7 @@ export const PROJECTS: Project[] = [
     id: "connectme",
     name: "ConnectMe",
     meta: "real-time transit · React Native",
-    desc: "A campus transit management and real-time shuttle tracking application for BMSIT. Features live map locations, delay predictions, and push notification updates.",
+    desc: "Campus transit app for BMSIT featuring real-time shuttle tracking, ETA delay predictions, and live push notifications.",
     stack: ["React Native", "Expo", "Node.js", "Express", "Socket.IO", "MongoDB", "Redis"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/Connect_Me",
     demoUrl: "#",
@@ -119,7 +119,7 @@ export const PROJECTS: Project[] = [
     id: "silent-cry",
     name: "Silent Cry Decoder",
     meta: "applied ML · PyTorch",
-    desc: "An acoustic infant cry diagnostic classifier utilizing a hybrid 3-stream feature fusion neural network to classify cry drivers (hunger, pain, fatigue, discomfort, burping).",
+    desc: "Acoustic infant cry classifier using a 3-stream neural network to identify hunger, pain, fatigue, and discomfort.",
     stack: ["PyTorch", "Python", "FastAPI", "OpenAI Whisper", "EfficientNet-B0", "Librosa", "PWA"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/The-Silent-Cry-Decoder",
     demoUrl: "#",
@@ -133,7 +133,7 @@ export const PROJECTS: Project[] = [
     id: "sqlguardjs",
     name: "SQLGuardJS",
     meta: "security middleware · npm",
-    desc: "An advanced heuristic protection and request-scanning middleware for Express to dynamically shield applications from SQL injection, NoSQL bypasses, and XSS.",
+    desc: "Security middleware for Express to dynamically detect and block SQL injection, NoSQL bypasses, and XSS attacks.",
     stack: ["Node.js", "Express", "npm", "TypeScript", "Python", "TensorFlow"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/sqlguardjs",
     demoUrl: "https://www.npmjs.com/package/sqlguardjs",
@@ -147,7 +147,7 @@ export const PROJECTS: Project[] = [
     id: "mcppro",
     name: "MCPPro",
     meta: "AI agent orchestrator · RAG",
-    desc: "A production-grade AI agent and Document RAG orchestration platform featuring a decoupled orchestrator and custom Model Context Protocol (MCP) server integration.",
+    desc: "AI agent and Document RAG platform with custom Model Context Protocol (MCP) server integration.",
     stack: ["Next.js", "FastAPI", "MCP", "Qdrant", "Supabase", "BGE-M3", "TypeScript", "Python"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/MCPPRO",
     demoUrl: "#",
@@ -161,7 +161,7 @@ export const PROJECTS: Project[] = [
     id: "visiontraffic",
     name: "VisionTraffic",
     meta: "computer vision",
-    desc: "A real-time traffic density analyzer and vehicle tracking system designed for municipal CCTV stream analysis.",
+    desc: "Real-time traffic density analyzer and vehicle tracking system for municipal CCTV streams using YOLOv8.",
     stack: ["YOLOv8", "ByteTrack", "OpenCV", "Python"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/visiontraffic",
     demoUrl: "#",
@@ -173,7 +173,7 @@ export const PROJECTS: Project[] = [
     id: "cloudpulse",
     name: "CloudPulse Monitor",
     meta: "cloud engineering · AWS · devops",
-    desc: "A real-time AWS EC2 instance monitoring and cost optimization platform. Automatically scans and reports idle resources to estimate cost waste across multiple accounts.",
+    desc: "AWS EC2 instance monitor and cost optimizer that scans idle resources across multiple cloud accounts.",
     stack: ["React 19", "TypeScript", "Node.js", "Express", "AWS SDK", "Docker"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/CloudPulse",
     demoUrl: "https://github.com/Chiranth-Janardhan-moger?tab=packages&repo_name=CloudPulse",
@@ -187,7 +187,7 @@ export const PROJECTS: Project[] = [
     id: "latex-editor",
     name: "Latex Editor",
     meta: "mobile tools · Kotlin",
-    desc: "A high-performance LaTeX editor and local compiler for Android powered by a native port of the Tectonic typesetting engine.",
+    desc: "Offline LaTeX editor and local compiler for Android powered by the Tectonic typesetting engine.",
     stack: ["Kotlin", "Jetpack Compose", "Tectonic Engine", "JNI", "Android Studio"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/latex-editor-android",
     demoUrl: "#",
@@ -201,7 +201,7 @@ export const PROJECTS: Project[] = [
     id: "vaultx",
     name: "VaultX Password Manager",
     meta: "mobile security · React Native",
-    desc: "A military-grade offline-first password manager built with React Native. Guarantees zero-network access privacy with AES-256 and PBKDF2 derivation.",
+    desc: "Offline-first password manager with zero-network access privacy, AES-256 encryption, and Android Autofill.",
     stack: ["React Native", "Expo", "Expo Router", "AES-256", "PBKDF2", "Autofill API"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager",
     demoUrl: "https://chiranth-janardhan-moger.github.io/vaultx-offline-password-manager/",
@@ -215,7 +215,7 @@ export const PROJECTS: Project[] = [
     id: "surplus2serve",
     name: "Surplus2Serve",
     meta: "full-stack · social impact",
-    desc: "A real-time coordination portal designed to connect retail food donors with nearest verified community kitchens and shelters.",
+    desc: "Real-time coordination portal connecting retail food donors with verified community kitchens and shelters.",
     stack: ["React", "Node.js", "Express", "MySQL", "OpenCage API", "Twilio API"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/Surplus2serve",
     demoUrl: "#",
@@ -228,7 +228,7 @@ export const PROJECTS: Project[] = [
     id: "webstack",
     name: "WebStack",
     meta: "visual bookmark stack · Android",
-    desc: "A modern visual bookmark stack and website manager for Android. Rather than struggling to remember and manage dozens of website URLs, WebStack empowers Android users to visually save, organize, search, and revisit their favorite sites with automated snapshot rendering and offline caching.",
+    desc: "Visual bookmark manager for Android to save, organize, and search websites with automated snapshots and offline caching.",
     stack: ["Kotlin", "Room Database", "Coil", "Material 3", "Coroutines & Flow"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/webstack",
     appDeepLink: "/app/webstack",
@@ -242,7 +242,7 @@ export const PROJECTS: Project[] = [
     id: "gearvault",
     name: "GearVault",
     meta: "equipment custody · WebRTC · QR",
-    desc: "A full-stack AV equipment booking and QR custody tracking platform with an interval-overlap availability engine, WebRTC live camera scanner, and return intake inspection workflow.",
+    desc: "AV equipment booking and QR custody tracking platform with overlap prevention and WebRTC camera scanning.",
     stack: ["Next.js", "TypeScript", "WebRTC", "PostgreSQL", "Prisma", "Tailwind CSS"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/gearvault",
     demoUrl: "#",
@@ -256,7 +256,7 @@ export const PROJECTS: Project[] = [
     id: "telecom-churn",
     name: "Telecom Churn Prediction",
     meta: "applied ML · predictive analytics",
-    desc: "A scalable machine learning predictive pipeline analyzing customer retention dynamics and churn risk drivers across 243,000+ Indian telecom subscriber records.",
+    desc: "ML pipeline analyzing customer churn drivers across 243,000+ telecom subscriber records using XGBoost and SHAP.",
     stack: ["Python", "Scikit-Learn", "XGBoost", "LightGBM", "Pandas", "NumPy"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/telecom-churn-analysis",
     demoUrl: "#",
@@ -270,7 +270,7 @@ export const PROJECTS: Project[] = [
     id: "agentathon",
     name: "Agentathon",
     meta: "high-concurrency · hackathons",
-    desc: "A real-time AI Agent Hackathon registration and team management platform built with congestion control, queue throttling, and race condition prevention.",
+    desc: "Real-time hackathon management platform built with congestion control, queue throttling, and live team tracking.",
     stack: ["React", "TypeScript", "Supabase", "Node.js", "Tailwind CSS"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/Agentathon",
     demoUrl: "https://agentathonweb.vercel.app/",
@@ -284,7 +284,7 @@ export const PROJECTS: Project[] = [
     id: "preppy-atelier",
     name: "Preppy Atelier",
     meta: "luxury e-commerce · React 19",
-    desc: "A high-performance Haute Couture luxury e-commerce web platform featuring curated collections, interactive quick-views, wishlist sync, and multi-currency pricing.",
+    desc: "Luxury e-commerce platform featuring curated collections, interactive quick-views, wishlist sync, and multi-currency pricing.",
     stack: ["React 19", "TypeScript", "Tailwind CSS", "Framer Motion", "Vite"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/preppy",
     demoUrl: "https://preppy-sage.vercel.app/",
@@ -304,7 +304,7 @@ export const CERTIFICATIONS: Certificate[] = [
     period: "2026",
     logo: "/assets/certifications/amazon-logo.png",
     certificateUrl: "/assets/certifications/amazon-ml-summer-school-certificate.webp",
-    desc: "Selected for the competitive Amazon ML Summer School program, exploring fundamental to state-of-the-art ML algorithms, deep neural architectures, dimensional reduction, and generative AI under Amazon scientists."
+    desc: "Selected for Amazon ML Summer School, covering ML algorithms, Deep Learning, Generative AI, and AI Agents under Amazon scientists."
   },
   {
     id: "oracle-oci-ai-foundations",
@@ -312,7 +312,7 @@ export const CERTIFICATIONS: Certificate[] = [
     issuer: "Oracle",
     period: "2025",
     logo: "/assets/certifications/oracle-logo.png",
-    desc: "Validated core proficiency in Artificial Intelligence, Machine Learning workloads, Generative AI models, and prompt engineering deployed on Oracle Cloud Infrastructure."
+    desc: "Demonstrated core proficiency in AI, ML workloads, Generative AI, and prompt engineering on Oracle Cloud Infrastructure."
   },
   {
     id: "checkpoint-secureacademy",
@@ -320,7 +320,7 @@ export const CERTIFICATIONS: Certificate[] = [
     issuer: "Check Point Software Technologies",
     period: "2026",
     logo: "/assets/certifications/checkpoint-logo.png",
-    desc: "Comprehensive enterprise cybersecurity training covering multi-vector threat prevention, firewall architecture, Zero-Trust network segmentation, and proactive security management."
+    desc: "Cybersecurity training covering threat prevention, firewall architecture, and Zero-Trust network segmentation."
   }
 ];
 

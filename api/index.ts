@@ -1,3 +1,8 @@
+import { Detector } from "sqlguardjs";
+
+const detector = new Detector();
+const inMemorySecurityLogs: any[] = [];
+
 export default async function handler(req: any, res: any) {
   const url = req.url || "/";
   const method = req.method || "GET";
@@ -30,19 +35,79 @@ export default async function handler(req: any, res: any) {
     return res.status(200).json({ posts: [] });
   }
 
-  // 4. Security endpoints
+  // 4. Security endpoints - Active SQLGuardJS Evaluation
   if (url.startsWith("/api/security/test")) {
+    let payload = "";
+    let body = req.body;
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch (_) {
+        payload = body;
+      }
+    }
+    if (body && typeof body === "object") {
+      payload = typeof body.payload === "string" ? body.payload : (body.payload !== undefined ? String(body.payload) : JSON.stringify(body));
+    } else if (typeof body === "string") {
+      payload = body;
+    }
+
+    if (!payload && req.query?.payload) {
+      payload = String(req.query.payload);
+    }
+
+    const result = detector.detect(payload);
+    const isBlocked = result.label !== "benign" && result.confidence >= 0.5;
+
+    if (isBlocked) {
+      const threatEntry = {
+        id: Math.random().toString(36).substring(2, 9),
+        timestamp: new Date().toISOString(),
+        ip: String(ip),
+        method,
+        path: url,
+        status: "blocked",
+        label: result.label,
+        confidence: result.confidence,
+        matches: result.matches || [],
+        payloadSnippet: payload.substring(0, 100)
+      };
+      inMemorySecurityLogs.unshift(threatEntry);
+      if (inMemorySecurityLogs.length > 50) inMemorySecurityLogs.pop();
+
+      return res.status(403).json({
+        error: "Forbidden",
+        message: "Malicious payload detected by SQLGuardJS",
+        details: {
+          label: result.label,
+          confidence: result.confidence,
+          matches: result.matches,
+          scores: result.scores
+        },
+        blocked: true,
+        received: payload
+      });
+    }
+
     return res.status(200).json({
       success: true,
       mode: "block",
       status: "active",
-      message: "SQLGuardJS active heuristics verified.",
+      message: "Payload successfully verified. No malicious patterns detected by SQLGuardJS.",
+      details: {
+        label: result.label,
+        confidence: result.confidence,
+        matches: result.matches,
+        scores: result.scores
+      },
+      blocked: false,
+      received: payload,
       timestamp: new Date().toISOString()
     });
   }
 
   if (url.startsWith("/api/security/logs")) {
-    return res.status(200).json({ logs: [] });
+    return res.status(200).json(inMemorySecurityLogs);
   }
 
   // 5. Contact form submission

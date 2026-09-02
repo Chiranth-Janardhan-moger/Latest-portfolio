@@ -28,6 +28,7 @@ import { Project } from '../types';
 import { triggerFluidCloud } from '../utils/fluidCloud';
 import TiltCard from './TiltCard';
 import LazyImage from './LazyImage';
+import MobileButterfly from './MobileButterfly';
 
 interface PortfolioViewProps {
   onNavigateToContact: () => void;
@@ -221,6 +222,9 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
 
   return (
     <div className="space-y-12 sm:space-y-16 pt-[28px] sm:pt-0 pb-8 sm:py-8 animate-fade-in" id="portfolio-container">
+      {/* 3D Mobile Origami/Ink Animated Butterfly Companion */}
+      <MobileButterfly />
+
       {/* Hero Section */}
       <section className="pt-0 pb-4" id="hero">
         {/* Mobile-Only Hero Graphic — randomly shows braille ∞ or peekaboo doodle */}

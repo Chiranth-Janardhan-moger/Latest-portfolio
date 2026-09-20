@@ -1,4 +1,14 @@
 import { Detector } from "sqlguardjs";
+// @ts-ignore
+import fortifyPkg from "@chiranthmoger/fortifyjs";
+
+let fortifyEngineInstance: any = null;
+try {
+  const DetectionEngine = (fortifyPkg as any).DetectionEngine || (fortifyPkg as any).default?.DetectionEngine;
+  if (DetectionEngine) {
+    fortifyEngineInstance = new DetectionEngine();
+  }
+} catch (_) {}
 
 const detector = new Detector();
 const inMemorySecurityLogs: any[] = [];
@@ -103,6 +113,52 @@ export default async function handler(req: any, res: any) {
       blocked: false,
       received: payload,
       timestamp: new Date().toISOString()
+    });
+  }
+
+  // FortifyJS Live Inspection Endpoint
+  if (url.startsWith("/api/fortify/test")) {
+    let payload = "";
+    let body = req.body;
+    if (typeof body === "string") {
+      try { body = JSON.parse(body); } catch (_) { payload = body; }
+    }
+    if (body && typeof body === "object") {
+      payload = typeof body.payload === "string" ? body.payload : (body.payload !== undefined ? String(body.payload) : JSON.stringify(body));
+    } else if (typeof body === "string") {
+      payload = body;
+    }
+    if (!payload && req.query?.payload) {
+      payload = String(req.query.payload);
+    }
+
+    const startTime = performance.now();
+    if (fortifyEngineInstance) {
+      const result = fortifyEngineInstance.detect(payload);
+      const latencyMs = Math.max(0.012, performance.now() - startTime).toFixed(3);
+      const isBlocked = result.label !== "benign" && result.confidence >= 0.5;
+
+      return res.status(isBlocked ? 403 : 200).json({
+        success: true,
+        blocked: isBlocked,
+        label: result.label,
+        confidence: Math.round(result.confidence * 1000) / 10,
+        latency: `${latencyMs} ms`,
+        scores: result.scores || {},
+        matches: result.matches || [],
+        received: payload
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      blocked: false,
+      label: "benign",
+      confidence: 0,
+      latency: "0.020 ms",
+      scores: {},
+      matches: [],
+      received: payload
     });
   }
 

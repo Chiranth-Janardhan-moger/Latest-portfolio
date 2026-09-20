@@ -130,6 +130,20 @@ export const PROJECTS: Project[] = [
     ]
   },
   {
+    id: "fortifyjs",
+    name: "FortifyJS",
+    meta: "Zero-Dependency WAF & AI Security Suite · npm",
+    desc: "In-process Web Application Firewall and GenAI prompt security suite for Node.js. Sub-millisecond defense across 15 attack classes with 98.95% empirical recall across 2,142 benchmark samples.",
+    stack: ["Node.js", "TypeScript", "npm", "WAF", "GenAI Security", "AST Analysis"],
+    githubUrl: "https://github.com/Chiranth-Janardhan-moger/fortifyjs",
+    demoUrl: "https://www.npmjs.com/package/@chiranthmoger/fortifyjs",
+    logs: [
+      { type: "VERIFIED", text: "Zero external dependencies; replaces helmet, cors, csurf, express-rate-limit, and legacy sanitizers with uniform security policies" },
+      { type: "VERIFIED", text: "Evaluated across 2,142 benchmark samples (OWASP CRS v4, HarmBench, PayloadsAllTheThings) with 98.95% recall and 15,723 req/sec/core throughput" },
+      { type: "VERIFIED", text: "Integrated llmGuard inspects prompt injections, multilingual jailbreaks (DAN, STAN), and system prompt exfiltration in < 0.07 ms" }
+    ]
+  },
+  {
     id: "sqlguardjs",
     name: "SQLGuardJS",
     meta: "security middleware · npm",

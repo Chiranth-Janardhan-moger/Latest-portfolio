@@ -1,149 +1,155 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-interface SectionAnchor {
-  sectionId: string;
-  headingId: string;
+interface PerchAnchor {
+  id: string;
   name: string;
   defaultOffset: number;
   offsetY: number;
+  type: 'heading' | 'button' | 'badge';
 }
 
-const SECTIONS: SectionAnchor[] = [
-  { sectionId: 'hero', headingId: 'name-header', name: 'Hero Name', defaultOffset: 0.62, offsetY: -26 },
-  { sectionId: 'education', headingId: 'edu-label', name: 'Education', defaultOffset: 0.22, offsetY: -22 },
-  { sectionId: 'experience', headingId: 'exp-label', name: 'Experience', defaultOffset: 0.22, offsetY: -22 },
-  { sectionId: 'hackathons', headingId: 'hackathons-label', name: 'Hackathons', defaultOffset: 0.20, offsetY: -22 },
-  { sectionId: 'leadership', headingId: 'leadership-label', name: 'Leadership', defaultOffset: 0.20, offsetY: -22 },
-  { sectionId: 'projects', headingId: 'projects-label', name: 'Projects', defaultOffset: 0.22, offsetY: -22 },
-  { sectionId: 'certifications', headingId: 'certifications-label', name: 'Certifications', defaultOffset: 0.22, offsetY: -22 },
-  { sectionId: 'cta-connect', headingId: 'cta-title', name: 'Ready to Connect', defaultOffset: 0.72, offsetY: -26 }
+/** Perching targets strictly bounded between Hero and Education */
+const PERCH_ANCHORS: PerchAnchor[] = [
+  { id: 'hero-name-chiranth', name: 'Chiranth Name', defaultOffset: 0.50, offsetY: -16, type: 'heading' },
+  { id: 'hero-name-moger', name: 'Moger Name', defaultOffset: 0.50, offsetY: -16, type: 'heading' },
+  { id: 'link-github', name: 'GitHub Button', defaultOffset: 0.50, offsetY: -16, type: 'button' },
+  { id: 'link-linkedin', name: 'LinkedIn Button', defaultOffset: 0.50, offsetY: -16, type: 'button' },
+  { id: 'link-resume', name: 'Resume Button', defaultOffset: 0.50, offsetY: -16, type: 'button' },
+  { id: 'prompt-line', name: 'Terminal Prompt', defaultOffset: 0.40, offsetY: -18, type: 'heading' },
+  { id: 'role-badge-0', name: 'Software Dev Badge', defaultOffset: 0.50, offsetY: -18, type: 'badge' },
+  { id: 'edu-label', name: 'Education Header', defaultOffset: 0.35, offsetY: -16, type: 'heading' },
+  { id: 'edu-inst-0', name: 'BMSIT Education Card', defaultOffset: 0.25, offsetY: -16, type: 'heading' }
 ];
 
-/** Clamp coordinates strictly within the visible mobile screen */
+/** Clamp coordinates strictly within visible screen boundaries */
 function clampToViewport(x: number, y: number): { x: number; y: number } {
+  const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 390;
+  const innerHeight = typeof window !== 'undefined' ? window.innerHeight : 844;
   const minX = 35;
-  const maxX = (typeof window !== 'undefined' ? window.innerWidth : 390) - 35;
-  const minY = 50;
-  const maxY = (typeof window !== 'undefined' ? window.innerHeight : 844) - 60;
+  const maxX = innerWidth - 35;
+  const minY = 45;
+  const maxY = innerHeight - 50;
   return {
     x: Math.max(minX, Math.min(maxX, x)),
     y: Math.max(minY, Math.min(maxY, y))
   };
 }
 
-/** Get viewport-relative coordinates for a heading ONLY if it is genuinely visible on screen */
-function getVisibleHeadingCoords(headingId: string, customOffset?: number): { x: number; y: number } | null {
-  const container = document.getElementById(headingId);
-  if (!container) return null;
+/** Compute natural body tilt from flight direction.
+ *  Returns { facing, tilt } — tilt already accounts for scaleX mirror. */
+function getFlightOrientation(
+  fromX: number, fromY: number, toX: number, toY: number
+): { facing: 'left' | 'right'; tilt: number } {
+  const dx = toX - fromX;
+  const dy = toY - fromY;
+  const facing: 'left' | 'right' = dx >= 0 ? 'right' : 'left';
+  // Flight angle from vertical (head-up = 0°), clockwise positive
+  const angleDeg = Math.atan2(dx, -dy) * (180 / Math.PI);
+  // Scale to max ±20° so the tilt stays natural, not extreme
+  const scaled = angleDeg * (20 / 180);
+  // scaleX(-1) mirrors rotation visually, so negate for left-facing
+  const tilt = facing === 'left' ? -scaled : scaled;
+  return { facing, tilt: Math.round(tilt * 10) / 10 };
+}
 
-  const textEl = container.querySelector('span') || container;
-  const rect = textEl.getBoundingClientRect();
+/** Get viewport-relative coordinates for an anchor ONLY if it is genuinely visible on screen */
+function getVisibleAnchorCoords(anchorId: string, customOffset?: number): { x: number; y: number } | null {
+  const el = document.getElementById(anchorId);
+  if (!el) return null;
+
+  const anchor = PERCH_ANCHORS.find(a => a.id === anchorId);
+  let targetEl: Element = el;
+
+  // Resolve genuinely visible text span (handles responsive sm:hidden / hidden sm:inline tags)
+  if (anchor?.type === 'heading' && el.tagName !== 'SPAN') {
+    const spans = Array.from(el.querySelectorAll('span'));
+    const visibleSpan = spans.find(s => {
+      const r = s.getBoundingClientRect();
+      return r.width > 0 && r.height > 0;
+    });
+    if (visibleSpan) targetEl = visibleSpan;
+  }
+
+  const rect = targetEl.getBoundingClientRect();
   const innerHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
 
-  // Heading MUST be on the visible screen
-  if (rect.top < 10 || rect.top > innerHeight - 50) {
+  // Element MUST be visible in viewport
+  if (rect.bottom < 15 || rect.top > innerHeight - 35) {
     return null;
   }
 
-  const config = SECTIONS.find(s => s.headingId === headingId) || SECTIONS[0];
-  const offset = customOffset !== undefined ? customOffset : config.defaultOffset;
+  const defaultOffset = anchor ? anchor.defaultOffset : 0.5;
+  const offsetY = anchor ? anchor.offsetY : -16;
+  const offset = customOffset !== undefined ? customOffset : defaultOffset;
 
   const rawX = rect.left + rect.width * offset;
-  const rawY = rect.top + config.offsetY;
+  const rawY = rect.top + offsetY;
   return clampToViewport(rawX, rawY);
 }
 
-/** Generate a natural randomized letter offset along a heading string */
-function getRandomLetterOffset(): number {
-  const presets = [0.14, 0.26, 0.42, 0.58, 0.74, 0.86];
-  return presets[Math.floor(Math.random() * presets.length)];
-}
-
-/** Generate a natural subtle perched tilt angle */
-function getRandomPerchTilt(): number {
-  const tiltOptions = [-12, -8, -4, 0, 4, 8, 12];
-  return tiltOptions[Math.floor(Math.random() * tiltOptions.length)];
-}
-
-/** Find the best target heading on screen based on natural scroll position */
-function findBestScrollTarget(): { section: SectionAnchor; pos: { x: number; y: number } } {
+/** Find the best target on screen strictly bounded between Hero and Education */
+function findBestScrollTarget(activeId?: string): { anchor: PerchAnchor; pos: { x: number; y: number } } | null {
   const innerHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
-  const docHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
   const scrollY = window.scrollY;
-  const focalY = innerHeight * 0.36;
+  const focalY = innerHeight * 0.35;
 
-  // 1. Bottom of page -> always Ready to Connect!
-  if (scrollY + innerHeight >= docHeight - 90) {
-    const last = SECTIONS[SECTIONS.length - 1];
-    const pos = getVisibleHeadingCoords(last.headingId, getRandomLetterOffset()) || {
-      x: window.innerWidth * 0.72,
-      y: innerHeight * 0.70
-    };
-    return { section: last, pos };
-  }
-
-  // 2. Top of page -> Hero Name
-  if (scrollY <= 40) {
-    const first = SECTIONS[0];
-    const pos = getVisibleHeadingCoords(first.headingId, 0.62) || {
-      x: window.innerWidth * 0.62,
-      y: 120
-    };
-    return { section: first, pos };
-  }
-
-  // 3. Scan all 8 headings in document order for those on the visible screen
-  const onScreenHeadings: { section: SectionAnchor; pos: { x: number; y: number }; top: number }[] = [];
-
-  for (const s of SECTIONS) {
-    const pos = getVisibleHeadingCoords(s.headingId, getRandomLetterOffset());
-    if (pos) {
-      const el = document.getElementById(s.headingId);
-      const top = el ? el.getBoundingClientRect().top : 0;
-      onScreenHeadings.push({ section: s, pos, top });
+  // Education is the absolute last section: if user scrolled past education, stop following
+  const eduSection = document.getElementById('education');
+  if (eduSection) {
+    const eduRect = eduSection.getBoundingClientRect();
+    if (eduRect.bottom < 30) {
+      return null;
     }
   }
 
-  // If there are visible headings on screen:
-  if (onScreenHeadings.length > 0) {
-    // Pick the one closest to the reading focal sweet spot (~36% down screen)
-    onScreenHeadings.sort((a, b) => Math.abs(a.top - focalY) - Math.abs(b.top - focalY));
-    return onScreenHeadings[0];
+  // 1. Top of page: stay firmly on Chiranth
+  if (scrollY <= 80) {
+    const heroAnchor = PERCH_ANCHORS.find(a => a.id === 'hero-name-chiranth') || PERCH_ANCHORS[0];
+    const pos = getVisibleAnchorCoords(heroAnchor.id);
+    if (pos) {
+      return { anchor: heroAnchor, pos };
+    }
   }
 
-  // 4. If in the middle of a long section (e.g. projects list):
-  // Keep the butterfly at natural reading height (~35% down screen) in the center/left
-  const midScreenPos = {
-    x: window.innerWidth * 0.35,
-    y: innerHeight * 0.35
-  };
+  // 2. Scan all visible anchors in Hero and Education and pick closest to reading focal point
+  const onScreenAnchors: { anchor: PerchAnchor; pos: { x: number; y: number }; top: number }[] = [];
+  for (const a of PERCH_ANCHORS) {
+    const pos = getVisibleAnchorCoords(a.id);
+    if (pos) {
+      const el = document.getElementById(a.id);
+      const top = el ? el.getBoundingClientRect().top : 0;
+      onScreenAnchors.push({ anchor: a, pos, top });
+    }
+  }
 
-  for (const s of SECTIONS) {
-    const secEl = document.getElementById(s.sectionId);
-    if (secEl) {
-      const rect = secEl.getBoundingClientRect();
-      if (rect.top <= focalY && rect.bottom >= focalY) {
-        return { section: s, pos: midScreenPos };
+  if (onScreenAnchors.length > 0) {
+    if (activeId) {
+      const currentActive = onScreenAnchors.find(a => a.anchor.id === activeId);
+      if (currentActive && Math.abs(currentActive.top - focalY) < 140) {
+        return currentActive;
       }
     }
+    onScreenAnchors.sort((a, b) => Math.abs(a.top - focalY) - Math.abs(b.top - focalY));
+    return onScreenAnchors[0];
   }
 
-  return { section: SECTIONS[0], pos: midScreenPos };
+  return null;
 }
 
 export default function MobileButterfly() {
   const [coords, setCoords] = useState<{ x: number; y: number } | null>(null);
   const [isFlying, setIsFlying] = useState<boolean>(false);
   const [isStartled, setIsStartled] = useState<boolean>(false);
-  const [tilt, setTilt] = useState<number>(-8);
   const [facing, setFacing] = useState<'left' | 'right'>('right');
+  const [tilt, setTilt] = useState<number>(0);
   const [wingPose, setWingPose] = useState<'open' | 'folded'>('open');
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [flightDuration, setFlightDuration] = useState<number>(1800);
 
   const coordsRef = useRef<{ x: number; y: number } | null>(null);
-  const activeHeadingRef = useRef<string>('name-header');
-  const activeOffsetRef = useRef<number>(0.62);
-  const prevScrollY = useRef<number>(0);
+  const activeAnchorRef = useRef<string>('hero-name-chiranth');
+  const prevAnchorRef = useRef<string>('');
+  const flyingLockRef = useRef<boolean>(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const landingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -165,92 +171,83 @@ export default function MobileButterfly() {
 
   // ----- ENTRANCE ANIMATION (On portfolio load) -----
   useEffect(() => {
-    if (window.innerWidth >= 640) return;
-
-    // Start off-screen top right
-    const startX = window.innerWidth * 0.85;
+    const innerW = typeof window !== 'undefined' ? window.innerWidth : 390;
+    const isDesktop = innerW >= 768;
+    const startX = isDesktop ? (innerW / 2 - 140) : innerW * 0.45;
     const startY = -70;
     updateCoords({ x: startX, y: startY });
     setIsFlying(true);
     setIsVisible(true);
-    setFacing('left'); // flying in leftward from top-right
-    setTilt(14);
+    setFlightDuration(1800);
 
-    // Give DOM 320ms to settle typography and hero layout
+    // Give DOM time to settle layout
     const timer = setTimeout(() => {
-      const initialOffset = Math.random() > 0.5 ? 0.65 : 0.22;
-      const initialPose: 'open' | 'folded' = Math.random() > 0.45 ? 'open' : 'folded';
-      const landPos = getVisibleHeadingCoords('name-header', initialOffset) || {
-        x: window.innerWidth * initialOffset,
+      const heroAnchor = PERCH_ANCHORS.find(a => a.id === 'hero-name-chiranth') || PERCH_ANCHORS[0];
+      const landPos = getVisibleAnchorCoords(heroAnchor.id) || {
+        x: isDesktop ? (innerW / 2 - 140) : 195,
         y: 120
       };
 
-      setFacing(initialOffset > 0.5 ? 'left' : 'right');
+      setFlightDuration(1800);
       updateCoords(landPos);
-      setTilt(initialOffset > 0.5 ? -10 : 8);
-      activeHeadingRef.current = 'name-header';
-      activeOffsetRef.current = initialOffset;
+      activeAnchorRef.current = heroAnchor.id;
 
       landingTimeoutRef.current = setTimeout(() => {
         setIsFlying(false);
-        setWingPose(initialPose);
-        setTilt(getRandomPerchTilt());
-      }, 1100);
-    }, 320);
+        setWingPose('folded');
+      }, 1800);
+    }, 280);
 
     return () => clearTimeout(timer);
   }, [updateCoords]);
 
-  // ----- SCROLL TRACKING ACROSS ALL SECTIONS -----
+  // ----- SCROLL TRACKING STRICTLY BOUNDED BETWEEN HERO & EDUCATION -----
   useEffect(() => {
-    if (window.innerWidth >= 640) return;
-
     const onScroll = () => {
-      const currentY = window.scrollY;
-      const dy = currentY - prevScrollY.current;
-      prevScrollY.current = currentY;
-
-      // Butterfly lifts off and flaps wings gracefully
-      setIsFlying(true);
-      if (dy > 2) {
-        setTilt(12); // gentle pitch downward with scroll
-      } else if (dy < -2) {
-        setTilt(-12); // gentle pitch upward against scroll
-      }
-
+      // Debounce scroll target evaluation to prevent state thrashing during active scrolling
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      if (landingTimeoutRef.current) clearTimeout(landingTimeoutRef.current);
 
-      // When user stops scrolling, locate the active heading in view
       scrollTimeoutRef.current = setTimeout(() => {
-        const target = findBestScrollTarget();
-        const randomFacing: 'left' | 'right' = Math.random() > 0.5 ? 'right' : 'left';
-        const randomPose: 'open' | 'folded' = Math.random() > 0.45 ? 'open' : 'folded';
-        const randomTilt = getRandomPerchTilt();
+        // Check if user scrolled past Education: butterfly gracefully hides
+        const eduSection = document.getElementById('education');
+        if (eduSection && eduSection.getBoundingClientRect().bottom < 30) {
+          setIsVisible(false);
+          setIsFlying(false);
+          return;
+        }
 
-        activeHeadingRef.current = target.section.headingId;
-        const currentX = coordsRef.current?.x || 0;
-        setFacing(target.pos.x >= currentX ? 'right' : 'left');
+        const target = findBestScrollTarget(activeAnchorRef.current);
+        if (!target) {
+          setIsVisible(false);
+          setIsFlying(false);
+          return;
+        }
+
+        const curX = coordsRef.current ? coordsRef.current.x : target.pos.x;
+        const curY = coordsRef.current ? coordsRef.current.y : target.pos.y;
+        const orient = getFlightOrientation(curX, curY, target.pos.x, target.pos.y);
+        setFacing(orient.facing);
+        setTilt(orient.tilt);
+        setIsVisible(true);
+        setIsFlying(true);
+        setFlightDuration(1800);
+
+        activeAnchorRef.current = target.anchor.id;
         updateCoords(target.pos);
-        setTilt(target.pos.x > currentX ? 8 : -8);
 
-        // Land gently and choose posture (smooth 180-deg open unfurl vs folded side view)
+        if (landingTimeoutRef.current) clearTimeout(landingTimeoutRef.current);
         landingTimeoutRef.current = setTimeout(() => {
           setIsFlying(false);
-          setFacing(randomFacing);
-          setWingPose(randomPose);
-          setTilt(randomTilt);
-        }, 900);
-      }, 180);
+          setWingPose(Math.random() > 0.4 ? 'open' : 'folded');
+          setTilt(0);
+        }, 1800);
+      }, 120);
     };
 
     const onResize = () => {
-      if (window.innerWidth >= 640) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-        const currentPos = getVisibleHeadingCoords(activeHeadingRef.current, activeOffsetRef.current);
-        if (currentPos) updateCoords(currentPos);
+      const currentPos = getVisibleAnchorCoords(activeAnchorRef.current);
+      if (currentPos) {
+        updateCoords(currentPos);
       }
     };
 
@@ -265,102 +262,138 @@ export default function MobileButterfly() {
     };
   }, [updateCoords]);
 
-  // ----- TAP / TOUCH INTERACTION -----
-  const onTap = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (!coordsRef.current || isStartled) return;
+  // ----- TAP / TOUCH / CLICK INTERACTION -----
+  const onTap = useCallback((e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    if (!coordsRef.current || flyingLockRef.current) return;
 
-    setIsStartled(true);
-    setIsFlying(true);
+    // Clear any pending flights
+    if (tapTimeoutRef.current) clearTimeout(tapTimeoutRef.current);
+    if (landingTimeoutRef.current) clearTimeout(landingTimeoutRef.current);
+
+    flyingLockRef.current = true;
 
     try {
       navigator.vibrate?.(18);
     } catch {}
 
     const curPos = coordsRef.current;
-    // Phase 1: Startle flutter jump (hops up and away, flips direction)
-    const sideDir = Math.random() > 0.5 ? 1 : -1;
-    const sideShift = sideDir * (35 + Math.random() * 30);
-    const jumpPos = clampToViewport(curPos.x + sideShift, curPos.y - 65 - Math.random() * 25);
 
-    setFacing(sideDir > 0 ? 'right' : 'left');
-    updateCoords(jumpPos);
-    setTilt(sideDir > 0 ? 16 : -16);
+    // --- Pick destination FIRST so the entire flight is forward-facing ---
+    const visibleList: { anchor: PerchAnchor; pos: { x: number; y: number } }[] = [];
+    for (const a of PERCH_ANCHORS) {
+      const jitter = (Math.random() - 0.5) * 0.2;
+      const offset = Math.max(0.2, Math.min(0.8, a.defaultOffset + jitter));
+      const pos = getVisibleAnchorCoords(a.id, offset);
+      if (pos) {
+        visibleList.push({ anchor: a, pos });
+      }
+    }
 
-    // Phase 2: Pick a new visible landing spot ON THE SCREEN
+    if (visibleList.length === 0) {
+      flyingLockRef.current = false;
+      return;
+    }
+
+    // Exclude current and previous anchor to avoid loops
+    const freshCandidates = visibleList.filter(
+      v => v.anchor.id !== activeAnchorRef.current && v.anchor.id !== prevAnchorRef.current
+    );
+    const candidates = freshCandidates.length > 0
+      ? freshCandidates
+      : visibleList.filter(v => v.anchor.id !== activeAnchorRef.current);
+
+    const nextTarget = candidates.length > 0
+      ? candidates[Math.floor(Math.random() * candidates.length)]
+      : visibleList[0];
+
+    const destPos = nextTarget.pos;
+    const newAnchorId = nextTarget.anchor.id;
+    const nextPose: 'open' | 'folded' = Math.random() > 0.4 ? 'open' : 'folded';
+
+    // --- Direction: always face toward destination (forward flight, never backward) ---
+    const flightDir = destPos.x >= curPos.x ? 1 : -1;
+
+    // --- PHASE 1: Startle dodge — hop TOWARD destination direction (+ upward) ---
+    const dodgeX = flightDir * (20 + Math.random() * 25);
+    const dodgeY = -(35 + Math.random() * 25);
+    const dodgePos = clampToViewport(curPos.x + dodgeX, curPos.y + dodgeY);
+
+    // Orient body toward dodge position
+    const dodgeOrient = getFlightOrientation(curPos.x, curPos.y, dodgePos.x, dodgePos.y);
+    setIsStartled(true);
+    setIsFlying(true);
+    setFacing(dodgeOrient.facing);
+    setTilt(dodgeOrient.tilt);
+    setFlightDuration(350);
+    updateCoords(dodgePos);
+
+    // --- PHASE 2: Composed forward glide to destination ---
     tapTimeoutRef.current = setTimeout(() => {
-      // Collect headings currently visible in viewport
-      const visibleHeadings: { section: SectionAnchor; pos: { x: number; y: number } }[] = [];
-      for (const s of SECTIONS) {
-        const pos = getVisibleHeadingCoords(s.headingId, getRandomLetterOffset());
-        if (pos) {
-          visibleHeadings.push({ section: s, pos });
-        }
-      }
+      setIsStartled(false);
 
-      let destPos: { x: number; y: number };
-      let newHeadingId = activeHeadingRef.current;
-      let newOffset = activeOffsetRef.current;
-      const nextFacing: 'left' | 'right' = Math.random() > 0.5 ? 'right' : 'left';
-      const nextPose: 'open' | 'folded' = Math.random() > 0.45 ? 'open' : 'folded';
-      const nextTilt = getRandomPerchTilt();
+      // Re-orient body toward final destination
+      const glideOrient = getFlightOrientation(dodgePos.x, dodgePos.y, destPos.x, destPos.y);
+      setFacing(glideOrient.facing);
+      setTilt(glideOrient.tilt);
 
-      // If another visible heading is on screen, fly to it
-      const otherVisible = visibleHeadings.filter(v => v.section.headingId !== activeHeadingRef.current);
-      if (otherVisible.length > 0) {
-        const pick = otherVisible[Math.floor(Math.random() * otherVisible.length)];
-        destPos = pick.pos;
-        newHeadingId = pick.section.headingId;
-        newOffset = pick.section.defaultOffset;
-      } else {
-        // Otherwise pick a different letter offset on the current heading
-        newOffset = getRandomLetterOffset();
-        const freshPos = getVisibleHeadingCoords(activeHeadingRef.current, newOffset);
-        destPos = freshPos || clampToViewport(curPos.x + (Math.random() > 0.5 ? 60 : -60), curPos.y);
-      }
+      const glideTime = 1400 + Math.floor(Math.random() * 500);
+      setFlightDuration(glideTime);
 
-      // Turn towards flight path
-      setFacing(destPos.x >= jumpPos.x ? 'right' : 'left');
+      prevAnchorRef.current = activeAnchorRef.current;
+      activeAnchorRef.current = newAnchorId;
       updateCoords(destPos);
-      activeHeadingRef.current = newHeadingId;
-      activeOffsetRef.current = newOffset;
-      setTilt(destPos.x > jumpPos.x ? 10 : -10);
 
-      // Phase 3: Land smoothly, adopt new stance (open basking vs folded), pitch angle & facing
+      // Touchdown: settle wings, neutralize tilt, release lock
       landingTimeoutRef.current = setTimeout(() => {
-        setIsStartled(false);
         setIsFlying(false);
-        setFacing(nextFacing);
         setWingPose(nextPose);
-        setTilt(nextTilt);
-      }, 920);
+        setTilt(0);
+        flyingLockRef.current = false;
+      }, glideTime);
     }, 400);
-  }, [isStartled, updateCoords]);
+  }, [updateCoords]);
 
-  if (!isVisible || !coords) return null;
+  // Natural idle wandering: softly advance to next landmark every 20-28s when resting near top of page
+  useEffect(() => {
+    if (isFlying || !isVisible) return;
+    const idleHopTimer = setInterval(() => {
+      if (typeof window !== 'undefined' && window.scrollY <= 450) {
+        onTap();
+      }
+    }, 20000 + Math.random() * 8000);
+    return () => clearInterval(idleHopTimer);
+  }, [isFlying, isVisible, onTap]);
+
+  if (!coords) return null;
 
   return (
     <div
-      className="fixed z-[60] pointer-events-none sm:hidden"
+      className={`fixed z-[60] pointer-events-none transition-opacity duration-400 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      }`}
       style={{
-        left: `${coords.x}px`,
-        top: `${coords.y}px`,
-        transform: 'translate(-50%, -50%)',
-        transition: `all ${isFlying ? '950ms' : '380ms'} cubic-bezier(0.25, 1, 0.4, 1)`
+        top: 0,
+        left: 0,
+        transform: `translate3d(${coords.x}px, ${coords.y}px, 0) translate(-50%, -50%)`,
+        willChange: 'transform',
+        transition: `transform ${isFlying ? `${flightDuration}ms` : '500ms'} cubic-bezier(0.33, 0.05, 0.15, 1), opacity 400ms ease`
       }}
       aria-hidden="true"
     >
       <div
         onClick={onTap}
         onTouchStart={onTap}
-        className="relative w-20 h-20 flex items-center justify-center cursor-pointer pointer-events-auto select-none"
+        className="relative w-14 h-14 flex items-center justify-center cursor-pointer pointer-events-auto select-none"
         style={{ touchAction: 'manipulation' }}
         title="Tap butterfly"
       >
         {/* Dynamic Grounding Bioluminescent Shadow */}
         <div
-          className="absolute pointer-events-none transition-all duration-500"
+          className="absolute pointer-events-none transition-all duration-400"
           style={{
             bottom: isFlying ? '-14px' : '-3px',
             left: '50%',
@@ -371,25 +404,25 @@ export default function MobileButterfly() {
               ? 'radial-gradient(ellipse, rgba(0, 195, 255, 0.28) 0%, rgba(37, 99, 235, 0.12) 50%, transparent 75%)'
               : 'radial-gradient(ellipse, rgba(0, 0, 0, 0.28) 0%, rgba(37, 99, 235, 0.08) 55%, transparent 75%)',
             borderRadius: '50%',
-            filter: isFlying ? 'blur(4.5px)' : 'blur(1.4px)'
+            filter: isFlying ? 'blur(4px)' : 'blur(1.2px)'
           }}
         />
 
         {/* 3D Butterfly Container with Dynamic Facing, Stance & Glow */}
         <div
           className={`relative flex items-center justify-center transform-gpu ${
-            isStartled ? 'animate-butterfly-startle' : ''
+            isStartled ? 'animate-butterfly-startle' : isFlying ? 'animate-butterfly-bob' : ''
           }`}
           style={{
-            transform: `scaleX(${facing === 'left' ? -1 : 1}) rotate(${tilt}deg) translateY(${isFlying ? '-4px' : '0'})`,
+            transform: `scaleX(${facing === 'left' ? -1 : 1}) rotate(${tilt}deg)`,
             perspective: '600px',
             transformStyle: 'preserve-3d',
-            transition: 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)',
+            transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
             filter: isFlying 
-              ? 'drop-shadow(0 0 7px rgba(0, 210, 255, 0.65)) drop-shadow(0 2px 8px rgba(37, 99, 235, 0.45))'
+              ? 'drop-shadow(0 0 6px rgba(0, 210, 255, 0.5)) drop-shadow(0 2px 8px rgba(37, 99, 235, 0.35))'
               : wingPose === 'open'
-                ? 'drop-shadow(0 2px 6px rgba(0, 180, 255, 0.45))'
-                : 'drop-shadow(0 1px 4px rgba(0, 160, 255, 0.35))'
+                ? 'drop-shadow(0 2px 6px rgba(0, 180, 255, 0.4))'
+                : 'drop-shadow(0 1px 4px rgba(0, 160, 255, 0.3))'
           }}
         >
           {/* LEFT WING (Iridescent Blue Morpho Forewing & Hindwing) */}

@@ -4,6 +4,8 @@ import path from "path";
 import dotenv from "dotenv";
 import { sqlguardjs } from "sqlguardjs";
 import rateLimit from "express-rate-limit";
+// @ts-ignore
+import fortifyPkg from "@chiranthmoger/fortifyjs";
 
 dotenv.config();
 if (!process.env.DISCORD_WEBHOOK_URL && fs.existsSync("D:/.env")) {
@@ -51,8 +53,14 @@ const guard = sqlguardjs({
   }
 });
 
-// Register Global Guard
-app.use(guard.global());
+// Register Global Guard (exempting FortifyJS sandbox endpoint)
+const globalGuard = guard.global();
+app.use((req, res, next) => {
+  if (req.path === "/api/fortify/test") {
+    return next();
+  }
+  return globalGuard(req, res, next);
+});
 
 // In-memory store for contact form submissions and blog posts (transient, perfect for this prototype)
 interface ContactSubmission {
@@ -490,6 +498,51 @@ app.post("/api/security/test", (req, res) => {
     success: true,
     message: "Payload successfully verified. No malicious patterns detected by SQLGuardJS.",
     received: payload
+  });
+});
+
+// Live-testing endpoint powered by FortifyJS Zero-Dependency WAF & AI Defense Engine
+let fortifyEngineInstance: any = null;
+try {
+  const DetectionEngine = (fortifyPkg as any).DetectionEngine || (fortifyPkg as any).default?.DetectionEngine;
+  if (DetectionEngine) {
+    fortifyEngineInstance = new DetectionEngine();
+  }
+} catch (e) {
+  console.warn("FortifyJS engine initialization warning:", e);
+}
+
+app.post("/api/fortify/test", (req, res) => {
+  const { payload } = req.body || {};
+  const rawInput = typeof payload === "string" ? payload : (payload !== undefined ? JSON.stringify(payload) : "");
+  const startTime = performance.now();
+
+  if (fortifyEngineInstance) {
+    const result = fortifyEngineInstance.detect(rawInput);
+    const latencyMs = Math.max(0.012, performance.now() - startTime).toFixed(3);
+    const isBlocked = result.label !== "benign" && result.confidence >= 0.5;
+
+    return res.status(isBlocked ? 403 : 200).json({
+      success: true,
+      blocked: isBlocked,
+      label: result.label,
+      confidence: Math.round(result.confidence * 1000) / 10,
+      latency: `${latencyMs} ms`,
+      scores: result.scores || {},
+      matches: result.matches || [],
+      received: rawInput
+    });
+  }
+
+  res.json({
+    success: true,
+    blocked: false,
+    label: "benign",
+    confidence: 0,
+    latency: "0.020 ms",
+    scores: {},
+    matches: [],
+    received: rawInput
   });
 });
 

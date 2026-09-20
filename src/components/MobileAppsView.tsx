@@ -857,11 +857,6 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                 <span className="font-mono text-[10px] text-ink-soft bg-white/90 border border-line/80 px-2.5 py-1 rounded-full shadow-2xs">
                   {app.category}
                 </span>
-                {app.screenshots && app.screenshots.length > 0 && (
-                  <span className="font-mono text-[10px] text-ink bg-white/90 border border-line/80 px-2 py-1 rounded-full shadow-2xs">
-                    {app.screenshots.length} Screenshots
-                  </span>
-                )}
               </div>
 
               {/* Big App Logo */}

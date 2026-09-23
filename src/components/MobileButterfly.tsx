@@ -314,12 +314,11 @@ export default function MobileButterfly() {
     const newAnchorId = nextTarget.anchor.id;
     const nextPose: 'open' | 'folded' = Math.random() > 0.4 ? 'open' : 'folded';
 
-    // --- Direction: always face toward destination (forward flight, never backward) ---
-    const flightDir = destPos.x >= curPos.x ? 1 : -1;
-
-    // --- PHASE 1: Startle dodge — hop TOWARD destination direction (+ upward) ---
-    const dodgeX = flightDir * (20 + Math.random() * 25);
-    const dodgeY = -(35 + Math.random() * 25);
+    // --- PHASE 1: Startle dodge — random direction hop (any direction) ---
+    const dodgeAngle = Math.random() * Math.PI * 2; // full 360° random
+    const dodgeDist = 30 + Math.random() * 25;
+    const dodgeX = Math.cos(dodgeAngle) * dodgeDist;
+    const dodgeY = Math.sin(dodgeAngle) * dodgeDist - 20; // bias slightly upward
     const dodgePos = clampToViewport(curPos.x + dodgeX, curPos.y + dodgeY);
 
     // Orient body toward dodge position

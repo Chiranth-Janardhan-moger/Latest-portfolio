@@ -7,6 +7,7 @@ export interface Project {
   githubUrl?: string;
   demoUrl?: string;
   appDeepLink?: string;
+  fdroidUrl?: string;
   logs: {
     type: 'VERIFIED' | 'FLAGGED' | 'NOTE';
     text: string;
@@ -83,6 +84,7 @@ export interface MobileApp {
   iconUrl?: string;
   githubUrl?: string;
   apkUrl?: string;
+  fdroidUrl?: string;
   demoUrl?: string;
   architectureHighlights: string[];
   problemStatement?: string;

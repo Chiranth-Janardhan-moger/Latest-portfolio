@@ -35,6 +35,25 @@ import TiltCard from './TiltCard';
 import LazyImage from './LazyImage';
 import MobileButterfly from './MobileButterfly';
 
+const FdroidIcon = ({ size = 14, className = "" }: { size?: number; className?: string }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className={className}
+  >
+    <line x1="5" y1="2.5" x2="7.5" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="19" y1="2.5" x2="16.5" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    <path 
+      fillRule="evenodd" 
+      clipRule="evenodd" 
+      d="M 5.5 6 h 13 a 2.5 2.5 0 0 1 2.5 2.5 v 1.5 a 2.5 2.5 0 0 1 -2.5 2.5 h -13 a 2.5 2.5 0 0 1 -2.5 -2.5 v -1.5 a 2.5 2.5 0 0 1 2.5 -2.5 z M 6.25 9.25 a 1.25 1.25 0 1 0 2.5 0 a 1.25 1.25 0 1 0 -2.5 0 z M 15.25 9.25 a 1.25 1.25 0 1 0 2.5 0 a 1.25 1.25 0 1 0 -2.5 0 z" 
+    />
+    <rect x="3" y="14" width="18" height="7.5" rx="2.5" />
+  </svg>
+);
+
 interface PortfolioViewProps {
   onNavigateToContact: () => void;
   onNavigateToApps?: (appId?: string) => void;
@@ -938,6 +957,19 @@ export default function PortfolioView({ onNavigateToContact, onNavigateToApps, o
                         id={`project-gh-${proj.id}`}
                       >
                         <Github size={14} />
+                      </a>
+                    )}
+                    {proj.fdroidUrl && (
+                      <a
+                        href={proj.fdroidUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-8 h-8 rounded-full border border-line/80 bg-white flex items-center justify-center text-ink hover:bg-ink hover:text-paper hover:border-ink shadow-2xs active:scale-95 transition-all duration-200 ease-out"
+                        title="Available on F-Droid"
+                        id={`project-fdroid-${proj.id}`}
+                        aria-label="Available on F-Droid"
+                      >
+                        <FdroidIcon size={14} />
                       </a>
                     )}
                     {(proj.id === 'vaultx' || proj.id === 'latex-editor' || Boolean(proj.appDeepLink)) && (

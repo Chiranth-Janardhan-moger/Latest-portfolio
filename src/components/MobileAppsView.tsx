@@ -116,6 +116,26 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
     </svg>
   );
 
+  // Custom F-Droid Icon SVG Component
+  const FdroidIcon = ({ size = 14, className = "" }: { size?: number; className?: string }) => (
+    <svg 
+      width={size} 
+      height={size} 
+      viewBox="0 0 24 24" 
+      fill="currentColor" 
+      className={className}
+    >
+      <line x1="5" y1="2.5" x2="7.5" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <line x1="19" y1="2.5" x2="16.5" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d="M 5.5 6 h 13 a 2.5 2.5 0 0 1 2.5 2.5 v 1.5 a 2.5 2.5 0 0 1 -2.5 2.5 h -13 a 2.5 2.5 0 0 1 -2.5 -2.5 v -1.5 a 2.5 2.5 0 0 1 2.5 -2.5 z M 6.25 9.25 a 1.25 1.25 0 1 0 2.5 0 a 1.25 1.25 0 1 0 -2.5 0 z M 15.25 9.25 a 1.25 1.25 0 1 0 2.5 0 a 1.25 1.25 0 1 0 -2.5 0 z" 
+      />
+      <rect x="3" y="14" width="18" height="7.5" rx="2.5" />
+    </svg>
+  );
+
   // Render simulated high-fidelity mobile UI screens
   const renderScreenMockup = (type: string, appId: string) => {
     if (appId === 'vaultx') {
@@ -555,6 +575,18 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                 <span>Source Code</span>
               </a>
             )}
+            {selectedApp.fdroidUrl && (
+              <a
+                href={selectedApp.fdroidUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 border border-line/80 bg-white/80 backdrop-blur-md rounded-full px-4 py-2.5 hover:border-ink hover:bg-ink hover:text-paper hover:-translate-y-0.5 active:scale-95 shadow-2xs transition-all duration-200 ease-out btn-sweep"
+                id="btn-app-fdroid-detail"
+              >
+                <FdroidIcon size={14} className="shrink-0" />
+                <span>F-Droid</span>
+              </a>
+            )}
             <a
               href={selectedApp.apkUrl || selectedApp.githubUrl + '/releases'}
               target="_blank"
@@ -857,6 +889,12 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
                 <span className="font-mono text-[10px] text-ink-soft bg-white/90 border border-line/80 px-2.5 py-1 rounded-full shadow-2xs">
                   {app.category}
                 </span>
+                {app.fdroidUrl && (
+                  <span className="font-mono text-[10px] text-ink-soft bg-white/90 border border-line/80 px-2.5 py-1 rounded-full shadow-2xs flex items-center gap-1">
+                    <FdroidIcon size={11} className="shrink-0" />
+                    <span>F-Droid</span>
+                  </span>
+                )}
               </div>
 
               {/* Big App Logo */}

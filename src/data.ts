@@ -220,6 +220,7 @@ export const PROJECTS: Project[] = [
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager",
     demoUrl: "https://chiranth-janardhan-moger.github.io/vaultx-offline-password-manager/",
     appDeepLink: "/app/vaultx",
+    fdroidUrl: "https://f-droid.org/packages/com.chiranth7.vaultx",
     logs: [
       { type: "VERIFIED", text: "Native Android Autofill Integration allowing safe, seamless credential insertion inside external applications" },
       { type: "VERIFIED", text: "Built-in 2FA/TOTP authenticator, clipboard clearing safety monitoring, and screenshot prevention overlays" }
@@ -246,6 +247,7 @@ export const PROJECTS: Project[] = [
     stack: ["Kotlin", "Room Database", "Coil", "Material 3", "Coroutines & Flow"],
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/webstack",
     appDeepLink: "/app/webstack",
+    fdroidUrl: "https://f-droid.org/packages/com.chiranth7.webstack/",
     logs: [
       { type: "VERIFIED", text: "Automated snapshot generation and local disk caching for instant offline bookmark loading" },
       { type: "VERIFIED", text: "Hardware-accelerated expanding search bar and dynamic tag management" },
@@ -486,10 +488,69 @@ Read more in our [complete ConnectMe mobile repository documentation](https://gi
 
 export const MOBILE_APPS: MobileApp[] = [
   {
+    id: "webstack",
+    name: "WebStack",
+    category: "Productivity & Utilities",
+    tagline: "Visual Bookmark Manager & Website Hub",
+    desc: "A sleek visual bookmark stack and link management application for Android. Eliminates the friction of remembering or losing web URLs by enabling users to visually organize, tag, and instantly revisit their essential web apps and websites.",
+    detailedAbout: "Rather than forcing users to remember, bookmark-clutter, or constantly re-search for web tools and sites, WebStack provides Android users with a centralized, beautiful visual workspace. With automated page snapshot generation, offline caching, and instant search, saving and revisiting websites becomes fast, organized, and reliable.",
+    problemStatement: "Remembering and juggling multiple web apps and URLs is frustrating, and standard mobile browser bookmark menus are buried deep in text-only lists that lack visual context, fast tagging, and offline snapshot previews.",
+    solutionStatement: "Engineered a dedicated Android visual bookmark stack using Room DB and local storage that automatically fetches website snapshots and favicons, caches them locally for offline access, and provides instant categorized filtering.",
+    solutionPoints: [
+      "Automated Snapshot Generation: Captures responsive website preview cards and favicons for effortless visual scanning.",
+      "Zero-Lag Filter & Search: Hardware-accelerated search across titles, URLs, and custom tags with smooth 60/120 FPS transitions.",
+      "Offline Snapshot Caching: Previews and metadata are preserved locally on-device, enabling instant access without mobile data consumption.",
+      "Interactive Tag Management: Create, edit, and filter custom tags with long-press context sheets and haptic feedback.",
+      "1-Tap System Share: Directly capture links from Chrome, Safari, or social feeds using native Android Intent filters."
+    ],
+    stack: ["Kotlin", "Android SDK", "Room Database", "Coil", "Material 3", "Kotlin Coroutines & Flow"],
+    iconUrl: "/assets/apps/webstack/webstack-icon.svg",
+    features: [
+      "Visual Website Cards with high-resolution snapshot rendering",
+      "Dual Layout Modes: Switch between rich screenshot cards and compact rows",
+      "Fast Search & Filter by title, domain, or custom category tags",
+      "Custom Tag Management with long-press action sheets and rename/delete support",
+      "100% Offline Snapshot Caching with local storage persistence",
+      "System Share Sheet Integration for 1-tap link saving from any browser",
+      "Smart Clipboard Detection for instant quick-paste link capture",
+      "ABI-Optimized Builds for arm64-v8a and armeabi-v7a architecture"
+    ],
+    status: "Production",
+    version: "v1.1.1",
+    githubUrl: "https://github.com/Chiranth-Janardhan-moger/webstack",
+    apkUrl: "https://github.com/Chiranth-Janardhan-moger/webstack/releases/download/v1.1.1/app-arm64-v8a-release.apk",
+    fdroidUrl: "https://f-droid.org/packages/com.chiranth7.webstack/",
+    architectureHighlights: [
+      "MVVM architecture backed by Room SQLite database and Kotlin StateFlow",
+      "Coil image pipeline with customized memory and disk cache policies",
+      "Smooth hardware-accelerated transitions utilizing native RenderThread",
+      "Dual ABI-split packaging delivering optimized APK binary sizes"
+    ],
+    screenshots: [
+      "/assets/apps/webstack/webstack-home.png",
+      "/assets/apps/webstack/webstack-save-link.png",
+      "/assets/apps/webstack/webstack-settings.png"
+    ],
+    screenMockups: [
+      {
+        id: "ws-screen-1",
+        title: "Visual Bookmark Stack",
+        description: "High-density visual website cards with responsive snapshot previews, favicons, and category badges.",
+        type: "stack"
+      },
+      {
+        id: "ws-screen-2",
+        title: "Instant Search & Filtering",
+        description: "Hardware-accelerated search bar with fluid expansion and interactive category filter pills.",
+        type: "search"
+      }
+    ]
+  },
+  {
     id: "vaultx",
     name: "VaultX",
     category: "Security & Cryptography",
-    tagline: "Offline-First Android App Locker & Password Vault",
+    tagline: "Offline Locker & Password Vault",
     desc: "A zero-knowledge, offline-first mobile password manager and credential vault. Implements military-grade AES-256-GCM encryption with PBKDF2 key derivation, biometric authentication, and hardware-backed SecureStore keys. Zero internet permissions requested, ensuring total isolation from network attack vectors.",
     detailedAbout: "VaultX is an open-source, privacy-first mobile password manager and secure wallet engineered with React Native and Expo. Your credentials never touch third-party servers, never synchronize to the cloud, and are protected with military-grade AES-256 authenticated encryption. Features include biometric authentication, built-in 2FA/TOTP authenticator generation, secure identity & payment card storage, native Android Autofill integration, and deterministic master password generation.",
     problemStatement: "Mainstream password managers synchronize vault databases across remote centralized servers. When cloud providers suffer breaches, credential stuffing attacks, or subpoena seizures, user master hashes and encrypted vaults are exposed. Furthermore, many proprietary apps require recurring paid subscriptions, harvest telemetry logs, and expose users to server-side outage lockouts.",
@@ -519,9 +580,10 @@ export const MOBILE_APPS: MobileApp[] = [
       "Smart Auto-Categorization (Google, Banking, Social Media, Shopping, Gaming, Work)"
     ],
     status: "Live Release",
-    version: "v1.3.4",
+    version: "v1.4.0",
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager",
-    apkUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager/releases/download/v1.3.4/VaultX-v1.3.4-arm64-v8a.apk",
+    apkUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager/releases/download/v1.4.0/VaultX-v1.4.0-arm64-v8a.apk",
+    fdroidUrl: "https://f-droid.org/packages/com.chiranth7.vaultx",
     architectureHighlights: [
       "Key derivation using PBKDF2 with SHA-256 and 100,000 iterations",
       "Transient memory buffers with automated zero-fill garbage collection",
@@ -547,42 +609,6 @@ export const MOBILE_APPS: MobileApp[] = [
         description: "Native offline Time-based One-Time Password generator with animated circular sync indicators.",
         type: "totp"
       }
-    ]
-  },
-  {
-    id: "connectme",
-    name: "ConnectMe",
-    category: "Transit Telemetry & Mapping",
-    tagline: "Real-Time Campus Bus Tracking & ETA Prediction",
-    desc: "A real-time transit telemetry mobile app engineered for university shuttle tracking. Overcomes urban GPS multipath jitter using on-device Kalman filtering algorithms, coupled with live WebSockets for sub-second bus coordinate updates.",
-    detailedAbout: "ConnectMe was architected to eliminate transit uncertainty across the university campus. Designed as a comprehensive client-server ecosystem, the mobile app connects students with campus shuttle telemetry in real time. It calculates accurate arrival times based on historical transit segment speeds, traffic conditions, and campus perimeter geofences.",
-    problemStatement: "University students and faculty lost hours every week waiting for campus shuttles with unpredictable schedules. Standard GPS tracking suffered severe multipath reflections from concrete academic buildings, causing tracking bus icons to jitter erratically across map tiles, teleport across blocks, and miscalculate arrival ETAs.",
-    solutionStatement: "Engineered an on-device mathematical Kalman filter that predicts expected vehicle momentum and discounts noisy GPS telemetry anomalies. Position updates are streamed through lightweight Socket.io rooms directly to Upstash Redis geospatial clusters, reducing server packet ingress by 38% while delivering a smooth 60 FPS bus avatar animation.",
-    solutionPoints: [
-      "On-Device Kalman Filtering: Mathematical trajectory smoothing predicting momentum and discounting GPS reflections.",
-      "Sub-Second Bidirectional Telemetry: Live position coordinates streamed via Socket.io to Upstash Redis geospatial clusters.",
-      "Dynamic Arrival ETA Engine: Automated arrival forecasting calculated from real-time speed profiles and route geofences.",
-      "38% Ingress Compression: On-device coordinate delta filtering preventing redundant server database writes.",
-      "Resilient Offline Mode: Local SQLite timetable caching enabling full route navigation during cellular drops."
-    ],
-    stack: ["React Native", "Expo", "Socket.IO", "Redis Geo", "Leaflet / Mapbox", "Node.js", "Express", "TypeScript"],
-    iconUrl: "/assets/apps/bustrack/bus-icon.webp",
-    features: [
-      "Live GPS telemetry with on-device Kalman filter motion smoothing",
-      "Sub-second bus avatar sync via Socket.io bidirectional channels",
-      "Automated ETA prediction based on dynamic route speed profiling",
-      "Geofenced arrival alerts and push notifications via Expo Push & Firebase",
-      "Offline timetable caching and fallback route navigation schedules",
-      "Driver dispatch telemetry console with live route adherence metrics"
-    ],
-    status: "Production",
-    version: "v2.1.0",
-    githubUrl: "https://github.com/Chiranth-Janardhan-moger/Connect_Me",
-    architectureHighlights: [
-      "Upstash Redis geospatial indexing (GEOADD & GEORADIUS query engine)",
-      "38% reduction in packet ingress through on-device telemetry compression",
-      "Graceful offline degradation with local SQLite schedule caches",
-      "Dynamic connection reconnect with exponential backoff on cell drops"
     ]
   },
   {
@@ -629,61 +655,39 @@ export const MOBILE_APPS: MobileApp[] = [
     ]
   },
   {
-    id: "webstack",
-    name: "WebStack",
-    category: "Productivity & Utilities",
-    tagline: "Visual Bookmark Manager & Website Hub",
-    desc: "A sleek visual bookmark stack and link management application for Android. Eliminates the friction of remembering or losing web URLs by enabling users to visually organize, tag, and instantly revisit their essential web apps and websites.",
-    detailedAbout: "Rather than forcing users to remember, bookmark-clutter, or constantly re-search for web tools and sites, WebStack provides Android users with a centralized, beautiful visual workspace. With automated page snapshot generation, offline caching, and instant search, saving and revisiting websites becomes fast, organized, and reliable.",
-    problemStatement: "Remembering and juggling multiple web apps and URLs is frustrating, and standard mobile browser bookmark menus are buried deep in text-only lists that lack visual context, fast tagging, and offline snapshot previews.",
-    solutionStatement: "Engineered a dedicated Android visual bookmark stack using Room DB and local storage that automatically fetches website snapshots and favicons, caches them locally for offline access, and provides instant categorized filtering.",
+    id: "connectme",
+    name: "ConnectMe",
+    category: "Transit Telemetry & Mapping",
+    tagline: "Real-Time Campus Bus Tracking & ETA Prediction",
+    desc: "A real-time transit telemetry mobile app engineered for university shuttle tracking. Overcomes urban GPS multipath jitter using on-device Kalman filtering algorithms, coupled with live WebSockets for sub-second bus coordinate updates.",
+    detailedAbout: "ConnectMe was architected to eliminate transit uncertainty across the university campus. Designed as a comprehensive client-server ecosystem, the mobile app connects students with campus shuttle telemetry in real time. It calculates accurate arrival times based on historical transit segment speeds, traffic conditions, and campus perimeter geofences.",
+    problemStatement: "University students and faculty lost hours every week waiting for campus shuttles with unpredictable schedules. Standard GPS tracking suffered severe multipath reflections from concrete academic buildings, causing tracking bus icons to jitter erratically across map tiles, teleport across blocks, and miscalculate arrival ETAs.",
+    solutionStatement: "Engineered an on-device mathematical Kalman filter that predicts expected vehicle momentum and discounts noisy GPS telemetry anomalies. Position updates are streamed through lightweight Socket.io rooms directly to Upstash Redis geospatial clusters, reducing server packet ingress by 38% while delivering a smooth 60 FPS bus avatar animation.",
     solutionPoints: [
-      "Automated Snapshot Generation: Captures responsive website preview cards and favicons for effortless visual scanning.",
-      "Zero-Lag Filter & Search: Hardware-accelerated search across titles, URLs, and custom tags with smooth 60/120 FPS transitions.",
-      "Offline Snapshot Caching: Previews and metadata are preserved locally on-device, enabling instant access without mobile data consumption.",
-      "Interactive Tag Management: Create, edit, and filter custom tags with long-press context sheets and haptic feedback.",
-      "1-Tap System Share: Directly capture links from Chrome, Safari, or social feeds using native Android Intent filters."
+      "On-Device Kalman Filtering: Mathematical trajectory smoothing predicting momentum and discounting GPS reflections.",
+      "Sub-Second Bidirectional Telemetry: Live position coordinates streamed via Socket.io to Upstash Redis geospatial clusters.",
+      "Dynamic Arrival ETA Engine: Automated arrival forecasting calculated from real-time speed profiles and route geofences.",
+      "38% Ingress Compression: On-device coordinate delta filtering preventing redundant server database writes.",
+      "Resilient Offline Mode: Local SQLite timetable caching enabling full route navigation during cellular drops."
     ],
-    stack: ["Kotlin", "Android SDK", "Room Database", "Coil", "Material 3", "Kotlin Coroutines & Flow"],
-    iconUrl: "/assets/apps/webstack/webstack-icon.svg",
+    stack: ["React Native", "Expo", "Socket.IO", "Redis Geo", "Leaflet / Mapbox", "Node.js", "Express", "TypeScript"],
+    iconUrl: "/assets/apps/bustrack/bus-icon.webp",
     features: [
-      "Visual Website Cards with high-resolution snapshot rendering",
-      "Dual Layout Modes: Switch between rich screenshot cards and compact rows",
-      "Fast Search & Filter by title, domain, or custom category tags",
-      "Custom Tag Management with long-press action sheets and rename/delete support",
-      "100% Offline Snapshot Caching with local storage persistence",
-      "System Share Sheet Integration for 1-tap link saving from any browser",
-      "Smart Clipboard Detection for instant quick-paste link capture",
-      "ABI-Optimized Builds for arm64-v8a and armeabi-v7a architecture"
+      "Live GPS telemetry with on-device Kalman filter motion smoothing",
+      "Sub-second bus avatar sync via Socket.io bidirectional channels",
+      "Automated ETA prediction based on dynamic route speed profiling",
+      "Geofenced arrival alerts and push notifications via Expo Push & Firebase",
+      "Offline timetable caching and fallback route navigation schedules",
+      "Driver dispatch telemetry console with live route adherence metrics"
     ],
     status: "Production",
-    version: "v1.0.0",
-    githubUrl: "https://github.com/Chiranth-Janardhan-moger/webstack",
-    apkUrl: "https://github.com/Chiranth-Janardhan-moger/webstack/releases/download/v1.0.0/app-arm64-v8a-release.apk",
+    version: "v2.1.0",
+    githubUrl: "https://github.com/Chiranth-Janardhan-moger/Connect_Me",
     architectureHighlights: [
-      "MVVM architecture backed by Room SQLite database and Kotlin StateFlow",
-      "Coil image pipeline with customized memory and disk cache policies",
-      "Smooth hardware-accelerated transitions utilizing native RenderThread",
-      "Dual ABI-split packaging delivering optimized APK binary sizes"
-    ],
-    screenshots: [
-      "/assets/apps/webstack/webstack-home.png",
-      "/assets/apps/webstack/webstack-save-link.png",
-      "/assets/apps/webstack/webstack-settings.png"
-    ],
-    screenMockups: [
-      {
-        id: "ws-screen-1",
-        title: "Visual Bookmark Stack",
-        description: "High-density visual website cards with responsive snapshot previews, favicons, and category badges.",
-        type: "stack"
-      },
-      {
-        id: "ws-screen-2",
-        title: "Instant Search & Filtering",
-        description: "Hardware-accelerated search bar with fluid expansion and interactive category filter pills.",
-        type: "search"
-      }
+      "Upstash Redis geospatial indexing (GEOADD & GEORADIUS query engine)",
+      "38% reduction in packet ingress through on-device telemetry compression",
+      "Graceful offline degradation with local SQLite schedule caches",
+      "Dynamic connection reconnect with exponential backoff on cell drops"
     ]
   }
 ];

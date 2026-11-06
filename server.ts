@@ -18,11 +18,21 @@ if (!process.env.DISCORD_WEBHOOK_URL && fs.existsSync("C:/Users/Chiranth/.env"))
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
 
-// Enable native trust proxy for accurate behind-reverse-proxy IP resolution
-app.set("trust proxy", true);
+// Enable native trust proxy for accurate behind-reverse-proxy IP resolution (single hop)
+app.set("trust proxy", 1);
 
 // Body parser
 app.use(express.json());
+
+// Helper for escaping dynamic data rendered into HTML to prevent Reflected XSS
+function escapeHtml(str: string): string {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 // Initialize Rate Limiters for Security/Quota Protection
 const contactLimiter = rateLimit({
@@ -37,6 +47,21 @@ const contactLimiter = rateLimit({
   },
   message: {
     error: "Rate limit exceeded. Maximum 3 contact submissions allowed every 15 minutes to prevent spam.",
+  }
+});
+
+const telemetryLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 30, // Limit telemetry tracking requests per minute per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  validate: {
+    trustProxy: false,
+    xForwardedForHeader: false,
+    default: false
+  },
+  message: {
+    error: "Too many telemetry requests.",
   }
 });
 
@@ -430,19 +455,19 @@ app.use(HONEYPOT_ROUTES, (req, res) => {
       <div class="info-box">
         <div class="info-row">
           <span class="info-label">Probed Route</span>
-          <span class="info-value">${req.originalUrl}</span>
+          <span class="info-value">${escapeHtml(req.originalUrl)}</span>
         </div>
         <div class="info-row">
           <span class="info-label">Source IP</span>
-          <span class="info-value">${ip}</span>
+          <span class="info-value">${escapeHtml(String(ip))}</span>
         </div>
         <div class="info-row">
           <span class="info-label">Client Agent</span>
-          <span class="info-value">${userAgent}</span>
+          <span class="info-value">${escapeHtml(String(userAgent))}</span>
         </div>
         <div class="info-row">
           <span class="info-label">Timestamp</span>
-          <span class="info-value">${timestamp}</span>
+          <span class="info-value">${escapeHtml(timestamp)}</span>
         </div>
         <div class="info-row">
           <span class="info-label">Defense Core</span>
@@ -661,12 +686,13 @@ async function sendDiscordNotification(data: TelemetryData) {
 }
 
 // GitHub Tracking Pixel & Live Telemetry Endpoint
-app.get(["/api/telemetry/pixel.svg", "/api/telemetry/pixel.png", "/api/track/github.svg"], async (req, res) => {
+app.get(["/api/telemetry/pixel.svg", "/api/telemetry/pixel.png", "/api/track/github.svg"], telemetryLimiter, async (req, res) => {
   const forwarded = req.headers["x-forwarded-for"];
   const ip = (typeof forwarded === "string" ? forwarded.split(",")[0].trim() : Array.isArray(forwarded) ? forwarded[0] : null) || req.headers["x-real-ip"] || req.socket.remoteAddress || "unknown";
   const userAgent = req.headers["user-agent"] || "unknown";
   const referer = req.headers["referer"] || req.headers["referrer"] || "Direct";
-  const target = (req.query.target as string) || (req.query.repo as string) || "GitHub Profile / README";
+  const rawTarget = (req.query.target as string) || (req.query.repo as string) || "GitHub Profile / README";
+  const target = String(rawTarget).replace(/[@#<>&`*_\\]/g, "").slice(0, 64) || "GitHub Profile";
 
   try {
     await sendDiscordNotification({
@@ -690,8 +716,14 @@ app.get(["/api/telemetry/pixel.svg", "/api/telemetry/pixel.png", "/api/track/git
   res.send(`<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1" viewBox="0 0 1 1"><rect width="1" height="1" fill="none"/></svg>`);
 });
 
-// Logs endpoint for SQLGuardJS
-app.get("/api/security/logs", guard.logsHandler());
+// Logs endpoint for SQLGuardJS (protected if ADMIN_API_KEY is configured)
+app.get("/api/security/logs", (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (process.env.ADMIN_API_KEY && authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  return guard.logsHandler()(req, res, next);
+});
 
 app.post("/api/contact", contactLimiter, (req, res) => {
   const { name, email, subject, message } = req.body;

@@ -123,7 +123,8 @@ export default async function handler(req: any, res: any) {
   const ip = (typeof forwarded === "string" ? forwarded.split(",")[0].trim() : Array.isArray(forwarded) ? forwarded[0] : null) || req.headers["x-real-ip"] || req.socket?.remoteAddress || "unknown";
   const userAgent = req.headers["user-agent"] || "unknown";
   const referer = req.headers["referer"] || req.headers["referrer"] || "Direct";
-  const target = req.query?.target || req.query?.repo || "GitHub Profile / README";
+  const rawTarget = req.query?.target || req.query?.repo || "GitHub Profile / README";
+  const target = String(rawTarget).replace(/[@#<>&`*_\\]/g, "").slice(0, 64) || "GitHub Profile";
 
   const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
   if (!webhookUrl || !webhookUrl.startsWith("https://discord.com/api/webhooks/")) {

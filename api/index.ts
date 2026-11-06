@@ -13,6 +13,15 @@ try {
 const detector = new Detector();
 const inMemorySecurityLogs: any[] = [];
 
+function escapeHtml(str: string): string {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export default async function handler(req: any, res: any) {
   const url = req.url || "/";
   const method = req.method || "GET";
@@ -163,6 +172,10 @@ export default async function handler(req: any, res: any) {
   }
 
   if (url.startsWith("/api/security/logs")) {
+    const authHeader = req.headers["authorization"];
+    if (process.env.ADMIN_API_KEY && authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
     return res.status(200).json(inMemorySecurityLogs);
   }
 
@@ -316,9 +329,9 @@ export default async function handler(req: any, res: any) {
     <h1>Unauthorized Access Captured</h1>
     <p>This path is a monitored security honeypot. Your connection metadata has been logged by the SQLGuardJS security engine.</p>
     <div class="box">
-      <div><strong>IP:</strong> ${ip}</div>
-      <div><strong>Target:</strong> ${url}</div>
-      <div><strong>Timestamp:</strong> ${timestamp}</div>
+      <div><strong>IP:</strong> ${escapeHtml(String(ip))}</div>
+      <div><strong>Target:</strong> ${escapeHtml(String(url))}</div>
+      <div><strong>Timestamp:</strong> ${escapeHtml(String(timestamp))}</div>
     </div>
     <div class="btn-group">
       <a href="https://cftweb-security.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-primary">Want to play CTF? Launch Challenge ↗</a>

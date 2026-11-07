@@ -516,9 +516,9 @@ export const MOBILE_APPS: MobileApp[] = [
       "ABI-Optimized Builds for arm64-v8a and armeabi-v7a architecture"
     ],
     status: "Production",
-    version: "v1.1.1",
+    version: "v2.0.0",
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/webstack",
-    apkUrl: "https://github.com/Chiranth-Janardhan-moger/webstack/releases/download/v1.1.1/app-arm64-v8a-release.apk",
+    apkUrl: "https://github.com/Chiranth-Janardhan-moger/webstack/releases/download/v2.0.0/webstack-v2.0.0.apk",
     fdroidUrl: "https://f-droid.org/packages/com.chiranth7.webstack/",
     architectureHighlights: [
       "MVVM architecture backed by Room SQLite database and Kotlin StateFlow",
@@ -580,9 +580,9 @@ export const MOBILE_APPS: MobileApp[] = [
       "Smart Auto-Categorization (Google, Banking, Social Media, Shopping, Gaming, Work)"
     ],
     status: "Live Release",
-    version: "v1.4.0",
+    version: "v1.4.2",
     githubUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager",
-    apkUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager/releases/download/v1.4.0/VaultX-v1.4.0-arm64-v8a.apk",
+    apkUrl: "https://github.com/Chiranth-Janardhan-moger/vaultx-offline-password-manager/releases/download/v1.4.2/vaultx-v1.4.2-arm64-v8a.apk",
     fdroidUrl: "https://f-droid.org/packages/com.chiranth7.vaultx",
     architectureHighlights: [
       "Key derivation using PBKDF2 with SHA-256 and 100,000 iterations",
@@ -652,42 +652,6 @@ export const MOBILE_APPS: MobileApp[] = [
       "Zero-copy memory mapped buffers for lightning-fast on-device PDF generation",
       "AST-driven syntax highlighter with incremental delta parsing",
       "Sandboxed local TeX bundle package repository"
-    ]
-  },
-  {
-    id: "connectme",
-    name: "ConnectMe",
-    category: "Transit Telemetry & Mapping",
-    tagline: "Real-Time Campus Bus Tracking & ETA Prediction",
-    desc: "A real-time transit telemetry mobile app engineered for university shuttle tracking. Overcomes urban GPS multipath jitter using on-device Kalman filtering algorithms, coupled with live WebSockets for sub-second bus coordinate updates.",
-    detailedAbout: "ConnectMe was architected to eliminate transit uncertainty across the university campus. Designed as a comprehensive client-server ecosystem, the mobile app connects students with campus shuttle telemetry in real time. It calculates accurate arrival times based on historical transit segment speeds, traffic conditions, and campus perimeter geofences.",
-    problemStatement: "University students and faculty lost hours every week waiting for campus shuttles with unpredictable schedules. Standard GPS tracking suffered severe multipath reflections from concrete academic buildings, causing tracking bus icons to jitter erratically across map tiles, teleport across blocks, and miscalculate arrival ETAs.",
-    solutionStatement: "Engineered an on-device mathematical Kalman filter that predicts expected vehicle momentum and discounts noisy GPS telemetry anomalies. Position updates are streamed through lightweight Socket.io rooms directly to Upstash Redis geospatial clusters, reducing server packet ingress by 38% while delivering a smooth 60 FPS bus avatar animation.",
-    solutionPoints: [
-      "On-Device Kalman Filtering: Mathematical trajectory smoothing predicting momentum and discounting GPS reflections.",
-      "Sub-Second Bidirectional Telemetry: Live position coordinates streamed via Socket.io to Upstash Redis geospatial clusters.",
-      "Dynamic Arrival ETA Engine: Automated arrival forecasting calculated from real-time speed profiles and route geofences.",
-      "38% Ingress Compression: On-device coordinate delta filtering preventing redundant server database writes.",
-      "Resilient Offline Mode: Local SQLite timetable caching enabling full route navigation during cellular drops."
-    ],
-    stack: ["React Native", "Expo", "Socket.IO", "Redis Geo", "Leaflet / Mapbox", "Node.js", "Express", "TypeScript"],
-    iconUrl: "/assets/apps/bustrack/bus-icon.webp",
-    features: [
-      "Live GPS telemetry with on-device Kalman filter motion smoothing",
-      "Sub-second bus avatar sync via Socket.io bidirectional channels",
-      "Automated ETA prediction based on dynamic route speed profiling",
-      "Geofenced arrival alerts and push notifications via Expo Push & Firebase",
-      "Offline timetable caching and fallback route navigation schedules",
-      "Driver dispatch telemetry console with live route adherence metrics"
-    ],
-    status: "Production",
-    version: "v2.1.0",
-    githubUrl: "https://github.com/Chiranth-Janardhan-moger/Connect_Me",
-    architectureHighlights: [
-      "Upstash Redis geospatial indexing (GEOADD & GEORADIUS query engine)",
-      "38% reduction in packet ingress through on-device telemetry compression",
-      "Graceful offline degradation with local SQLite schedule caches",
-      "Dynamic connection reconnect with exponential backoff on cell drops"
     ]
   }
 ];

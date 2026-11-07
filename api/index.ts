@@ -13,6 +13,70 @@ try {
 const detector = new Detector();
 const inMemorySecurityLogs: any[] = [];
 
+interface CachedAppRelease {
+  version: string;
+  apkUrl?: string;
+  publishedAt?: string;
+}
+
+let vercelAppReleasesCache: { timestamp: number; data: Record<string, CachedAppRelease> } | null = null;
+const VERCEL_RELEASES_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+const APP_GITHUB_REPOS: Record<string, string> = {
+  webstack: "Chiranth-Janardhan-moger/webstack",
+  vaultx: "Chiranth-Janardhan-moger/vaultx-offline-password-manager",
+  "latex-editor": "Chiranth-Janardhan-moger/latex-editor-android"
+};
+
+async function fetchServerAppReleases(): Promise<Record<string, CachedAppRelease>> {
+  const results: Record<string, CachedAppRelease> = {};
+
+  await Promise.all(
+    Object.entries(APP_GITHUB_REPOS).map(async ([appId, repo]) => {
+      try {
+        const ghRes = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
+          headers: {
+            "User-Agent": "Portfolio-Release-Checker/1.0",
+            Accept: "application/vnd.github.v3+json"
+          }
+        });
+        if (!ghRes.ok) return;
+        const release: any = await ghRes.json();
+        if (release && release.tag_name) {
+          const assets: Array<{ name: string; browser_download_url: string }> = release.assets || [];
+          const apks = assets.filter(a => a.name.toLowerCase().endsWith(".apk"));
+
+          let apkUrl: string | undefined;
+          const arm64 = apks.find(a => a.name.toLowerCase().includes("arm64-v8a"));
+          const named = apks.find(a => {
+            const l = a.name.toLowerCase();
+            return !l.includes("armeabi") && !l.includes("x86") && !l.includes("v7a") && !l.startsWith("app-");
+          });
+          const universal = apks.find(a => {
+            const l = a.name.toLowerCase();
+            return !l.includes("armeabi") && !l.includes("x86") && !l.includes("v7a");
+          });
+
+          if (arm64) apkUrl = arm64.browser_download_url;
+          else if (named) apkUrl = named.browser_download_url;
+          else if (universal) apkUrl = universal.browser_download_url;
+          else if (apks.length > 0) apkUrl = apks[0].browser_download_url;
+
+          results[appId] = {
+            version: release.tag_name,
+            apkUrl,
+            publishedAt: release.published_at
+          };
+        }
+      } catch (err) {
+        console.warn(`[Releases] Error fetching release for ${repo}:`, err);
+      }
+    })
+  );
+
+  return results;
+}
+
 function escapeHtml(str: string): string {
   return String(str)
     .replace(/&/g, "&amp;")
@@ -47,6 +111,26 @@ export default async function handler(req: any, res: any) {
   // 2. Visits counter
   if (url.startsWith("/api/visits")) {
     return res.status(200).json({ count: 1254 });
+  }
+
+  // 2b. App releases
+  if (url.startsWith("/api/apps/releases")) {
+    res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=1200");
+    if (vercelAppReleasesCache && Date.now() - vercelAppReleasesCache.timestamp < VERCEL_RELEASES_TTL_MS) {
+      return res.status(200).json(vercelAppReleasesCache.data);
+    }
+    try {
+      const data = await fetchServerAppReleases();
+      if (Object.keys(data).length > 0) {
+        vercelAppReleasesCache = { timestamp: Date.now(), data };
+      }
+      return res.status(200).json(vercelAppReleasesCache ? vercelAppReleasesCache.data : data);
+    } catch (_) {
+      if (vercelAppReleasesCache) {
+        return res.status(200).json(vercelAppReleasesCache.data);
+      }
+      return res.status(200).json({});
+    }
   }
 
   // 3. Custom blogs

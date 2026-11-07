@@ -14,7 +14,6 @@ import {
   Eye,
   Key,
   Clock,
-  Radio,
   FileCode,
   Zap,
   ArrowUpRight
@@ -23,6 +22,11 @@ import { MOBILE_APPS } from '../data';
 import { MobileApp } from '../types';
 import TiltCard from './TiltCard';
 import LazyImage from './LazyImage';
+import {
+  getCachedAppReleases,
+  fetchLatestAppReleases,
+  mergeAppReleases
+} from '../utils/appReleases';
 
 interface MobileAppsViewProps {
   initialAppId?: string | null;
@@ -35,7 +39,6 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
     const lower = id.toLowerCase();
     if (lower === 'latex' || lower === 'latex-editor') return 'latex-editor';
     if (lower === 'vaultx') return 'vaultx';
-    if (lower === 'connectme') return 'connectme';
     if (lower === 'webstack') return 'webstack';
     return lower;
   };
@@ -44,7 +47,6 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
     if (initialAppId) return normalizeAppId(initialAppId);
     const path = window.location.pathname.toLowerCase();
     if (path === '/app/vaultx' || path === '/apps/vaultx') return 'vaultx';
-    if (path === '/app/connectme' || path === '/apps/connectme') return 'connectme';
     if (path === '/app/latex' || path === '/apps/latex' || path === '/app/latex-editor' || path === '/apps/latex-editor') return 'latex-editor';
     if (path === '/app/webstack' || path === '/apps/webstack') return 'webstack';
     if (path.startsWith('/app/')) return normalizeAppId(path.split('/app/')[1]) || null;
@@ -76,7 +78,22 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
     setActiveScreenshotIndex(null);
   }, [selectedAppId]);
 
-  const selectedApp = MOBILE_APPS.find(app => app.id === selectedAppId);
+  const [apps, setApps] = useState<MobileApp[]>(() =>
+    mergeAppReleases(MOBILE_APPS, getCachedAppReleases())
+  );
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchLatestAppReleases(MOBILE_APPS).then(releases => {
+      if (!isMounted || !releases || Object.keys(releases).length === 0) return;
+      setApps(prev => mergeAppReleases(prev, releases));
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const selectedApp = apps.find(app => app.id === selectedAppId);
 
   // Full-screen screenshot preview modal state
   const [activeScreenshotIndex, setActiveScreenshotIndex] = useState<number | null>(null);
@@ -170,7 +187,7 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
 
             <div className="flex justify-between items-center text-[11px] text-gray-400 pt-2 border-t border-white/10 font-mono">
               <span className="text-blue-400 cursor-pointer">Use Biometrics</span>
-              <span>v1.3.4</span>
+              <span>{selectedApp?.version || 'v1.4.2'}</span>
             </div>
           </div>
         );
@@ -271,92 +288,6 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
           </div>
         );
       }
-    }
-
-    // ConnectMe Mobile screens
-    if (type === 'map') {
-      return (
-        <div className="bg-[#1a2332] text-white p-5 rounded-2xl border border-line/60 h-80 flex flex-col justify-between select-none shadow-inner font-sans relative overflow-hidden">
-          {/* Simulated Map Background Grid */}
-          <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:20px_20px]" />
-
-          {/* Map Polyline Representation */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <svg className="w-full h-full opacity-40" viewBox="0 0 300 300">
-              <path d="M 30,220 Q 150,80 270,180" fill="none" stroke="#38bdf8" strokeWidth="4" strokeDasharray="6 4" />
-            </svg>
-          </div>
-
-          {/* Top Info Bar */}
-          <div className="relative z-10 flex justify-between items-center bg-black/40 backdrop-blur-md p-2 rounded-lg border border-white/10 text-[11px] font-mono">
-            <div className="flex items-center gap-1.5">
-              <Radio size={12} className="text-emerald-400 animate-ping" />
-              <span>Route 4: BMSIT Central</span>
-            </div>
-            <span className="text-emerald-400 font-bold">LIVE 1Hz</span>
-          </div>
-
-          {/* Bus Avatar Marker on Map */}
-          <div className="relative z-10 my-auto flex flex-col items-center justify-center">
-            <div className="w-12 h-12 rounded-2xl bg-white border border-line/80 shadow-lg flex items-center justify-center p-1.5 animate-bounce overflow-hidden">
-              <LazyImage src="/assets/apps/bustrack/bus-icon.webp" alt="ConnectMe Bus Icon" className="w-full h-full object-contain" wrapperClassName="w-full h-full flex items-center justify-center" />
-            </div>
-            <span className="bg-black/70 px-2 py-0.5 rounded text-[10px] font-mono mt-1.5 border border-white/20">
-              Shuttle #02 · Kalman Smoothed
-            </span>
-          </div>
-
-          {/* Bottom Card */}
-          <div className="relative z-10 bg-black/60 backdrop-blur-md p-2.5 rounded-xl border border-white/10 flex justify-between items-center text-xs">
-            <div>
-              <span className="text-gray-400 text-[10px] block">Next Arrival</span>
-              <span className="font-bold text-sm text-white">Academic Block A</span>
-            </div>
-            <span className="text-emerald-400 font-bold font-mono text-sm">3 MINS</span>
-          </div>
-        </div>
-      );
-    }
-
-    if (type === 'schedule') {
-      return (
-        <div className="bg-[#1a2332] text-white p-5 rounded-2xl border border-line/60 h-80 flex flex-col justify-between select-none shadow-inner font-sans">
-          <div className="flex justify-between items-center text-[11px] text-gray-400 font-mono">
-            <span className="font-bold text-white">Transit Timeline</span>
-            <span className="text-blue-400">3 Active Shuttles</span>
-          </div>
-
-          <div className="space-y-3 my-auto font-mono text-xs">
-            <div className="flex items-start gap-3 border-l-2 border-emerald-400 pl-3">
-              <div>
-                <span className="text-emerald-400 text-[10px] block font-bold">CURRENT STOP</span>
-                <span className="font-semibold text-white">Main Campus Gate</span>
-                <span className="text-[10px] text-gray-400 block mt-0.5">Departed: 9:42 AM</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 border-l-2 border-blue-400 pl-3">
-              <div>
-                <span className="text-blue-400 text-[10px] block font-bold">NEXT STOP · 3 MIN</span>
-                <span className="font-semibold text-white">ISE / CSE Block</span>
-                <span className="text-[10px] text-gray-400 block mt-0.5">ETA: 9:45 AM (Calculated)</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 border-l-2 border-gray-600 pl-3 opacity-60">
-              <div>
-                <span className="text-gray-400 text-[10px] block">FINAL TERMINUS</span>
-                <span className="font-semibold text-white">Hostel Complex</span>
-                <span className="text-[10px] text-gray-400 block mt-0.5">ETA: 9:52 AM</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-[10px] text-center text-gray-400 font-mono">
-            Offline SQLite Schedule Fallback Available
-          </div>
-        </div>
-      );
     }
 
     if (type === 'editor') {
@@ -872,7 +803,7 @@ export default function MobileAppsView({ initialAppId, onSelectApp }: MobileApps
 
       {/* Grid: 2 Clean Cards in One Row on Desktop / Tablets */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6" id="mobile-apps-grid">
-        {MOBILE_APPS.map((app: MobileApp) => (
+        {apps.map((app: MobileApp) => (
           <TiltCard
             key={app.id}
             onClick={() => handleSelectApp(app.id)}
